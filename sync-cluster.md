@@ -94,3 +94,36 @@ The first table lists all the **client** peers: these are the other Sync Server(
 While the second table lists the **connected peers**:
 
 <figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption><p>Connected peers table</p></figcaption></figure>
+
+## Overview about the Clustering architecture
+
+The ObjectBox clustering mechanism implements so far the [Raft consensus algorithm](https://en.wikipedia.org/wiki/Raft\_\(algorithm\)).
+
+When establishing the cluster, it's elected a leader node that is the main responsible of the Sync History, while other nodes will be identified as followers. The leader election is performed using a voting system: the candidate node that gathers the majority of votes becomes the leader.
+
+A peer can therefore be in 3 different states: **leader**, **follower** or **candidate** (only during election).
+
+After the leader is elected, it starts sending heartbeats to the follower nodes to notify them of its availability. When the followers stop receiving heartbeats from the leader (e.g. because the leader is down), the election takes place again.
+
+The Sync Client changes are sent either to a follower node or to a leader node. If it's a follower node, the changes are not processed and forwarded to the leader node. The leader node synchronizes its followers to make sure they all share the same state and commits the changes to its own Sync History.
+
+### Visualize the cluster activity
+
+The Sync Cluster page of ObjectBox Admin web app helps you to visualize the Cluster activity and possibly debug your configuration and the network connection.
+
+<figure><img src=".gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+
+In the top panel, you can read some general information about the current Sync Server.
+
+Below, follow two tables that show the peers of the current Sync Server.
+
+<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+
+The first table lists all the **client** peers: these are the other Sync Server(s) that are connected to the current one. In the image, we can see that the current Sync Server has other two Sync Server(s) connected to it.
+
+<figure><img src=".gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+
+While the second table lists the **connected peers**...
+
