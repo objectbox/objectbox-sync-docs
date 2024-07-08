@@ -1,5 +1,5 @@
 ---
-description: ObjectBox Sync Cluster for high availability and scalability
+description: ObjectBox Sync Cluster for scalability and high availability.
 ---
 
 # Sync Cluster
