@@ -121,7 +121,7 @@ docker run --rm -it \
     --mount source=sync-server-data,target=/data \
     --publish 127.0.0.1:9999:9999 \
     --publish 127.0.0.1:9980:9980 \
-    objectboxio/sync:sync-server-2023-01-19 \
+    objectboxio/sync:sync-server-2023-06-14 \
     --model /data/objectbox-model.json \
     --unsecured-no-authentication \
     --admin-bind 0.0.0.0:9980
@@ -144,10 +144,10 @@ docker run --rm -it `
     --mount source=sync-server-data,target=/data `
     --publish 127.0.0.1:9999:9999 `
     --publish 127.0.0.1:9980:9980 `
-    objectboxio/sync:21.3.1-server `
+    objectboxio/sync:sync-server-2023-06-14 `
     --model /data/objectbox-model.json `
     --unsecured-no-authentication `
-    --browser-bind 0.0.0.0:9980
+    --admin-bind 0.0.0.0:9980
 ```
 {% endtab %}
 {% endtabs %}

@@ -40,14 +40,12 @@ Here is a simple example of using the client to read all existing objects from t
 
 ```
 from python_graphql_client import GraphqlClient
-import argparse
+import requests
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--token")
-args = parser.parse_args()
-
+url = 'http://localhost:8081/api/v2/sessions'
+token = requests.post(url).text
 header = {
-    'Authorization': 'Bearer ' + args.token
+    'Authorization': 'Bearer ' + token[1:-1]
 }
 
 client = GraphqlClient(endpoint="http://localhost:8081/api/graphql", headers = header)
