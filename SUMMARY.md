@@ -17,8 +17,6 @@
 
 ## ObjectBox Database Developer Docs
 
-***
-
 * [Java, Kotlin, Flutter/Dart](https://docs.objectbox.io/)
 * [C, C++](https://cpp.objectbox.io/)
 * [Swift](https://swift.objectbox.io/)

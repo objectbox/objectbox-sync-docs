@@ -8,7 +8,9 @@ description: >-
 
 ## ObjectBox Sync enabled library
 
-The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, it won't any Sync logic due to the missing implementation.
+The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, it won't execute any Sync logic due to the missing implementation.
+
+<mark style="background-color:green;">Even though you have access to the Sync API, it will only work when you have an ObjectBox Sync  subscription. If you have both libs (the database and the Sync lib), you can start using the Sync API as described in the following docs.</mark>
 
 {% hint style="info" %}
 If you haven't used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
