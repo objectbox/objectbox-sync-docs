@@ -37,6 +37,10 @@ The network connection seems fine? OK, let's get additional information! The Syn
 In the ObjectBox Browser, you can enable debug logs in the "Status" page. See [Sync Server configuration](objectbox-sync-server.md) for details.
 {% endhint %}
 
+## IDs do not match across devices
+
+You may notice that IDs of objects stored on one device may not always match the IDs on another device. Well, that's not a bug, but a feature. :slight\_smile:  Check the [docs on Object ID mapping](advanced/object-ids.md) and the possibility to use global IDs instead.
+
 ## Other hiccups
 
 A checklist of other likely issues:
