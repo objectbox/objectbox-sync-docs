@@ -28,7 +28,7 @@ Copy the AAR and JAR files to the `<module_name>/libs` directory (the path is re
 ```groovy
 // Prevent the ObjectBox plugin from adding dependencies without Sync server.
 configurations {
-    implementation {
+    all {
         exclude group: "io.objectbox", module: "objectbox-android"
         exclude group: "io.objectbox", module: "objectbox-linux"
     }
@@ -47,7 +47,7 @@ apply plugin: "io.objectbox.sync"
 ```kotlin
 // Prevent the ObjectBox plugin from adding dependencies without Sync server.
 configurations {
-    "implementation" {
+    all {
         exclude(group = "io.objectbox", module = "objectbox-android")
         exclude(group = "io.objectbox", module = "objectbox-linux")
     }
