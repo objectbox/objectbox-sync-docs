@@ -70,6 +70,12 @@ To enable shared global IDs for a type, use this annotation on the type (class) 
 ```
 {% endtab %}
 
+{% tab title="Dart" %}
+```dart
+@Sync(sharedGlobalIds: true)
+```
+{% endtab %}
+
 {% tab title="Swift" %}
 ```
 // objectbox: sync = { "sharedGlobalIds": true }
