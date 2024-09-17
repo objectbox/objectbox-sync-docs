@@ -50,9 +50,9 @@ This gives you specific information about how to get the Sync-enabled version of
 We may distribute ObjectBox Sync for Swift in our **Cocoapods** staging repository (we let you know). In that case, these are some typical lines to put in your Podfile (please check the version, there might be a newer one available):
 
 ```
+target 'MyCoolSyncProject' do
     use_frameworks!
-
-    pod 'ObjectBox', '..0-sync'
+    pod 'ObjectBox', '4.0.0-sync'
 end
 
 ```
