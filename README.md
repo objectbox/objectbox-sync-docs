@@ -11,7 +11,7 @@ description: >-
 If you haven't tried out ObjectBox DB yet, [get started here](https://objectbox.io/offline-first-mobile-database/).
 {% endhint %}
 
-Welcome to the official documentation for ObjectBox Sync. We're thrilled to see your interest in our data synchronization solution and would like to ask you to [sign up for early access here](https://objectbox.io/sync/).&#x20;
+Welcome to the official documentation for ObjectBox Sync. If you haven't already, please [sign up for a free Data Sync trial](https://objectbox.io/sync/).&#x20;
 
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
 
