@@ -1,8 +1,8 @@
 ---
 description: >-
-  Out-of-the-box Data Sync that goes hand-in-hand with the ObjectBox database.
-  Easily share data across devices - seamless, bi-directional, selective data
-  flows become easy with ObjectBox.
+  Offline-first out-of-the-box Data Sync for the ObjectBox database. Seamless,
+  bi-directional, selective data flows across devices, offline as well as
+  online, becomes easy with ObjectBox Data Sync.
 ---
 
 # Data Synchronization
