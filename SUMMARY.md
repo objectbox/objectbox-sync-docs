@@ -2,7 +2,6 @@
 
 * [Data Synchronization](README.md)
 * [Sync Client](sync-client.md)
-* [Sync Server Evaluation](sync-server-evaluation.md)
 * [ObjectBox Sync Server](objectbox-sync-server.md)
 * [Sync Server Configuration](sync-server-configuration.md)
 * [Data model evolution](data-model-evolution.md)
