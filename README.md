@@ -1,8 +1,8 @@
 ---
 description: >-
-  Out-of-the-box Data Sync that goes hand-in-hand with the ObjectBox database.
-  Easily share data across devices - seamless, bi-directional, selective data
-  flows become easy with ObjectBox.
+  Offline-first out-of-the-box Data Sync for the ObjectBox database. Seamless,
+  bi-directional, selective data flows across devices, offline as well as
+  online, becomes easy with ObjectBox Data Sync.
 ---
 
 # Data Synchronization
@@ -56,7 +56,11 @@ While WebSockets is a great match for ObjectBox Sync for most cases, we are not 
 
 ### Robust data synchronization
 
-Sync is tightly integrated with the ObjectBox database. In ObjectBox, when you put objects this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database\_transaction). This is great to ensure that your data is always consistent. A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization. Thus, this high level of consistency which our database offer, extends to Sync; as Sync meta data can not diverge from the actual data.
+Sync is tightly integrated with the ObjectBox database.
+When you put object in the database, this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database\_transaction).
+This is great to ensure that your data is always consistent.
+A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization.
+Thus, this high level of consistency extends to Sync; as Sync meta data can not diverge from the actual data.
 
 OK, this may sound a bit abstract, so let's look at an example. Let's say device A is constantly computing data based on a never ending stream of sensor data. Also that computed data is synced to a edge gateway B. Now at any point in time, device A suddenly looses power. Don't worry, your data is safe and consistent. Transactions ensure that the state on device A is consistent with what will be synchronized to gateway B. ObjectBox takes care of all that; no matter if A and B were connected to each other or whatever the synchronization state was at the point when the power went out. Once device A boots up again, ObjectBox will synchronize data to gateway B from the point it was interrupted.
 

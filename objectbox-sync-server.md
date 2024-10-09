@@ -6,7 +6,10 @@ description: >-
 
 # ObjectBox Sync Server
 
-The ObjectBox Sync Server enables ObjectBox Sync. ObjectBox Sync clients connect to Sync Server to exchange data to update each other (data synchronization). You need to contact the ObjectBox team to get your personal copy of Sync Server (plain executable or Docker). It comes as a single command-line application `sync-server` and includes a web based data browser and management interface for administrator users.&#x20;
+The ObjectBox Sync Server enables ObjectBox Sync.
+ObjectBox Sync clients connect to Sync Server to exchange data to update each other (data synchronization).
+You need to contact the ObjectBox team to get your personal copy of Sync Server (plain executable or Docker).
+It comes as a single command-line application `sync-server` and includes a web based data browser and management interface for administrator users.&#x20;
 
 ## Getting started
 
@@ -266,12 +269,20 @@ Never use this option in an app shipped to customers. It is inherently insecure 
 
 ## Updating the data model
 
-The model JSON is used to initialize the database schema and can also be used later to switch the schema to a newer version, by starting the server with an updated model file. Alternatively, the schema version can be changed through the web UI.
+The model JSON is used to initialize the data model for sync (and also the database schema). 
+Later, when your data model has evolved, you will want to update model at server.
+You have two options to supply a newer version:
+
+ * Starting the server with an updated model file.
+ * Upload the model file through the Admin web UI.
+
+For details, please refer to the [data model evolution](data-model-evolution.md) section.
 
 ## Feedback
 
-While we hope that ObjectBox Sync is already useful for your use case, we're also aware that some features are missing. We're looking forward to your feedback to prioritize the most requested features. Please fill in this [Sync Feedback Form](https://forms.gle/JtUDBo61UQTExRao8) to tell us what you think.
+We're looking forward to your feedback to prioritize the most requested features.
+Please fill in this [Sync Feedback Form](https://forms.gle/JtUDBo61UQTExRao8) to tell us what you think.
 
-Please let the ObjectBox team know. If you run into issues, we're happy to help. We are aware of rough edges still exist and might be able to help you one way or the other. Feel free to send us a message on contact\[at]objectbox.io.
+And if you run into issues, please let the ObjectBox team know; we're happy to help.
 
 Thank you!
