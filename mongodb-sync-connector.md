@@ -14,7 +14,7 @@ Join the waitlist [here](https://objectbox.io/mongodb/).
 
 ## Bi-directional Synchronization with MongoDB
 
-![MongoDB_ObjectBox_Central.png](.gitbook/assets/MongoDB_ObjectBox_Central.png)
+![](.gitbook/assets/MongoDB_ObjectBox_Central.png)
 
 ObjectBox Sync brings your data in MongoDB to the edge (e.g. mobile and IoT devices, big and small servers)
 and synchronize changes back to MongoDB.
