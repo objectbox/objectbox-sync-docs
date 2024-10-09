@@ -6,6 +6,7 @@
 * [Sync Server Configuration](sync-server-configuration.md)
 * [Data model evolution](data-model-evolution.md)
 * [Sync Cluster](sync-cluster.md)
+* [MongoDB Sync Connector](mongodb-sync-connector.md)
 * [Advanced Sync](advanced/README.md)
   * [Object IDs and Sync](advanced/object-ids.md)
   * [Embedded Sync Server](advanced/embedded-sync-server.md)
