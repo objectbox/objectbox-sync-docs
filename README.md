@@ -1,8 +1,8 @@
 ---
 description: >-
-  Offline-first out-of-the-box Data Sync for the ObjectBox database. Seamless,
-  bi-directional, selective data flows across devices, offline as well as
-  online, becomes easy with ObjectBox Data Sync.
+  Out-of-the-box Data Sync that goes hand-in-hand with the ObjectBox database.
+  Easily share data across devices - seamless, bi-directional, selective data
+  flows become easy with ObjectBox.
 ---
 
 # Data Synchronization
@@ -36,7 +36,7 @@ The same APIs apply to synced objects, e.g. you use the same `put` call on a syn
 
 When you write applications with ObjectBox Sync, you usually do not bother if the device is online or offline. It does not matter. You work with the objects that you have at hand and let ObjectBox Sync "do its thing". But what is that exactly?
 
-So, let's look a bit behind the scenes. Whenever you change data (on sync-enabled types), ObjectBox **tracks these changes** and stores them safely in an **outgoing queue**. In the background, ObjectBox Sync tries to connect to the data synchronization destination (Sync server). If the connection was successfully established, the outgoing queue is "processed". This means that enqueued data is send, and once the sync destination acknowledges the receipt, that piece of data can be safely removed from the queue.
+So, let's look a bit behind the scenes. Whenever you change data (on sync-enabled types), ObjectBox **tracks these changes** and stores them safely in an **outgoing queue**. In the background, ObjectBox Sync tries to connect to the data synchronization destination (Sync server). If the connection was successfully established, the outgoing queue is "processed". This means that enqueued data is sent, and once the sync destination acknowledges the receipt, that piece of data can be safely removed from the queue.
 
 When disconnected, Sync clients will **periodically try to reconnect** in the background. By default, this is done using increasing backoff intervals. While details may change, the backoffs should stay similar to this sequence \[seconds]: 0.5, 1, 2, 4, 8, 15, 30, 30, 60. This resembles pretty much an exponential backoff, but also ensures not to delay a (re-)connection attempt for longer than one minute.
 
@@ -56,7 +56,7 @@ While WebSockets is a great match for ObjectBox Sync for most cases, we are not 
 
 ### Robust data synchronization
 
-Sync is tightly integrated with the ObjectBox database. In ObjectBox, when you put objects this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database\_transaction). This is great to ensure that your data is always consistent. A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization. Thus, that though level of consistency, which databases offer extends to Sync. Sync meta data can not diverge from the actual data.
+Sync is tightly integrated with the ObjectBox database. In ObjectBox, when you put objects this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database\_transaction). This is great to ensure that your data is always consistent. A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization. Thus, this high level of consistency which our database offer, extends to Sync; as Sync meta data can not diverge from the actual data.
 
 OK, this may sound a bit abstract, so let's look at an example. Let's say device A is constantly computing data based on a never ending stream of sensor data. Also that computed data is synced to a edge gateway B. Now at any point in time, device A suddenly looses power. Don't worry, your data is safe and consistent. Transactions ensure that the state on device A is consistent with what will be synchronized to gateway B. ObjectBox takes care of all that; no matter if A and B were connected to each other or whatever the synchronization state was at the point when the power went out. Once device A boots up again, ObjectBox will synchronize data to gateway B from the point it was interrupted.
 

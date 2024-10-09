@@ -49,7 +49,7 @@ As of now, the server is already running and accessible:
 * ObjectBox Sync on all interfaces, port 9999:\
   Use this information (using a reachable IP or host name) to setup Sync clients
 * Admin web UI on localhost, port 9980:\
-  Have a look [http://127.0.0.1:9980](http://127.0.0.1:9980) in your favorite web browser.
+  Have a look at [http://127.0.0.1:9980](http://127.0.0.1:9980) in your favorite web browser.
 
 ### Docker
 
@@ -215,14 +215,14 @@ As you can see, logging is structured into the following columns:
 * **Thread:** the first three digits are the number of the thread that logged the text message
 * **Time:** UTC time using 24 hours format, including 1/10,000 second precision (1/10 milliseconds)
 * **Level:** One of the log levels (listed with increasing severity):
-  * DEBUG: extensive logs to help diagnosing a specific behavior. If you want to use debug logs, compile with the "DebugLog" freature flag and enable them within your app (e.g. use debugLog(true) in C++).
-  * INFO: "important" information
-  * WARN: something unusual has happened that you might want to check.
-  * ERROR: reserved for special error occasions ("something bad happened") that typically require some action. It might be that the machine is running out of resources (RAM, disk space etc) or an unexpected situation was encountered. When in doubt, reach out to the ObjectBox team to clarify what's going on.
+  * **DEBUG**: extensive logs to help diagnosing a specific behavior. Debug logs are only enabled if the DebugLog feature flag is on (usually the Sync Server ships such feature). You also need to make sure the Debug logging switch is enabled on Admin UI (see the screenshot above).
+  * **INFO**: "important" information
+  * **WARN**: something unusual has happened that you might want to check.
+  * **ERROR**: reserved for special error occasions ("something bad happened") that typically require some action. It might be that the machine is running out of resources (RAM, disk space etc) or an unexpected situation was encountered. When in doubt, reach out to the ObjectBox team to clarify what's going on.
 * **Tag (optional):** Most logs include a tag identifying the internal component
 * **Message:** the actual log text
 
-After startup, you typically won't see anymore logs by default. In contrast to "info" and above, "debug" level logs gives you extensive information including client connects and message interactions with clients.
+After startup, you typically won't see anymore logs by default. In contrast to "info" and above, "debug" level logs give you extensive information including client connects and message interactions with clients.
 
 To give you a feel what debug logs are like have a look at the following example. It shows a new client connecting, logging in and sending data:
 
@@ -272,6 +272,6 @@ The model JSON is used to initialize the database schema and can also be used la
 
 While we hope that ObjectBox Sync is already useful for your use case, we're also aware that some features are missing. We're looking forward to your feedback to prioritize the most requested features. Please fill in this [Sync Feedback Form](https://forms.gle/JtUDBo61UQTExRao8) to tell us what you think.
 
-Please let the ObjectBox team know if you run into issues; we're happy to help. We are aware of rough edges still exist and might be able to help you one way or the other. Feel free to send us a message on contact\[at]objectbox.io.
+Please let the ObjectBox team know. If you run into issues, we're happy to help. We are aware of rough edges still exist and might be able to help you one way or the other. Feel free to send us a message on contact\[at]objectbox.io.
 
 Thank you!

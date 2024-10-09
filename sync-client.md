@@ -8,7 +8,7 @@ description: >-
 
 ## ObjectBox Sync enabled library
 
-The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, it won't execute any Sync logic due to the missing implementation.
+The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, but won't provide any Sync logic due to the missing implementation.
 
 {% hint style="info" %}
 If you haven't used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
@@ -31,8 +31,8 @@ If needed, e.g. to publish a JVM app that supports multiple platforms or to add 
 
 <pre class="language-groovy"><code class="lang-groovy"><strong>// Android
 </strong><strong>implementation("io.objectbox:objectbox-sync-android:$objectboxVersion")
-</strong><strong>
-</strong><strong>// JVM
+</strong>
+<strong>// JVM
 </strong>implementation("io.objectbox:objectbox-sync-linux:$objectboxVersion")
 implementation("io.objectbox:objectbox-sync-macos:$objectboxVersion")
 implementation("io.objectbox:objectbox-sync-windows:$objectboxVersion")
@@ -317,7 +317,7 @@ The example uses wss://127.0.0.1 for the server endpoint. This is the IP address
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). [Details](https://developer.android.com/studio/run/emulator-networking)
 {% endhint %}
 
-Sync client is started by calling `start()/buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.&#x20;
+Sync client is started by calling `start()/buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
 
 Once the client is logged in, the server will push any changes it has missed. The server will also push any future changes while the client remains connected. This [sync updates behavior](sync-client.md#controlling-sync-updates-behavior) can be configured.
 
@@ -564,7 +564,7 @@ Note that a started sync client can not be started again. Stop and close an exis
 
 ## Listening to events
 
-The sync client supports listening to various events, e.g. if authentication has failed or if the client was disconnected from the server. This enables other components of an app, like the user interface, to react accordingly.&#x20;
+The sync client supports listening to various events, e.g. if authentication has failed or if the client was disconnected from the server. This enables other components of an app, like the user interface, to react accordingly.
 
 {% tabs %}
 {% tab title="Java" %}
@@ -723,13 +723,13 @@ public protocol SyncListener: SyncLoginListener, SyncCompletedListener, SyncChan
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
-It's possible to listen to sync-related events on the client. Use the following `SyncClient`  getters to connect to a stream:
+It's possible to listen to sync-related events on the client. Use the following `SyncClient` getters to connect to a stream:
 
 * `Stream<SyncLoginEvent> get loginEvents` - such as logged-in, credentials-rejected.
 * `Stream<void> get completionEvents` to observe when synchronization has completed.
 * `Stream<SyncConnectionEvent> get connectionEvents` to observe connection events.
 
-Note that these streams don't buffer events so unless you're subscribed, no events are collected. Additionally, don't forget to cancel the subscription when you don't care about the information anymore, to free up resources.&#x20;
+Note that these streams don't buffer events so unless you're subscribed, no events are collected. Additionally, don't forget to cancel the subscription when you don't care about the information anymore, to free up resources.
 
 ```dart
 final client = Sync.client(...);
@@ -979,7 +979,7 @@ Some events may be issued in parallel, from multiple background threads. To help
 * [State listeners](sync-client.md#listening-to-events) - listening to login success/failure, connection status, sync complete.
 * [Data change listener](sync-client.md#listening-to-sync-updates) - listening to incoming data changes.
 
-There can be only one event executed at any single moment from a listener in a single group. You can imagine this as if there were two parallel threads, one could only issue "state" events, the other only "data change" events.&#x20;
+There can be only one event executed at any single moment from a listener in a single group. You can imagine this as if there were two parallel threads, one could only issue "state" events, the other only "data change" events.
 
 ### Controlling sync updates behavior
 

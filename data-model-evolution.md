@@ -12,7 +12,7 @@ This section refers mostly to the standard object model provided by ObjectBox. T
 
 ## Managing data model versions
 
-In the [Sync Server docs](objectbox-sync-server.md), you already saw data models in action. The server initially needs the JSON file containing the data model to start. Over time this data model will evolve. New types and properties will be added, and sometimes old ones will be retired. The ObjectBox Sync Server tracks these versions and helps you manage clients using different model versions.
+In the [Sync Server docs](objectbox-sync-server.md), you already saw data models in action. The server initially needs the JSON file containing the data model to start with. Over time this data model will evolve. New types and properties will be added, and sometimes old ones will be retired. The ObjectBox Sync Server tracks these versions and helps you manage clients using different model versions.
 
 Let's say you have a new client version of your application that also introduced new properties to a type. To prepare that for synchronization, you need to upload the updated data model to the server. This is done by the admin web UI - in "Schema Versions" section, click "New Version" button in the right and you'll get an upload dialog.&#x20;
 

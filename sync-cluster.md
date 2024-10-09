@@ -1,5 +1,5 @@
 ---
-description: ObjectBox Sync Cluster for scalability and high availability.
+description: ObjectBox Sync Cluster for high availability and scalability
 ---
 
 # Sync Cluster
@@ -60,7 +60,7 @@ The base configuration of the Sync Server is described [here](sync-server-config
   * `credentials` (required): given `credentialsType`, this is actual secret.
 
 {% hint style="info" %}
-**Note:**  while most of the options can be specified either in the Sync Server command line and in the JSON file, the `serversToConnect` options is JSON file only. Thus, if you want to configure clustering for your Sync Server, please use a JSON configuration file as [described here](objectbox-sync-server.md#configuration-file).
+**Note:** while most of the options can be specified either in the Sync Server command line and in the JSON file, the `serversToConnect` options is JSON file only. Thus, if you want to configure clustering for your Sync Server, please use a JSON configuration file as [described here](objectbox-sync-server.md#configuration-file).
 {% endhint %}
 
 ## Overview of the clustering architecture
