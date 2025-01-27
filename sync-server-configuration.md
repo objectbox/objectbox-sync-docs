@@ -15,47 +15,79 @@ Note that both approaches can be [combined](sync-server-configuration.md#combini
 
 ## Configuration via command line (CLI)
 
-A good start is to have a look at the output of running `sync-server --help` (your output may vary, e.g. when using a newer version of the Sync Server):
+Running the Sync Server from the command line is simple way to get started. It's a idea to look at the output of running `sync-server --help` (your output may vary, e.g. when using a newer version of the Sync Server).
+
+<details>
+
+<summary>Sync Server CLI Help Output (click to expand)</summary>
 
 ```
-$ sync-server --help
+sync-server --help
+001-16:12:08.9830 [INFO ] [SvSyAp] Starting ObjectBox Sync Server version 5 (protocol version: 6, core: 4.0.3-2025-01-24 (SyncServer, http, graphql, admin, tree, dlog, cluster, backup, lmdb, VectorSearch, SyncMongoDb))
 ObjectBox Sync Server
 Usage:
   sync-server [OPTION...]
 
-      --admin-bind arg          host/IP and port the admin http server should
-                                listen on (default: http://127.0.0.1:9980)
-      --admin-threads arg       number of the worker threads used by admin
+      --admin-bind arg          host/IP and port the admin http server 
+                                should listen on (default: 
+                                http://127.0.0.1:9980)
+      --admin-threads arg       number of the worker threads used by admin 
                                 http server (default: 4)
       --admin-off               do not start the admin http server
-      --async-tx-slot arg       If async DB TXs are "too fast", this adds a
+      --async-tx-slot arg       If async DB TXs are "too fast", this adds a 
                                 delay to fill up the slot (default: 3000)
-  -b, --bind arg                host/IP and port the sync server should
-                                listen on (default: ws://0.0.0.0:9999)
-  -c, --conf arg                configuration file path (default:
-                                sync-server-config.json)
-      --cert arg                certificate file path (default: )
-      --cluster-id arg          cluster ID to enable cluster mode for servers
-                                (default: )
-      --debug                   enable debug logs
-      --fixed-follower          the server never becomes the leader of the
-                                cluster (default: false)
-      --fixed-leader            make the server the (only!) leader of the
-                                cluster (danger: read docs carefully!) (default:
-                                false)
-  -d, --db-directory arg        directory where the database is stored
-                                (default: objectbox)
-      --db-max-size arg         database size limit; use a number with a unit
-                                (K/M/G/T), e.g. 256G (default: 104857600K)
-  -h, --help                    show help
-  -m, --model arg               schema model file to load (JSON) (default: )
-      --unsecured-no-authentication
-                                [UNSECURE] allow connections without
+      --auth-obx-admin          Enable ObjectBox Admin Users database for 
                                 authentication
-      --workers arg             number of workers for the main task pool
-                                (default is hardware dependent, e.g. 3 * CPU
-                                "cores") (default: 0)
+      --auth-required arg       Comma-separated list of authentication 
+                                methods (credential types) required for 
+                                clients to connect (default: "")
+  -b, --bind arg                host/IP and port the sync server should 
+                                listen on (default: "")
+  -c, --conf arg                configuration file path (default: 
+                                sync-server-config.json)
+      --cert arg                certificate file path (default: "")
+      --cluster-id arg          cluster ID to enable cluster mode for 
+                                servers (default: "")
+      --debug                   enable debug logs
+      --fixed-follower          the server never becomes the leader of the 
+                                cluster
+      --fixed-leader            make the server the (only!) leader of the 
+                                cluster (danger: read docs carefully!)
+  -d, --db-directory arg        directory where the database is stored 
+                                (default: objectbox)
+      --db-max-size arg         database size limit; use a number with a 
+                                unit (K/M/G/T), e.g. 256G (default: 
+                                104857600K)
+  -h, --help                    show help
+      --jwt-public-key-url arg  URL to the public key for JWT token 
+                                validation (default: "")
+      --jwt-claim-aud arg       Expected audience claim in JWT token 
+                                (default: "")
+      --jwt-claim-iss arg       Expected issuer claim in JWT token 
+                                (default: "")
+  -m, --model arg               schema model file to load (JSON) (default: 
+                                "")
+      --mongo-url arg           MongoDB Sync Connector: URL to the MongoDB 
+                                instance (default: "")
+      --mongo-db arg            MongoDB Sync Connector: name of the primary 
+                                MongoDB database to sync (default: "")
+      --no-stacks               disable stack traces when logging errors
+      --unsecured-no-authentication
+                                [UNSECURE] allow connections without 
+                                authentication
+      --workers arg             number of workers for the main task pool 
+                                (default is hardware dependent, e.g. 3 * 
+                                CPU "cores") (default: 0)
+      --restore-backup arg      restores the DB to the given backup file 
+                                (by default, restoration takes place only 
+                                if no DB exist)
+      --backup-overwrites-db    forces the restoration of the backup even 
+                                if the DB already exists (danger: 
+                                overwrites the db permanently!)
+
 ```
+
+</details>
 
 More details about the options can be found in the section on the configuration file. Just note that the naming convention is different (e.g. `dbMaxSize` instead of `db-max-size`), but both refer to the same underlying option.
 
