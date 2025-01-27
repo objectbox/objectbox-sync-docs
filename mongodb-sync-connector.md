@@ -1,13 +1,13 @@
 ---
-description: Bi-directional Synchronization with MongoDB.
+description: Bi-directional Data Sync with MongoDB - on-premise and to the cloud
 ---
 
 # MongoDB Sync Connector
 
-ObjectBox Sync can synchronize data with MongoDB using the integrated [MongoDB Sync Connector](https://objectbox.io/mongodb/). This way, changes made in on ObjectBox Sync clients are synchronized to MongoDB and vice versa.
+ObjectBox Data Sync syncs data with MongoDB using the integrated [MongoDB Sync Connector](https://objectbox.io/mongodb/). Changes made on ObjectBox clients are synchronized in realtime to MongoDB and vice versa.
 
 {% hint style="info" %}
-At this point, the Mongo Sync Connector is available to selected customers only. Join the waitlist [here](https://objectbox.io/mongodb/).
+Get your MongoDB Sync Connector Alpha trial [here](https://objectbox.io/mongodb/).
 {% endhint %}
 
 ## Bi-directional Synchronization with MongoDB
