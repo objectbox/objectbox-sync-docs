@@ -11,7 +11,7 @@ There are two approaches to configure ObjectBox Sync Server:
 * command line parameters (CLI): simple/quick approach for most settings
 * configuration file (JSON): recommended for complex settings and required for clusters
 
-Note that both approaches can be [combined](sync-server-configuration.md#combining-cli-and-file-configuration).
+Note that both approaches can be [combined](./#combining-cli-and-file-configuration).
 
 ## Configuration via command line (CLI)
 
@@ -93,7 +93,7 @@ More details about the options can be found in the section on the configuration 
 
 ## Configuration file
 
-Alternatively, you can choose to provide the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can checkin the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
+Alternatively, you can choose to provide the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can checkin the configuration file into version control). Also, it's the only way to configure a [cluster](../sync-cluster.md).
 
 By default, the configuration file is read from `sync-server-config.json` in the current working directory. To use a different location, supply it via the `--conf <path-to-config>` option.
 
@@ -135,7 +135,7 @@ The available options are:
 * `unsecured-no-authentication`: allow connections without authentication (note: this is unsecure and shall only be used to simplify test setups.
 
 {% hint style="info" %}
-To **setup a cluster**, please refer to the [cluster](sync-cluster.md) page for specific configuration options.
+To **setup a cluster**, please refer to the [cluster](../sync-cluster.md) page for specific configuration options.
 {% endhint %}
 
 ## Combining CLI and file configuration

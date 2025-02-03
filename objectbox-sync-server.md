@@ -6,10 +6,7 @@ description: >-
 
 # ObjectBox Sync Server
 
-The ObjectBox Sync Server enables ObjectBox Sync.
-ObjectBox Sync clients connect to Sync Server to exchange data to update each other (data synchronization).
-You need to contact the ObjectBox team to get your personal copy of Sync Server (plain executable or Docker).
-It comes as a single command-line application `sync-server` and includes a web based data browser and management interface for administrator users.&#x20;
+The ObjectBox Sync Server enables ObjectBox Sync. ObjectBox Sync clients connect to Sync Server to exchange data to update each other (data synchronization). You need to contact the ObjectBox team to get your personal copy of Sync Server (plain executable or Docker). It comes as a single command-line application `sync-server` and includes a web based data browser and management interface for administrator users.
 
 ## Getting started
 
@@ -105,7 +102,7 @@ docker run --rm -it \
 
 #### Using Docker volumes for database files
 
-Alternatively, you could keep data in a separate docker volume. This example shows how to create the volume for the first time and then how to use it to start the Sync Server container (note: the difference to the previous example is in `--mount` and `--user` arguments).&#x20;
+Alternatively, you could keep data in a separate docker volume. This example shows how to create the volume for the first time and then how to use it to start the Sync Server container (note: the difference to the previous example is in `--mount` and `--user` arguments).
 
 {% tabs %}
 {% tab title="Bash" %}
@@ -163,7 +160,7 @@ If you're running on Windows, you may run into permission issues, with the serve
 
 When using Docker on Windows, this guide expects you to use [Docker Desktop for WSL 2](https://docs.docker.com/docker-for-windows/wsl/). Check the [Install Docker Desktop on Windows instructions](https://docs.docker.com/desktop/install/windows-install/) if you don't have it installed yet.
 
-To follow the best practices and achieve optimal performance, as described by [Microsoft](https://docs.microsoft.com/en-us/windows/wsl/compare-versions#performance-across-os-file-systems) and [Docker](https://docs.docker.com/docker-for-windows/wsl/#best-practices), use a data volume for the database directory instead of binding to a local directory. Follow [#using-docker-volumes-for-database-files](objectbox-sync-server.md#using-docker-volumes-for-database-files "mention") to do that.&#x20;
+To follow the best practices and achieve optimal performance, as described by [Microsoft](https://docs.microsoft.com/en-us/windows/wsl/compare-versions#performance-across-os-file-systems) and [Docker](https://docs.docker.com/docker-for-windows/wsl/#best-practices), use a data volume for the database directory instead of binding to a local directory. Follow [#using-docker-volumes-for-database-files](objectbox-sync-server.md#using-docker-volumes-for-database-files "mention") to do that.
 
 {% hint style="info" %}
 If you're using PowerShell, make sure to use `${PWD}` instead of `$(pwd)` and replace the backward slash (\\) for multiline commands with a backtick (\`).
@@ -171,7 +168,7 @@ If you're using PowerShell, make sure to use `${PWD}` instead of `$(pwd)` and re
 
 ## Configuration
 
-The setup options for ObjectBox Sync Server are detailed on the [configuration](sync-server-configuration.md) page. In summary,  you can use command line options (e.g. run `sync-server --help` for a quick overview), or use a JSON configuration file for more complex setups. Again, please check the [configuration](sync-server-configuration.md) page for details.&#x20;
+The setup options for ObjectBox Sync Server are detailed on the [configuration](sync-server-configuration/) page. In summary, you can use command line options (e.g. run `sync-server --help` for a quick overview), or use a JSON configuration file for more complex setups. Again, please check the [configuration](sync-server-configuration/) page for details.
 
 ## Admin Web UI
 
@@ -184,7 +181,7 @@ The ObjectBox Sync Server Admin UI runs as part of the sync-server executable an
 
 ### Sync Stats
 
-**"**Sync" main menu item will bring you to a page with numerous charts with server runtime information. This can be valuable in multiple ways, e.g. during development, you can verify your applications connect to the server (show up in "Connects" and "Connected clients") and synchronize data (see "Client applied \*"). Also, there are multiple charts showing errors - watch for those when trying to figure out issues with your clients.
+\*\*"\*\*Sync" main menu item will bring you to a page with numerous charts with server runtime information. This can be valuable in multiple ways, e.g. during development, you can verify your applications connect to the server (show up in "Connects" and "Connected clients") and synchronize data (see "Client applied \*"). Also, there are multiple charts showing errors - watch for those when trying to figure out issues with your clients.
 
 ### Status
 
@@ -269,19 +266,16 @@ Never use this option in an app shipped to customers. It is inherently insecure 
 
 ## Updating the data model
 
-The model JSON is used to initialize the data model for sync (and also the database schema). 
-Later, when your data model has evolved, you will want to update model at server.
-You have two options to supply a newer version:
+The model JSON is used to initialize the data model for sync (and also the database schema). Later, when your data model has evolved, you will want to update model at server. You have two options to supply a newer version:
 
- * Starting the server with an updated model file.
- * Upload the model file through the Admin web UI.
+* Starting the server with an updated model file.
+* Upload the model file through the Admin web UI.
 
 For details, please refer to the [data model evolution](data-model-evolution.md) section.
 
 ## Feedback
 
-We're looking forward to your feedback to prioritize the most requested features.
-Please fill in this [Sync Feedback Form](https://forms.gle/JtUDBo61UQTExRao8) to tell us what you think.
+We're looking forward to your feedback to prioritize the most requested features. Please fill in this [Sync Feedback Form](https://forms.gle/JtUDBo61UQTExRao8) to tell us what you think.
 
 And if you run into issues, please let the ObjectBox team know; we're happy to help.
 

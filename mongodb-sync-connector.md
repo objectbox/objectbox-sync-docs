@@ -24,7 +24,7 @@ We likely don't have to mention this, but just to be on the safe side... Do not 
 
 Configuring the MongoDB Sync Connector involves the following steps:
 
-1. Set up the ObjectBox Sync Server without MongoDB Sync Connector and validate it runs and actually syncs data. See the [Sync Server configuration](sync-server-configuration.md) for details.
+1. Set up the ObjectBox Sync Server without MongoDB Sync Connector and validate it runs and actually syncs data. See the [Sync Server configuration](sync-server-configuration/) for details.
 2. Ensure that your MongoDB instance is a replica set. This is required for the MongoDB Sync Connector to work.
 3. Provide the MongoDB configuration, e.g. the connection URL, to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file (see below).
 4. Use the Admin UI to verify the MongoDB connection.

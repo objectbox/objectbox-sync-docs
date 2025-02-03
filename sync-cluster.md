@@ -31,7 +31,7 @@ Some general notes:
 
 ### Configuration
 
-The base configuration of the Sync Server is described [here](sync-server-configuration.md#configuration-file). Using the same configuration file, these are the Cluster specific options:
+The base configuration of the Sync Server is described [here](sync-server-configuration/#configuration-file). Using the same configuration file, these are the Cluster specific options:
 
 ```json
 {
@@ -65,7 +65,7 @@ The base configuration of the Sync Server is described [here](sync-server-config
 
 ## Overview of the clustering architecture
 
-The ObjectBox clustering mechanism roughly implements the [Raft consensus algorithm](https://en.wikipedia.org/wiki/Raft\_\(algorithm\)).
+The ObjectBox clustering mechanism roughly implements the [Raft consensus algorithm](https://en.wikipedia.org/wiki/Raft_\(algorithm\)).
 
 When establishing the cluster, it elects a leader node that is responsible for the Sync History, while other nodes will be identified as followers. The leader election is performed using a voting system: the candidate node that gathers the majority of votes becomes the leader.
 
