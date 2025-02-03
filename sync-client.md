@@ -325,13 +325,7 @@ All of this happens asynchronously. To observe these events (log in, sync comple
 
 The client will now also push changes to the server for each Store transaction.
 
-{% hint style="info" %}
-Note: For various reasons, ensure to **limit transaction size to around 120 KB** (e.g. watch out for BLOB data like pictures). With compression, this limit may be higher depending on your data.
-
-If you cannot avoid large transaction sizes, please reach out to us.
-{% endhint %}
-
-Should the client get disconnected, e.g. due to internet connection issues, it will automatically try to reconnect using an exponential backoff. Once the connection suceeds, data synchronization resumes.
+Should the client get disconnected, e.g. due to internet connection issues, it will automatically try to reconnect using an exponential back-off. Once the connection succeeds, data synchronization resumes.
 
 ### Drop-off, send-only clients
 
@@ -350,6 +344,60 @@ When using `wss` as the protocol in the server URL a TLS encrypted connection is
 ## Authentication options
 
 There are the currently three supported options for authentication with a sync server: shared secret, Google Sign-In and no authentication.
+
+### JWT authentication
+
+Often, you want to use JWT (JSON web token) as an authentication mechanism. The general process of using JWTs is outlined in the [server-side JWT documentation](sync-server-configuration/jwt-authentication.md). In short, you will use one of the JWT authentication provider's SDK to get a JWT. This token is then set as an credential using the ObjectBox Sync client API.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+String idToken = ...;  // Get from JWT authentication provider
+SyncCredentials credentials = SyncCredentials.jwtIdToken(idToken);
+// Alternatively, jwtAccessToken(...), jwtRefreshToken(...), jwtCustomToken(...)
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+val idToken = ...  // Get string from JWT authentication provider
+val credentials = SyncCredentials.jwtIdToken(idToken)
+// Alternatively, jwtAccessToken(...), jwtRefreshToken(...), jwtCustomToken(...)
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+let idToken = ...  // Get string from JWT authentication provider
+let credentials = SyncCredentials.makeJwtIdToken(idToken)
+// Alternatively, makeJwtAccessToken(...), makeJwtRefreshToken(...), makeJwtCustomToken(...)
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+// TODO
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+// TODO
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// TODO
+```
+{% endtab %}
+{% endtabs %}
 
 ### Shared secret
 

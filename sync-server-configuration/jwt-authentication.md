@@ -52,6 +52,6 @@ There is another way to provide the public key for special purposes or developme
 
 Starting the Sync Server with a JWT configuration using command line arguments looks like this:
 
-`sync-verver --jwt-public-key-url https://example.com/public-key -jwt-claim-aud myAUD --jwt-claim-iss myISS`
+`sync-verver --jwt-public-key-url https://example.com/public-key --jwt-claim-aud myAUD --jwt-claim-iss myISS`
 
 The configuration parameters match their counterparts in the JSON file, so you can refer there for details.
