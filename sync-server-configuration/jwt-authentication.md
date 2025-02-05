@@ -4,7 +4,7 @@ description: How to use JSON Web Tokens (JWT) for ObjectBox Sync Authentication
 
 # JWT Authentication
 
-JSON Web Tokens (JWT) are a very common method of handling authentication. Many authentication providers support JWT out of the box. Examples include Auth0, Firebase, Clerk, and KeyCloak (an open-source solution that can be self-hosted). For this guide, we assume that you already set up JWT authentication. Since this is a process specific to the provider, please refer to the provider's documentation if you need help.
+[JSON Web Tokens (JWT)](https://en.wikipedia.org/wiki/JSON_Web_Token) are a very common method of handling authentication. Many authentication providers support JWT out of the box. Examples include Auth0, Firebase, Clerk, and KeyCloak (an open-source solution that can be self-hosted). For this guide, we assume that you already set up JWT authentication. Since this is a process specific to the provider, please refer to the provider's documentation if you need help.
 
 ## Obtaining and Passing the JWT in the Sync Client
 
@@ -14,8 +14,8 @@ After setting up your JWT-based authentication service, you will obtain JWTs on 
 
 The Sync server verifies JWTs sent by the Sync client. It primarily checks three things:
 
-1. The **audience** claim (often called `aud`).
-2. The **issuer** claim (`iss`).
+1. The [**audience** claim](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.3) (often called `aud`).
+2. The [**issuer** claim](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.1) (`iss`).
 3. The **cryptographic signature**.
 
 The audience and issuer claims are initially configured with your authentication provider. You must use the same claim values in your ObjectBox Sync Server configuration.
@@ -40,18 +40,15 @@ The JWT configuration is part of the standard JSON configuration file used for t
 
 It uses the following configuration fields:
 
-* **publicKeyUrl:** The URL where the Sync Server can retrieve the public key(s) from your authentication provider. Public key rotation is automatically handled by pointing to this URL, ensuring that the Sync Server always uses the correct key for signature verification.
+* **publicKeyUrl:** The URL where the Sync Server can retrieve the public key(s) from your authentication provider. Public key rotation is automatically handled by pointing to this URL, ensuring that the Sync Server always uses the correct key for signature verification. The URL must
+point to a valid [JWKS](https://datatracker.ietf.org/doc/html/rfc7517) (JSON Web Key Set) resource that contains the public keys.
 * **claimAud:** Must match the `aud` (audience) value that your authentication provider includes in its issued JWTs. This is used to ensure the token is intended for the correct recipient.
 * **claimIss:** Must match the `iss` (issuer) value used by your authentication provider. This ensures the token is issued by a trusted source.
-
-There is another way to provide the public key for special purposes or development:
-
-**publicKey:** If provided instead of `publicKeyUrl`, you can use a fixed (non-rotating) public key for JWT verification. This can be helpful for development purposes; e.g. to create your own JWTs with a private/public key pair. This is not recommended for production use.
 
 ### CLI based JWT configuration
 
 Starting the Sync Server with a JWT configuration using command line arguments looks like this:
 
-`sync-verver --jwt-public-key-url https://example.com/public-key --jwt-claim-aud myAUD --jwt-claim-iss myISS`
+`sync-server --jwt-public-key-url https://example.com/public-key --jwt-claim-aud myAUD --jwt-claim-iss myISS`
 
 The configuration parameters match their counterparts in the JSON file, so you can refer there for details.
