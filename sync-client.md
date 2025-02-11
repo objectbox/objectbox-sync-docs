@@ -343,40 +343,46 @@ When using `wss` as the protocol in the server URL a TLS encrypted connection is
 
 ## Authentication options
 
-There are the currently three supported options for authentication with a sync server: shared secret, Google Sign-In and no authentication.
+There are currently multiple supported options for authenticating clients with a Sync server.
 
 ### JWT authentication
 
-Often, you want to use JWT (JSON web token) as an authentication mechanism. The general process of using JWTs is outlined in the [server-side JWT documentation](sync-server-configuration/jwt-authentication.md). In short, you will use one of the JWT authentication provider's SDK to get a JWT. This token is then set as an credential using the ObjectBox Sync client API.
+Clients can be authenticated using tokens in JWT (JSON web token) format. The general process is outlined in the [server-side JWT documentation](sync-server-configuration/jwt-authentication.md). Your client application typically will use a JWT authentication provider SDK to get a token in JWT format. This token is then set as a credential using the ObjectBox Sync client API:
 
 {% tabs %}
 {% tab title="Java" %}
 ```java
-String idToken = ...;  // Get from JWT authentication provider
-SyncCredentials credentials = SyncCredentials.jwtIdToken(idToken);
-// Alternatively, jwtAccessToken(...), jwtRefreshToken(...), jwtCustomToken(...)
+String idToken = "<token>"; // Get from JWT authentication provider
+SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
+// Options for other types of JWT are available:
+// jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val idToken = ...  // Get string from JWT authentication provider
-val credentials = SyncCredentials.jwtIdToken(idToken)
-// Alternatively, jwtAccessToken(...), jwtRefreshToken(...), jwtCustomToken(...)
+val idToken: String = TODO() // Get from JWT authentication provider
+val credential = SyncCredentials.jwtIdToken(idToken)
+// Options for other types of JWT are available:
+// jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
 ```
 {% endtab %}
 
 {% tab title="Swift" %}
 ```swift
-let idToken = ...  // Get string from JWT authentication provider
-let credentials = SyncCredentials.makeJwtIdToken(idToken)
-// Alternatively, makeJwtAccessToken(...), makeJwtRefreshToken(...), makeJwtCustomToken(...)
+let idToken: String = "TODO" // Get from JWT authentication provider
+let credential = SyncCredentials.makeJwtIdToken(idToken)
+// Options for other types of JWT are available:
+// makeJwtAccessToken(...), makeJwtRefreshToken(...), makeJwtCustomToken(...)
 ```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
-// Coming soon
+String idToken = "<token>"; // Get from JWT authentication provider
+SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
+// Options for other types of JWT are available:
+// jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
 ```
 {% endtab %}
 
@@ -401,42 +407,46 @@ let credentials = SyncCredentials.makeJwtIdToken(idToken)
 
 ### Shared secret
 
+This can be any pre-shared secret string or a byte sequence.
+
 {% tabs %}
 {% tab title="Java" %}
 ```java
-SyncCredentials credentials = SyncCredentials.sharedSecret("<secret>");
+SyncCredentials credential = SyncCredentials.sharedSecret("<secret>");
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val credentials = SyncCredentials.sharedSecret("<secret>")
+val credential = SyncCredentials.sharedSecret("<secret>")
 ```
 {% endtab %}
 
 {% tab title="Swift" %}
-_Coming soon!_
+```swift
+let credential = SyncCredentials.makeSharedSecret("<secret>")
+```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
 // use a string
-SyncCredentials credentials = SyncCredentials.sharedSecretString("<secret>");
+SyncCredentials credential = SyncCredentials.sharedSecretString("<secret>");
 
 // or a byte vector
 Uint8List secret = Uint8List.fromList([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]);
-SyncCredentials credentials = SyncCredentials.sharedSecretUint8List(secret);
+SyncCredentials credential = SyncCredentials.sharedSecretUint8List(secret);
 ```
 {% endtab %}
 
 {% tab title="C++" %}
 ```cpp
 // use a string
-obx::SyncCredentials creds = obx::SyncCredentials::sharedSecret("string");
+obx::SyncCredentials cred = obx::SyncCredentials::sharedSecret("string");
 
 // or a byte vector
 std::vector<uint8_t> secret = {0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186};
-obx::SyncCredentials creds = obx::SyncCredentials::sharedSecret(std::move(secret));
+obx::SyncCredentials cred = obx::SyncCredentials::sharedSecret(std::move(secret));
 ```
 {% endtab %}
 
@@ -463,29 +473,29 @@ obx_sync_credentials(sync_client,
 {% tab title="Go" %}
 ```go
 // use a string
-var creds = objectbox.SyncCredentialsSharedSecret([]byte("string"))
+var cred = objectbox.SyncCredentialsSharedSecret([]byte("string"))
 
 // or a byte vector
 var secret = []byte{0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186}
-var creds = objectbox.SyncCredentialsSharedSecret(secret)
+var cred = objectbox.SyncCredentialsSharedSecret(secret)
 ```
 {% endtab %}
 {% endtabs %}
 
-This can be any pre-shared secret string or a byte sequence.
-
 ### Google Sign-In
+
+The ObjectBox Sync server supports authenticating users using their Google account. This assumes [Google Sign-In](https://developers.google.com/identity/sign-in/android/start-integrating) is integrated into your app and it has [obtained the user's ID token](https://developers.google.com/identity/sign-in/android/backend-auth).
 
 {% tabs %}
 {% tab title="Java" %}
 ```java
-SyncCredentials credentials = SyncCredentials.google(account.getIdToken());
+SyncCredentials credential = SyncCredentials.google(account.getIdToken());
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val credentials = SyncCredentials.google(account.getIdToken())
+val credential = SyncCredentials.google(account.getIdToken())
 ```
 {% endtab %}
 
@@ -496,11 +506,11 @@ _Coming soon!_
 {% tab title="Dart/Flutter" %}
 ```dart
 // use a string
-SyncCredentials credentials = SyncCredentials.googleAuthString("<secret>");
+SyncCredentials credential = SyncCredentials.googleAuthString("<secret>");
 
 // or a byte vector
 Uint8List secret = Uint8List.fromList([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]);
-SyncCredentials credentials = SyncCredentials.googleAuthUint8List(secret);
+SyncCredentials credential = SyncCredentials.googleAuthUint8List(secret);
 ```
 {% endtab %}
 
@@ -521,16 +531,14 @@ obx_sync_credentials(sync_client,
 {% tab title="Go" %}
 ```go
 // use a string
-var creds = objectbox.SyncCredentialsGoogleAuth([]byte("string"))
+var cred = objectbox.SyncCredentialsGoogleAuth([]byte("string"))
 
 // or a byte vector
 var secret = []byte{0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186}
-var creds = objectbox.SyncCredentialsGoogleAuth(secret)
+var cred = objectbox.SyncCredentialsGoogleAuth(secret)
 ```
 {% endtab %}
 {% endtabs %}
-
-The ObjectBox sync server supports authenticating users using their Google account. This assumes [Google Sign-In](https://developers.google.com/identity/sign-in/android/start-integrating) is integrated into the app and it has [obtained the user's ID token](https://developers.google.com/identity/sign-in/android/backend-auth).
 
 ### No authentication (insecure)
 
@@ -538,16 +546,18 @@ The ObjectBox sync server supports authenticating users using their Google accou
 Never use this option in an app shipped to customers. It is inherently insecure and allows anyone to connect to the sync server.
 {% endhint %}
 
+For development and testing, it is often easier to just have no authentication at all to quickly get things up and running.
+
 {% tabs %}
 {% tab title="Java" %}
 ```java
-SyncCredentials credentials = SyncCredentials.none();
+SyncCredentials credential = SyncCredentials.none();
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val credentials = SyncCredentials.none()
+val credential = SyncCredentials.none()
 ```
 {% endtab %}
 
@@ -557,13 +567,13 @@ _Coming soon!_
 
 {% tab title="Dart/Flutter" %}
 ```java
-SyncCredentials credentials = SyncCredentials.none();
+SyncCredentials credential = SyncCredentials.none();
 ```
 {% endtab %}
 
 {% tab title="C++" %}
 ```cpp
-obx::SyncCredentials credentials = obx::SyncCredentials::none();
+obx::SyncCredentials credential = obx::SyncCredentials::none();
 ```
 {% endtab %}
 
@@ -575,12 +585,10 @@ obx_sync_credentials(sync_client, OBXSyncCredentialsType_NONE, NULL, 0)
 
 {% tab title="Go" %}
 ```go
-var creds = objectbox.SyncCredentialsNone()
+var cred = objectbox.SyncCredentialsNone()
 ```
 {% endtab %}
 {% endtabs %}
-
-For development and testing, it is often easier to just have no authentication at all to quickly get things up and running.
 
 ## Manually start
 
