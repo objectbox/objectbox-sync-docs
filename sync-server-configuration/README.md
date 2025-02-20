@@ -99,7 +99,7 @@ By default, the configuration file is read from `sync-server-config.json` in the
 
 Some options have a default value, so if you are OK with the default, there is no need to specify it.
 
-The available options are:
+Example file:
 
 ```javascript
 {
@@ -132,7 +132,8 @@ The available options are:
 * `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `auth.sharedSecret` if not empty, enables the shared secret authentication with the given key
 * `auth.google.clientIds` a list of GoogleAuth client IDs (strings)
-* `unsecured-no-authentication`: allow connections without authentication (note: this is unsecure and shall only be used to simplify test setups.
+* `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and shall only be used to simplify test setups.
+* `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
 
 {% hint style="info" %}
 To **setup a cluster**, please refer to the [cluster](../sync-cluster.md) page for specific configuration options.
