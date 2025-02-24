@@ -31,9 +31,7 @@ Configuring the MongoDB Sync Connector involves the following steps:
 
 ### The Data Model
 
-In general, the ObjectBox Sync server requires a data model to be provided (see the general sync server documentation). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. The types of the data model are mapped to MongoDB collections. Similarily, the properties of a type are mapped keys inside a MongoDB document. Thus, ensure that the data model matches the MongoDB schema.
-
-Note: nested documents are supported via the ObjectBox "Flex" property type, which can hold a map-like (JSON-like) structure. We are also considering alternatives to this, so let us know if you have specific requirements.
+In general, the ObjectBox Sync server requires an data model to be provided (a JSON file; see the general sync server documentation). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. On how this works, see the chapter on [data mapping](mongodb-sync-connector.md#syncing-and-mapping-data-with-mongodb) below.
 
 ### MongoDB Replica Set
 
@@ -75,3 +73,38 @@ If you prefer doing this via `sync-server-config.json`, you need to add a new `m
     }
 }
 ```
+
+## Syncing and mapping data with MongoDB
+
+### Difference in terminology and concepts
+
+ObjectBox and MongoDB have many similarities. Nevertheless, it's important to understand the differences in terminology and concepts between the two databases. The following table illustrates these differences. It's serves as background information on how to map things between the two systems:
+
+<table><thead><tr><th width="186">Concept</th><th>ObjectBox</th><th>MongoDB</th></tr></thead><tbody><tr><td><strong>Database</strong> containing the data</td><td>A <strong>store</strong>, grouped into types (data classes).</td><td>A <strong>database</strong>, grouped into collections.</td></tr><tr><td><strong>What you "open" as a user</strong></td><td>Using a name/directory you open a single store (database) locally on device. (In the case of Sync, this is the "client database".)<br>You can can open multiple stores, which are strictly separate.</td><td>Using a client, you connected to a MongoDB server. You can access all databases on the server remotely.</td></tr><tr><td><strong>Arranging data in a database (e.g. data sets)</strong></td><td>A <strong>box</strong> holds all objects of the same <strong>type</strong>. A type typically matches a data class in programming languages.<br>It's part of a <strong>strict schema</strong> (data model) that is enforced. The type definition consists of a fixed set of <strong>properties</strong>.</td><td><strong>Collections</strong> are used to group documents together. By default, are no strict rules imposed (<strong>schema-less</strong>).</td></tr><tr><td><strong>Data record</strong></td><td>An <strong>object</strong> is an instance of a type. It can have data values for the <strong>properties</strong> defined in the type. </td><td>A <strong>document</strong> is a set of data values called <strong>fields</strong>. It's very similar to a JSON file.</td></tr><tr><td><strong>Modelling related data</strong></td><td>Objects can have <strong>to-one and to-many relationships</strong> to other objects. Relationships are bidirectional. Data is typically <strong>normalized</strong>.</td><td>Typically, a document <strong>embeds</strong> all "related data" into itself resulting in larger documents. Data is typically <strong>not normalized</strong>. Alternatively, one can also choose to use references, which is more similar to relationships.</td></tr><tr><td><strong>Nested data records</strong></td><td>Nested data is supported by <strong>flex properties.</strong> E.g. these allow maps, which can contain nested data structures (JSON-like).</td><td>Documents contain nested data <strong>by default</strong>.</td></tr><tr><td><strong>Identifiers (IDs)</strong></td><td>IDs are <strong>64-bit integers.</strong><br>They are unique within its box and database instance.</td><td>Typically: Mongo's <strong>Object ID</strong> (OID) consisting of 12 bytes. Other ID types are supported too.<br>OIDs are considered globally unique.</td></tr></tbody></table>
+
+### Mapping data from MongoDB
+
+The data model used by ObjectBox defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to keys inside a MongoDB document. Thus, you should ensure that the ObjectBox data model matches the MongoDB schema. E.g. if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
+
+#### Objects and Documents
+
+When you compare the data structure of simple data elements, the difference is not big. Without nested data, the main difference you will note is the ID type.
+
+<figure><img src=".gitbook/assets/ObjectVsDocument (1).png" alt="" width="563"><figcaption></figcaption></figure>
+
+Note: nested documents are supported via the ObjectBox "Flex" property type, which can hold a map-like (JSON-like) structure. We are also considering alternatives to this, so let us know if you have specific requirements.
+
+#### ID mapping
+
+ObjectBox applies an automatic mapping to IDs when syncing with an external system like MongoDB. This way, both systems continue to work with their native ID types. This means that by default, the MongoDB ID is not present in ObjectBox objects and vice versa. Note that ObjectBox Sync also applies an [internal ID mapping](advanced/object-ids.md) on each ObjectBox device.
+
+ID mapping also happens for relations (starting with version Alpha 3 of MongoDB Sync Connector). Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This will become a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example.
+
+<figure><img src=".gitbook/assets/ObjectVsDocument-Parent.png" alt="" width="563"><figcaption></figcaption></figure>
+
+{% hint style="warning" %}
+ObjectBox IDs are only valid on their local device. Do not store them manually apart from relations, e.g. as a custom list/vector, when you want to sync to other devices.
+{% endhint %}
+
+
+
