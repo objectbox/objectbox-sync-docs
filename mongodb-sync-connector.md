@@ -12,7 +12,7 @@ Get your MongoDB Sync Connector Alpha trial [here](https://objectbox.io/mongodb/
 
 ## Bi-directional Synchronization with MongoDB
 
-![](.gitbook/assets/MongoDB_ObjectBox_Central.png)
+<div><figure><img src=".gitbook/assets/MongoDB_ObjectBox_Central.png" alt="Architecture: MongoDB <--> ObjectBox Sync Server <--> ObjectBox Sync Client"><figcaption></figcaption></figure> <figure><img src=".gitbook/assets/ObjectBox-Mongo-Architecture-Central.webp" alt=""><figcaption></figcaption></figure></div>
 
 ObjectBox Sync brings your data in MongoDB to the edge (e.g. mobile and IoT devices, big and small servers) and synchronize changes back to MongoDB. By using ObjectBox Sync, you can make your MongoDB data always available: continue to work offline and sync in real-time when online.
 
