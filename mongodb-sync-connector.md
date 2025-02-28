@@ -80,7 +80,7 @@ If you prefer doing this via `sync-server-config.json`, you need to add a new `m
 
 ObjectBox and MongoDB have many similarities. Nevertheless, it's important to understand the differences in terminology and concepts between the two databases. The following table illustrates these differences. It serves as background information on how to map things between the two systems:
 
-<table><thead><tr><th width="186">Concept</th><th>ObjectBox</th><th>MongoDB</th></tr></thead><tbody><tr><td><strong>Database</strong> containing the data</td><td>A <strong>store</strong>, grouped into types (data classes).</td><td>A <strong>database</strong>, grouped into collections.</td></tr><tr><td><strong>What your application "opens"</strong></td><td>Using a name or directory a single store (database) is opened locally on device. (In the case of Sync, this is the "client database".)<br>Multiple stores can be opened, which are strictly separate.</td><td>A client is used to connect to a MongoDB server. All databases can be accessed on the server remotely.</td></tr><tr><td><strong>Arranging data in a database (e.g. data sets)</strong></td><td>A <strong>box</strong> holds all objects of the same <strong>type</strong>. A type typically matches a data class in programming languages.<br>It's part of a <strong>strict schema</strong> (data model) that is enforced. The type definition consists of a fixed set of <strong>properties</strong>.</td><td><strong>Collections</strong> are used to group documents together. By default, no strict rules are imposed (<strong>schema-less</strong>).</td></tr><tr><td><strong>Data record</strong></td><td>An <strong>object</strong> is an instance of a type. It can have data values for the <strong>properties</strong> defined in the type. </td><td>A <strong>document</strong> is a set of data values called <strong>fields</strong>. It's very similar to a JSON file.</td></tr><tr><td><strong>Modelling related data</strong></td><td>Objects can have <strong>to-one and to-many relationships</strong> to other objects. Relationships are bidirectional. Data is typically <strong>normalized</strong>.</td><td>Typically, a document <strong>embeds</strong> all "related data" into itself resulting in larger documents. Data is typically <strong>not normalized</strong>. Alternatively, one can also choose to use references, which is more similar to relationships.</td></tr><tr><td><strong>Nested data records</strong></td><td>Nested data is supported by <strong>flex properties.</strong> E.g. these allow maps, which can contain nested data structures (JSON-like).</td><td>Documents contain nested data <strong>by default</strong>.</td></tr><tr><td><strong>Identifiers (IDs)</strong></td><td>IDs are <strong>64-bit integers.</strong><br>They are unique within its box and database instance.</td><td>Typically, Mongo's <strong>Object ID</strong> (OID) consists of 12 bytes. Other ID types are supported.<br>OIDs are considered globally unique.</td></tr></tbody></table>
+<table><thead><tr><th width="186">Concept</th><th>ObjectBox</th><th>MongoDB</th></tr></thead><tbody><tr><td><strong>Database</strong> containing the data</td><td>A <strong>store</strong>, grouped into types (data classes).</td><td>A <strong>database</strong>, grouped into collections.</td></tr><tr><td><strong>What your application "opens"</strong></td><td>Using a name or directory a single store (database) is opened locally on device. (In the case of Sync, this is the "client database".)<br>Multiple stores can be opened, which are strictly separate.</td><td>A client is used to connect to a MongoDB server. All databases can be accessed on the server remotely.</td></tr><tr><td><strong>Arranging data in a database (e.g. data sets)</strong></td><td>A <strong>box</strong> holds all objects of the same <strong>type</strong>. A type typically matches a data class in programming languages.<br>It's part of a <strong>strict schema</strong> (data model) that is enforced. The type definition consists of a fixed set of <strong>properties</strong>.</td><td><strong>Collections</strong> are used to group documents together. By default, no strict rules are imposed (<strong>schema-less</strong>).</td></tr><tr><td><strong>Data record</strong></td><td>An <strong>object</strong> is an instance of a type. It can have data values for the <strong>properties</strong> defined in the type. </td><td>A <strong>document</strong> is a set of data values called <strong>fields</strong>. It's very similar to a JSON file.</td></tr><tr><td><strong>Modelling related data</strong></td><td>Objects can have <strong>to-one and to-many relationships</strong> to other objects. Relationships are bidirectional. Data is typically <strong>normalized</strong>.</td><td>Typically, a document <strong>embeds</strong> all "related data" into itself resulting in larger documents. Data is typically <strong>not normalized</strong>. Alternatively, one can also choose to use references, which is more similar to relationships.</td></tr><tr><td><strong>Many-to-many relationships</strong></td><td><strong>Fully supported</strong>. Unlike to-one relationships, the data is stored <strong>outside the object</strong>. Updating relations is very <strong>efficient</strong>. There's <strong>no user-defined order</strong> and <strong>no duplicates</strong>.</td><td><strong>Alternative modelling</strong> by embedding or referencing documents. <strong>Inside the document</strong>, you can have an array of IDs in a <strong>user-defined order</strong> allowing <strong>duplicates</strong>.</td></tr><tr><td><strong>Nested data records</strong></td><td>Nested data is supported by <strong>flex properties.</strong> E.g. these allow maps, which can contain nested data structures (JSON-like).</td><td>Documents contain nested data <strong>by default</strong>.</td></tr><tr><td><strong>Identifiers (IDs)</strong></td><td>IDs are <strong>64-bit integers.</strong><br>They are unique within its box and database instance.</td><td>Typically, Mongo's <strong>Object ID</strong> (OID) consists of 12 bytes. Other ID types are supported.<br>OIDs are considered globally unique.</td></tr></tbody></table>
 
 ### Mapping data from MongoDB
 
@@ -96,15 +96,35 @@ Note: nested documents are supported via the ObjectBox "Flex" property type, whi
 
 #### ID mapping
 
-ObjectBox automatically maps IDs when syncing with an external system like MongoDB. This way, both systems continue to work with their native ID types. This means that by default, the MongoDB ID is not present in ObjectBox objects and vice versa. Note that ObjectBox Sync also applies [internal ID mapping](advanced/object-ids.md) on each ObjectBox device.
-
-ID mapping also happens for relations (starting with version Alpha 3 of MongoDB Sync Connector). Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This will become a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
-
-<figure><img src=".gitbook/assets/ObjectVsDocument-Parent.png" alt="" width="563"><figcaption></figcaption></figure>
+ObjectBox Sync automatically maps IDs when syncing with an external system like MongoDB. This way,you can use the native IDs in each system, i.e. 64-bit integer IDs in ObjectBox and 12-byte object IDs in MongoID. This also means that by default, the MongoDB ID is not present in ObjectBox objects and vice versa.
 
 {% hint style="warning" %}
-ObjectBox IDs are only valid on their local device. Do not store them manually apart from relations, e.g. as a custom list or vector, when you want to sync to other devices.
+ObjectBox IDs are only valid on their local device. Do not store them manually apart from relations, e.g. as a custom list or vector, when you want to sync to other devices.\
+For details, you can refer to the [internal ID mapping docs](advanced/object-ids.md) that happens on each ObjectBox device.
 {% endhint %}
 
+#### To-One Relations
 
+{% hint style="info" %}
+If you want to learn more about ObjectBox relations, check the [relation documentation](https://docs.objectbox.io/relations).
+{% endhint %}
+
+ObjectBox Sync also happens automatically maps IDs used in relations (starting with version Alpha 3 of MongoDB Sync Connector). keeps track
+
+Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This becomes a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
+
+<figure><img src=".gitbook/assets/ObjectVsDocument-Parent (1).png" alt="" width="563"><figcaption><p>To-One Relationship Example: motherId</p></figcaption></figure>
+
+#### Many-to-Many Relations
+
+Many-to-many relations work a bit different. As illustrated in the table above, many-to-many relations work differently in ObjectBox and MongoDB. For mapping between the following rules apply:
+
+* On the MongoDB side, many-to-many relations are stored as an array of ID references:
+  * The IDs are stored inside the document "owning" the relationship.
+  * The owning side of a relationship is always the same type (collection).
+  * If you want to, you can make this relation bidirectional, by adding IDs to the "target side" of the relationship. Just do not make this visible in the ObjectBox data model.
+* On the ObjectBox side, its native many-to-many relationships are used:
+  * They are bidirectional, e.g. you can define it on the owning and target side.
+  * They can be updated efficiently without touching the object
+  * They can be used in queries to link types (aka join).
 
