@@ -16,7 +16,9 @@ To start the server, you need to pass your data model, which describes the struc
 
 If you did not define a data model yet, then now is the time to do so. Basically, you need to start this on the **client side** by defining your data types in the programming language of your choice. Then, the **ObjectBox tooling will generate the data model file**. This is a standard process even for the non-sync ObjectBox database. So it's a good idea to look at the [ObjectBox database docs](https://docs.objectbox.io) and especially at the [Entity annotations](https://docs.objectbox.io/entity-annotations) that tag your data classes (e.g. `@Entity`). Data types that shall be synced via ObjectBox Sync also need to be tagged accordingly (e.g. `@Sync`). This is [outlined in the client section](sync-client.md#enable-your-objects-for-objectbox-sync).
 
+{% hint style="danger" %}
 Keep your data model file safe and secure. It contains the schema of your data model along with **unique IDs which cannot be restored**. If you lose it, you will lose access to your data and synchronization. Thus, **always** check the JSON file into your version control system, e.g. git.
+{% endhint %}
 
 ### Example: Starting the server via CLI
 
