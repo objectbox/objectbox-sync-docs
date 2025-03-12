@@ -16,6 +16,16 @@ ObjectBox Data Sync syncs data with MongoDB using the integrated [MongoDB Sync C
 
 ObjectBox Sync brings your data in MongoDB to the edge (e.g. mobile and IoT devices, big and small servers) and synchronizes changes back to MongoDB. By using ObjectBox Sync, you can make your MongoDB data always available: continue to work offline and sync in real-time when online.
 
+## Roadmap
+
+If you are coming from Atlas Device Sync, you already now that it [reaches its end-of-life](https://www.mongodb.com/docs/atlas/app-services/deprecation/) on **September 30, 2025**. Thus, it's a good idea to contact ObjectBox asap to get started with your migration.
+
+While ObjectBox Sync is not a new product, the MongoDB Connector is an ongoing effort. You can get started with development right away. Our timeline enables you to develop meaningful proof-of-concepts and actual integrations already. And once new features are out, you profit immediately.
+
+<table><thead><tr><th width="154.93328857421875">Planned Date</th><th width="87.73333740234375" align="center">Released</th><th width="148.5333251953125">Connector Version</th><th>Main features</th></tr></thead><tbody><tr><td>Oktober 2024</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 1</td><td>Two-way sync between MongoDB and ObjectBox for changes that are happening live.</td></tr><tr><td>January 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 2</td><td>JWT authentication, Mapping for all MongoDB data types</td></tr><tr><td>February 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 3</td><td>Relation mapping (to-one and many-to-many)</td></tr><tr><td>March 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 4</td><td>Support for additional MongoDB ID types</td></tr><tr><td>March 2025</td><td align="center"></td><td>Beta 1</td><td>Import initial data from MongoDB, pick-up sync at any point</td></tr><tr><td>April 2025</td><td align="center"></td><td>Beta 2</td><td>Server-side rules to select data for sync per user</td></tr><tr><td>Mai 2025</td><td align="center"></td><td>1.0</td><td>Initial release incorporating most important user feedback</td></tr></tbody></table>
+
+We'll update the plan regularly.
+
 ## Setup
 
 {% hint style="warning" %}
