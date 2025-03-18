@@ -32,20 +32,33 @@ We'll update the plan regularly.
 **Do not connect to your MongoDB production instance!** Use a separate instance for testing purposes.
 {% endhint %}
 
-Configuring the MongoDB Sync Connector involves the following steps:
+Setting up Sync server and its MongoDB Sync Connector involves the following steps:
 
-1. **Run the ObjectBox Sync Server&#x20;**_**without**_**&#x20;MongoDB Sync Connector** and validate it actually syncs data. See the [Sync Server configuration](sync-server-configuration/) for details.
-2. **Ensure that your MongoDB instance is a replica set.** This is required for the MongoDB Sync Connector to work.
-3. **Provide the MongoDB configuration**, e.g. the connection URL, to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file (see below).
-4. **Verify the MongoDB connection** using the Admin UI.
+1. [**Create and provide a Data Model to Sync Server**](mongodb-sync-connector.md#create-and-provide-a-data-model-to-sync-server) using a model JSON file.
+2. [**Run and test Sync Server**](mongodb-sync-connector.md#run-and-test-sync-server) _without_ connecting to MongoDB and validate it actually syncs data.
+3. [**Ensure that your MongoDB instance is a replica set**](mongodb-sync-connector.md#ensure-that-your-mongodb-instance-is-a-replica-set)**.** This is required for the MongoDB Sync Connector to work.
+4. [**Configure the MongoDB connection and run Sync Server**](mongodb-sync-connector.md#configure-the-mongodb-connection-and-run-sync-server)**.** E.g. provide the connection URL to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file.
+5. [**Verify the MongoDB connection**](mongodb-sync-connector.md#verify-the-mongodb-connection) using the Admin UI.
 
-### The Data Model
+Read on for details.
+
+### **Create and** Provide a Data Model to Sync Server
 
 In general, the ObjectBox Sync server requires a data model to be provided (a JSON file, see [objectbox-sync-server.md](objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. On how this works, see the chapter on [data mapping](mongodb-sync-connector.md#syncing-and-mapping-data-with-mongodb) below.
 
-### MongoDB Replica Set
+### **Run and test Sync Server**
 
-Only a MongoDB replica set instance provides the necessary features for the MongoDB Sync Connector to work (e.g. MongoDB's change streams). Note that all **MongoDB Atlas clusters are already replica sets**, so you are good to go with them.
+To avoid any later issues, run and test Sync Server without connecting to MongoDB and your client application and validate data is synced.
+
+See the [objectbox-sync-server.md](objectbox-sync-server.md "mention") page on how to run Sync Server.
+
+### Ensure that your MongoDB instance is a Replica Set
+
+{% hint style="info" %}
+**MongoDB Atlas clusters** are already replica sets, no additional configuration is required.
+{% endhint %}
+
+Only a MongoDB replica set instance provides the necessary features for the MongoDB Sync Connector to work (e.g. MongoDB's change streams).
 
 A local **standalone MongoDB instance** (MongoDB Community Edition is fine) can be converted to a replica set. You can do this either by following the [official MongoDB documentation](https://www.mongodb.com/docs/manual/tutorial/convert-standalone-to-replica-set/), or by following these simplified steps (tested on Ubuntu Linux) for a single node setup:
 
@@ -61,18 +74,14 @@ A local **standalone MongoDB instance** (MongoDB Community Edition is fine) can 
 5. Connect to the MongoDB shell: `mongosh`
 6. Initialize the replica set via the MongoDB shell: `rs.initiate()`
 
-### MongoDB Configuration
+### Configure the MongoDB connection and run Sync Server
 
-To configure the ObjectBox MongoDB Sync Connector via CLI arguments, you can use the following options:
+To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](objectbox-sync-server.md "mention")), you can use the following options:
 
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
 * `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default this is "objectbox\_sync".
 
-{% hint style="warning" %}
-For the JSON configuration, ensure that the server version's date is 2024-10-07 or higher. Before that, you can use {"mongoUrl": "1.2.3.4"} without the `mongoDb` config node.
-{% endhint %}
-
-If you prefer doing this via `sync-server-config.json`, you need to add a new `mongoDb` config node, which contains key/value pairs for MongoDB specific configuration attributes:
+Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
 
 ```json
 {
@@ -83,6 +92,14 @@ If you prefer doing this via `sync-server-config.json`, you need to add a new `m
     }
 }
 ```
+
+{% hint style="warning" %}
+If your Sync server version's date is lower than 2024-10-07, use `{"mongoUrl": "1.2.3.4"}` without the `mongoDb` config node.
+{% endhint %}
+
+### **Verify the MongoDB connection**
+
+Use the ObjectBox Sync Server [Admin web app](objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
 
 ## Syncing and mapping data with MongoDB
 
