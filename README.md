@@ -7,12 +7,12 @@ description: >-
 
 # Data Synchronization
 
-Welcome to the official documentation for the **ObjectBox Sync** feature.
+Welcome to the official documentation for the **ObjectBox Sync** feature!
 
 [Sign up for a free Data Sync trial](https://objectbox.io/sync/) to get access to this feature.
 
 {% hint style="info" %}
-To learn how to work with the ObjectBox database, have a look at its [Getting Started page](https://objectbox.io/offline-first-mobile-database/).
+To learn more about the ObjectBox database, have a look at its [website](https://objectbox.io/offline-first-mobile-database/).
 {% endhint %}
 
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
