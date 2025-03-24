@@ -8,6 +8,10 @@ description: >-
 
 ## ObjectBox Sync enabled library
 
+{% hint style="info" %}
+Prefer to look at example code? Check out [our examples repository](https://github.com/objectbox/objectbox-sync-examples).
+{% endhint %}
+
 The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, but won't provide any Sync logic due to the missing implementation.
 
 {% hint style="info" %}

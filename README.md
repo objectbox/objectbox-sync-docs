@@ -7,19 +7,27 @@ description: >-
 
 # Data Synchronization
 
-{% hint style="info" %}
-If you haven't tried out ObjectBox DB yet, [get started here](https://objectbox.io/offline-first-mobile-database/).
-{% endhint %}
+Welcome to the official documentation for the **ObjectBox Sync** feature.
 
-Welcome to the official documentation for ObjectBox Sync. If you haven't already, please [sign up for a free Data Sync trial](https://objectbox.io/sync/).&#x20;
+[Sign up for a free Data Sync trial](https://objectbox.io/sync/) to get access to this feature.
+
+{% hint style="info" %}
+To learn how to work with the ObjectBox database, have a look at its [Getting Started page](https://objectbox.io/offline-first-mobile-database/).
+{% endhint %}
 
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
 
 1. Set up your data model using one of the [ObjectBox Sync Client](sync-client.md) language bindings (Java, Dart, Swift, C, ...) to get a data model JSON file.
-2. Start the server using the data model file.
+2. [Start the server](objectbox-sync-server.md) using the data model file.
 3. Point your sync client to the server URL to start syncing.
 
 Please use the navigation on the left for more detailed information.
+
+{% hint style="info" %}
+Prefer to look at example code? Check out [our examples repository](https://github.com/objectbox/objectbox-sync-examples).
+{% endhint %}
+
+What follows is an overview of how the Sync feature works.
 
 ## Sync Architecture
 
@@ -56,11 +64,7 @@ While WebSockets is a great match for ObjectBox Sync for most cases, we are not 
 
 ### Robust data synchronization
 
-Sync is tightly integrated with the ObjectBox database.
-When you put object in the database, this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database\_transaction).
-This is great to ensure that your data is always consistent.
-A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization.
-Thus, this high level of consistency extends to Sync; as Sync meta data can not diverge from the actual data.
+Sync is tightly integrated with the ObjectBox database. When you put object in the database, this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database_transaction). This is great to ensure that your data is always consistent. A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization. Thus, this high level of consistency extends to Sync; as Sync meta data can not diverge from the actual data.
 
 OK, this may sound a bit abstract, so let's look at an example. Let's say device A is constantly computing data based on a never ending stream of sensor data. Also that computed data is synced to a edge gateway B. Now at any point in time, device A suddenly looses power. Don't worry, your data is safe and consistent. Transactions ensure that the state on device A is consistent with what will be synchronized to gateway B. ObjectBox takes care of all that; no matter if A and B were connected to each other or whatever the synchronization state was at the point when the power went out. Once device A boots up again, ObjectBox will synchronize data to gateway B from the point it was interrupted.
 
