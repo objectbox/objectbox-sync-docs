@@ -40,8 +40,7 @@ The JWT configuration is part of the standard JSON configuration file used for t
 
 It uses the following configuration fields:
 
-* **publicKeyUrl:** The URL where the Sync Server can retrieve the public key(s) from your authentication provider. Public key rotation is automatically handled by pointing to this URL, ensuring that the Sync Server always uses the correct key for signature verification. The URL must
-point to a valid [JWKS](https://datatracker.ietf.org/doc/html/rfc7517) (JSON Web Key Set) resource that contains the public keys.
+* **publicKeyUrl:** The URL where the Sync Server can retrieve the public key(s) from your authentication provider. Public key rotation is automatically handled by pointing to this URL, ensuring that the Sync Server always uses the correct key for signature verification. For more details, see [configuring the public key URL](#configuring-the-public-key-url).
 * **claimAud:** Must match the `aud` (audience) value that your authentication provider includes in its issued JWTs. This is used to ensure the token is intended for the correct recipient.
 * **claimIss:** Must match the `iss` (issuer) value used by your authentication provider. This ensures the token is issued by a trusted source.
 
@@ -52,3 +51,19 @@ Starting the Sync Server with a JWT configuration using command line arguments l
 `sync-server --jwt-public-key-url https://example.com/public-key --jwt-claim-aud myAUD --jwt-claim-iss myISS`
 
 The configuration parameters match their counterparts in the JSON file, so you can refer there for details.
+
+### Configuring the public key URL
+
+The public key URL must point to a JSON resource that contains an RSA-256 certificate. Its public key is used to verify tokens. Currently, Sync Server can handle two cases depending on the JSON returned from `publicKeyUrl`:
+
+1. The JSON contains elements of the form `"<kid>": "<x509-certificate>"`. The first `<x509-certificate>` is converted to a RSA-256 public key using OpenSSL.
+
+   This format is [used by Firebase](https://firebase.google.com/docs/auth/admin/verify-id-tokens).
+
+   **To configure authentication with Firebase**, use the URL: `https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com`
+
+4. The JSON represents a [JWKS](https://datatracker.ietf.org/doc/html/rfc7517) (JSON Web Key Set). Each key in the JSON must contain the `x5c` (X.509 certificate chain) property. The public key of the first certificate is converted to a RSA-256 key.
+
+   This format is [used by Auth0](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens).
+
+   **To configure authentication with Auth0**, use an URL like: `https://obx-auth-demo.eu.auth0.com/.well-known/jwks.json`
