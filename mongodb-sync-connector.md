@@ -81,6 +81,26 @@ To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when sta
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
 * `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default this is "objectbox\_sync".
 
+{% hint style="info" %}
+If you are using Docker on Windows/macOS to run an instance of the ObjectBox Sync server, use `host.docker.internal` as the host in the MongoDB connection string for the `--mongo-url` parameter, for example,
+
+```bash
+docker run --rm -it \
+    --volume "$(pwd):/data" \
+    --user $UID \
+    --publish 127.0.0.1:9999:9999 \
+    --publish 127.0.0.1:9980:9980 \
+    objectboxio/sync:sync-server-${sync_server_version} \
+    --model /data/objectbox-model.json \
+    --unsecured-no-authentication \
+    --admin-bind 0.0.0.0:9980 \
+    --mongo-url mongodb://host.docker.internal:27017 \
+    --mongo-db test-db
+```
+
+It enables the Sync server running within the container to access the MongoDB instance running on the host system. Note, **it only works on Windows and macOS**.
+{% endhint %}
+
 Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
 
 ```json
