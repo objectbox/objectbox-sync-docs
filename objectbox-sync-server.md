@@ -69,6 +69,16 @@ As of now, the server is already running and accessible:
 
 ObjectBox Sync Server is also available as a docker image (e.g. to run on Windows). It is not available to public, so ensure to contact us so we can set up individual access for you. We have two models for Docker images: image files or private repository on Docker Hub.
 
+{% hint style="info" %}
+
+If you haven't used Docker before, you can follow these guides to learn some basic concepts and get started with configuring the Sync server:
+
+- [What is Docker?](https://docs.docker.com/get-started/docker-overview/)
+- [What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
+- [What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
+
+{% endhint %}
+
 #### Docker image file distribution
 
 If we sent you a Docker image for download (e.g. via a [Sync trial](https://objectbox.io/sync/)), you can import it with Docker's [load](https://docs.docker.com/engine/reference/commandline/load/) command:
