@@ -69,15 +69,28 @@ As of now, the server is already running and accessible:
 
 ObjectBox Sync Server is also available as a docker image (e.g. to run on Windows). It is not available to public, so ensure to contact us so we can set up individual access for you. We have two models for Docker images: image files or private repository on Docker Hub.
 
+{% hint style="info" %}
+
+**New to Docker?** Check these guides to learn some basics before trying to run the Sync Server:
+
+- [Get Docker](https://docs.docker.com/get-started/get-docker/)
+- [What is Docker?](https://docs.docker.com/get-started/docker-overview/)
+- [What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
+- [What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
+
+Ensure that running `docker run hello-world` works before you continue with the Sync server.
+
+{% endhint %}
+
 #### Docker image file distribution
 
-If we sent you a Docker image for download (e.g. via a [Sync trial](https://objectbox.io/sync/)), you can import it with Docker's [load](https://docs.docker.com/engine/reference/commandline/load/) command:
+If we sent you a Docker image for download (e.g. via a [Sync trial](https://objectbox.io/sync/)), you can import it with Docker's [load](https://docs.docker.com/engine/reference/commandline/load/) command (YYYY-MM-DD is the actual date of the image, e.g. "2025-03-10"):
 
 ```bash
-$ docker load --input ~/Downloads/sync-server.tar
+$ docker load --input ~/Downloads/YYYY-MM-DD-objectbox-sync-server-docker.tar.gz
 c7022781a1ed: Loading layer [================================>]  13.55MB/13.55MB
 53308e59a2cf: Loading layer [================================>]  1.536kB/1.536kB
-Loaded image: objectboxio/sync:21.3.1-server
+Loaded image: objectboxio/sync:sync-server-2025-03-10
 ```
 
 #### Pull image from Docker Hub
