@@ -17,49 +17,92 @@ However, for commercial use cases, we do offer embedded servers in all of the Ob
 
 ## Use a Sync server library
 
-### Java (Android/Linux)
+### Java SDK
 
-By now, you were likely in touch with the ObjectBox team and were given Sync Server library artifacts. To use them in a Gradle project they have to be included as a local binary dependency. And the ObjectBox plugin has to be prevented from adding conflicting dependencies.
+{% hint style="info" %}
+Currently available for Android, JVM on Linux
+{% endhint %}
 
-Copy the AAR and JAR files to the `<module_name>/libs` directory (the path is relative to the `build.gradle` file), then modify `build.gradle`:
+After talking to the ObjectBox team you were likely given Sync Server library artifacts, for example an Android Archive (AAR) or a Java Archive (JAR). To include these manually as dependencies in a Gradle project:
+
+* In the desired subproject, likely in the `app` directory, copy the AAR or JAR file into a directory called `libs` . So for example:
+
+```
+app
+|-- libs
+|   | -- objectbox-sync-server-android.aar
+|   | -- objectbox-sync-server-linux.jar
+|-- build.gradle.kts
+```
+
+* In the Gradle build script of your subproject:
+  * [Declare the libs directory as a repository](https://docs.gradle.org/current/userguide/declaring_repositories.html)
+  * Exclude conflicting dependencies added automatically by the ObjectBox plugin
+  * Add each AAR and JAR file as a dependency
 
 {% tabs %}
-{% tab title="Groovy" %}
-```groovy
-// Prevent the ObjectBox plugin from adding dependencies without Sync server.
-configurations {
-    all {
-        exclude group: "io.objectbox", module: "objectbox-android"
-        exclude group: "io.objectbox", module: "objectbox-linux"
+{% tab title="Kotlin" %}
+{% code title="build.gradle.kts" %}
+```kotlin
+plugins {
+    // If not done already, apply the Sync version of the ObjectBox plugin
+    id("io.objectbox.sync")
+}
+
+// Let Gradle search the libs folder for dependencies
+repositories {
+    flatDir {
+        dirs("libs")
     }
 }
 
-dependencies {
-    // Add any .aar and .jar file from <module_name>/libs as a dependency.
-    implementation fileTree(dir: "libs", include: ["*.aar", "*.jar"])
+// Exclude conflicting Android and Linux libraries added by the plugin
+configurations {
+    all {
+        exclude(group = "io.objectbox", module = "objectbox-sync-android")
+        exclude(group = "io.objectbox", module = "objectbox-sync-linux")
+    }
 }
 
-apply plugin: "io.objectbox.sync"
+// Add the Android or Linux library as needed
+dependencies {
+    implementation("io.objectbox", "objectbox-sync-server-android", ext = "aar")
+    implementation("io.objectbox", "objectbox-sync-server-linux")
+}
 ```
+{% endcode %}
 {% endtab %}
 
-{% tab title="Kotlin" %}
-```kotlin
-// Prevent the ObjectBox plugin from adding dependencies without Sync server.
-configurations {
-    all {
-        exclude(group = "io.objectbox", module = "objectbox-android")
-        exclude(group = "io.objectbox", module = "objectbox-linux")
+{% tab title="Groovy" %}
+{% code title="build.gradle" %}
+```groovy
+plugins {
+    // If not done already, apply the Sync version of the ObjectBox plugin
+    id("io.objectbox.sync")
+}
+
+// Let Gradle search the libs folder for dependencies
+repositories {
+    flatDir {
+        dirs("libs")
     }
 }
 
-dependencies {
-    // Add any .aar and .jar file from <module-dir>/libs as a dependency.
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+// Exclude conflicting Android and Linux libraries added by the plugin
+configurations {
+    all {
+        exclude(group: "io.objectbox", module: "objectbox-sync-android")
+        exclude(group: "io.objectbox", module: "objectbox-sync-linux")
+    }
 }
 
-apply(plugin = "io.objectbox.sync")
+// Add the Android or Linux library as needed
+dependencies {
+    implementation("io.objectbox:objectbox-sync-server-android@aar")
+    implementation("io.objectbox:objectbox-sync-server-linux")
+}
 ```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
 
