@@ -35,7 +35,9 @@ See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page o
 
 By then you should be able to reach the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look like this:
 
-<figure><img src="../.gitbook/assets/sync-server-schema.webp" alt="Admin web app schema page showing a Tape with its properties"><figcaption><p></p></figcaption></figure>
+<figure><img src="../.gitbook/assets/sync-server-schema.webp" alt="Admin web app schema page showing a Tape with its properties"><figcaption><p>Data model (schema), which will be synced with MongoDB</p></figcaption></figure>
+
+For a visual overview, you can also try the "Type dependencies" and "Class" diagrams on the page. 
 
 ## Configure the MongoDB connection
 
@@ -48,7 +50,7 @@ Now that the Sync Server is up and running, let's connect it to MongoDB. This ca
 To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
 
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
-* `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default this is "objectbox\_sync".
+* `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default, this is "objectbox\_sync".
 
 {% hint style="info" %}
 If you are using Docker on Windows/macOS to run an instance of the ObjectBox Sync server, use `host.docker.internal` as the host in the MongoDB connection string for the `--mongo-url` parameter, for example,
@@ -87,3 +89,30 @@ Alternatively, configure the MongoDB connection in the Sync Server configuration
 
 Use the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
 -->
+
+## Initial Import from MongoDB
+
+To fully enable data synchronization, we need to do an initial import from MongoDB. This syncs all collections from MongoDB, which are part of the ObjectBox data model, into ObjectBox. It does this with snapshot isolation level to offer a maximum level of consistency, e.g. concurrent updates from other systems do not interfere with this process (when done in accordance with MongoDB transaction semantics). From this snapshot on, all changes are synchronized continuously between MongoDB and ObjectBox. If one system goes offline, the synchronization will pick up where it left off. So no change will be lost.
+
+When you navigate to a MongoDB page in the Admin, you will see a prominent message if the initial import did not run yet:
+
+<figure><img src="../.gitbook/assets/mongodb-initial-import-required.webp" alt="Admin web app initial import message"><figcaption><p>The initial MongoDB import still needs to be triggered</p></figcaption></figure>
+
+## Triggering a full MongoDB import
+
+On the "Full Sync" page beneath the "MongoDB Connector" menu, tap the "Full Import from MongoDB" button and a dialog like this will appear:
+
+<figure><img src="../.gitbook/assets/mongodb-full-import-dialog.webp" alt="Full MongoDB import dialog showing info and input fields for name and notes"><figcaption><p>MongoDB import confirmation dialog</p></figcaption></figure>
+
+It shows you some information and input fields. You must enter your name (required) and optional notes to help you identify this import in the future. Then tap "Import" to start the import process.
+
+During the import you can see the progress on the page. There are two main phases:
+
+* Exporting from MongoDB: one column shows the counts of MongoDB databases, collections and documents already exported
+* Importing into ObjectBox: the next column to the right shows the counts of objects actually changed in ObjectBox and the total count of all checked objects, which should roughly match the number of documents in MongoDB
+
+<figure><img src="../.gitbook/assets/mongodb-full-sync-importing.webp" alt=""><figcaption><p>MongoDB Example of an ongoing import</p></figcaption></figure>
+
+As you can see in the image above, you have the possibility to abort an ongoing import process. This is to be used very cautiously, as it can yield in inconsistent states of data if importing has already started (e.g. dangling relations). Then the best thing you can do is to start a new full sync again and let it complete. You already guessed it: aborting an ongoing import should be reserved for emergencies only.
+
+A finished import will show up in as "Completed" in the "State" column on green background. At that point, it's a good time to check the logs to ensure the sync went smoothly. Also having a look at the "Data" page will give you a good overview of the data imported.
