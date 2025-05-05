@@ -12,7 +12,7 @@ ObjectBox Data Sync syncs data with MongoDB using the integrated [MongoDB Sync C
 
 ## Bi-directional Synchronization with MongoDB
 
-<figure><img src=".gitbook/assets/ObjectBox-Mongo-Architecture-Central.webp" alt="Architecture: MongoDB <--> ObjectBox Sync Server <--> ObjectBox Sync Client"><figcaption><p>ObjectBox Sync Connector for MongoDB: Architecture</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/ObjectBox-Mongo-Architecture-Central.webp" alt="Architecture: MongoDB <--> ObjectBox Sync Server <--> ObjectBox Sync Client"><figcaption><p>ObjectBox Sync Connector for MongoDB: Architecture</p></figcaption></figure>
 
 ObjectBox Sync brings your data in MongoDB to the edge (e.g. mobile and IoT devices, big and small servers) and synchronizes changes back to MongoDB. By using ObjectBox Sync, you can make your MongoDB data always available: continue to work offline and sync in real-time when online.
 
@@ -34,23 +34,23 @@ We'll update the plan regularly.
 
 Setting up Sync server and its MongoDB Sync Connector involves the following steps:
 
-1. [**Create and provide a Data Model to Sync Server**](mongodb-sync-connector.md#create-and-provide-a-data-model-to-sync-server) using a model JSON file.
-2. [**Run and test Sync Server**](mongodb-sync-connector.md#run-and-test-sync-server) _without_ connecting to MongoDB and validate it actually syncs data.
-3. [**Ensure that your MongoDB instance is a replica set**](mongodb-sync-connector.md#ensure-that-your-mongodb-instance-is-a-replica-set)**.** This is required for the MongoDB Sync Connector to work.
-4. [**Configure the MongoDB connection and run Sync Server**](mongodb-sync-connector.md#configure-the-mongodb-connection-and-run-sync-server)**.** E.g. provide the connection URL to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file.
-5. [**Verify the MongoDB connection**](mongodb-sync-connector.md#verify-the-mongodb-connection) using the Admin UI.
+1. [**Create and provide a Data Model to Sync Server**](./#create-and-provide-a-data-model-to-sync-server) using a model JSON file.
+2. [**Run and test Sync Server**](./#run-and-test-sync-server) _without_ connecting to MongoDB and validate it actually syncs data.
+3. [**Ensure that your MongoDB instance is a replica set**](./#ensure-that-your-mongodb-instance-is-a-replica-set)**.** This is required for the MongoDB Sync Connector to work.
+4. [**Configure the MongoDB connection and run Sync Server**](./#configure-the-mongodb-connection-and-run-sync-server)**.** E.g. provide the connection URL to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file.
+5. [**Verify the MongoDB connection**](./#verify-the-mongodb-connection) using the Admin UI.
 
 Read on for details.
 
 ### **Create and** Provide a Data Model to Sync Server
 
-In general, the ObjectBox Sync server requires a data model to be provided (a JSON file, see [objectbox-sync-server.md](objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. On how this works, see the chapter on [data mapping](mongodb-sync-connector.md#syncing-and-mapping-data-with-mongodb) below.
+In general, the ObjectBox Sync server requires a data model to be provided (a JSON file, see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. On how this works, see the chapter on [data mapping](./#syncing-and-mapping-data-with-mongodb) below.
 
 ### **Run and test Sync Server**
 
 To avoid any later issues, run and test Sync Server without connecting to MongoDB and your client application and validate data is synced.
 
-See the [objectbox-sync-server.md](objectbox-sync-server.md "mention") page on how to run Sync Server.
+See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page on how to run Sync Server.
 
 ### Ensure that your MongoDB instance is a Replica Set
 
@@ -76,7 +76,7 @@ A local **standalone MongoDB instance** (MongoDB Community Edition is fine) can 
 
 ### Configure the MongoDB connection and run Sync Server
 
-To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](objectbox-sync-server.md "mention")), you can use the following options:
+To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
 
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
 * `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default this is "objectbox\_sync".
@@ -101,7 +101,7 @@ docker run --rm -it \
 It enables the Sync server running within the container to access the MongoDB instance running on the host system. Note, **it only works on Windows and macOS**.
 {% endhint %}
 
-Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
+Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](../sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
 
 ```json
 {
@@ -119,7 +119,7 @@ If your Sync server version's date is lower than 2024-10-07, use `{"mongoUrl": "
 
 ### **Verify the MongoDB connection**
 
-Use the ObjectBox Sync Server [Admin web app](objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
+Use the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
 
 ## Syncing and mapping data with MongoDB
 
@@ -137,7 +137,7 @@ The data model used by ObjectBox defines types, which are mapped to MongoDB coll
 
 When you compare the data structure of simple data elements, the difference is not big. Without nested data, the main difference you will note is the ID type.
 
-<figure><img src=".gitbook/assets/ObjectVsDocument (1).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/ObjectVsDocument (1).png" alt="" width="563"><figcaption></figcaption></figure>
 
 Note: nested documents are supported via the ObjectBox "Flex" property type, which can hold a map-like (JSON-like) structure. We are also considering alternatives to this, so let us know if you have specific requirements.
 
@@ -147,7 +147,7 @@ ObjectBox Sync automatically maps IDs when syncing with an external system like 
 
 {% hint style="warning" %}
 ObjectBox IDs are only valid on their local device. Do not store them manually (apart from relations) e.g. as a custom list or vector, when you want to sync to other devices.\
-For details, you can refer to the [internal ID mapping docs](advanced/object-ids.md) that happens on each ObjectBox device.
+For details, you can refer to the [internal ID mapping docs](../advanced/object-ids.md) that happens on each ObjectBox device.
 {% endhint %}
 
 Besides the Object ID, ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
@@ -172,7 +172,7 @@ ObjectBox Sync also happens automatically maps IDs used in relations (starting w
 
 Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This becomes a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
 
-<figure><img src=".gitbook/assets/ObjectVsDocument-Parent (1).png" alt="" width="563"><figcaption><p>To-One Relationship Example: motherId</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/ObjectVsDocument-Parent (1).png" alt="" width="563"><figcaption><p>To-One Relationship Example: motherId</p></figcaption></figure>
 
 The supported ID types also apply for relations, e.g. a "Person" document would have an UUID as the \_id field value, relations to it would also use the UUID as the relation ID on the MongoDB side.
 
