@@ -25,21 +25,25 @@ In general, the ObjectBox relies on a data model, which is typically defined as 
 * [Go](https://golang.objectbox.io/entity-annotations)
 * [C, C++](https://cpp.objectbox.io/entity-annotations) (uses a FlatBuffers schema file)
 
-All ObjectBox build tools also generate a data model JSON file. This 
+All ObjectBox build tools also generate a data model JSON file, which must be provided to the ObjectBox Sync Server. This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB (see the [data mapping page](mongodb-data-mapping.md)).
 
-Sync server requires a  to be provided (a JSON file, see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB (see the [data mapping page](mongodb-data-mapping.md)).
-
-### **Run and test Sync Server**
+### Run and test Sync Server
 
 To avoid any later issues, run and test Sync Server without connecting to MongoDB and your client application and validate data is synced.
 
 See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page on how to run Sync Server.
+
+By then you should be able to reach the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look like this:
+
+<figure><img src="../.gitbook/assets/sync-server-schema.webp" alt="Admin web app schema page showing a Tape with its properties"><figcaption><p></p></figcaption></figure>
 
 ## Configure the MongoDB connection
 
 {% hint style="warning" %}
 Use a separate MongoDB instance for testing purposes.
 {% endhint %}
+
+Now that the Sync Server is up and running, let's connect it to MongoDB. This can be done via CLI arguments or via the configuration file.
 
 To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
 
@@ -78,6 +82,8 @@ Alternatively, configure the MongoDB connection in the Sync Server configuration
 }
 ```
 
+<!-- not working at the moment
 ### **Verify the MongoDB connection**
 
 Use the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
+-->
