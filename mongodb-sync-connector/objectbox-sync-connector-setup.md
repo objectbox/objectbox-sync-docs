@@ -8,25 +8,26 @@ description: >-
 
 Once you have a [MongoDB instance running](mongodb-configuration.md), you can connect the ObjectBox Sync Server to it.
 
-## Setup
+## ObjectBox Preparations
 
-{% hint style="warning" %}
-**Do not connect to your MongoDB production instance!** Use a separate instance for testing purposes.
+Before using the MongoDB Sync Connector, let's ensure that the ObjectBox Sync Server is up and running. This involves basically two steps: having a data model and running the ObjectBox Sync Server. Read on for details.
+
+### Create and Provide a Data Model
+
+{% hint style="info" %}
+The ObjectBox data model defines which collections are synced with MongoDB (and much more...).
 {% endhint %}
 
-Setting up Sync server and its MongoDB Sync Connector involves the following steps:
+In general, the ObjectBox relies on a data model, which is typically defined as part of your (client) application. This is a different approach to MongoDB and other databases. The data model is defined by developers using special annotations in the programming language of your application. If you are not familiar with that process yet, then this is a good time to get familiar with ObjectBox "annotations" and how to define your data model. This is dependent on the programming language:
 
-1. [**Create and provide a Data Model to Sync Server**](./#create-and-provide-a-data-model-to-sync-server) using a model JSON file.
-2. [**Run and test Sync Server**](./#run-and-test-sync-server) _without_ connecting to MongoDB and validate it actually syncs data.
-3. [**Ensure that your MongoDB instance is a replica set**](./#ensure-that-your-mongodb-instance-is-a-replica-set)**.** This is required for the MongoDB Sync Connector to work.
-4. [**Configure the MongoDB connection and run Sync Server**](./#configure-the-mongodb-connection-and-run-sync-server)**.** E.g. provide the connection URL to the Sync Server and restart it. This can be done via CLI arguments or the JSON configuration file.
-5. [**Verify the MongoDB connection**](./#verify-the-mongodb-connection) using the Admin UI.
+* [Java, Kotlin, Dart, Python](https://docs.objectbox.io/entity-annotations)
+* [Swift](https://swift.objectbox.io/entity-annotations)
+* [Go](https://golang.objectbox.io/entity-annotations)
+* [C, C++](https://cpp.objectbox.io/entity-annotations) (uses a FlatBuffers schema file)
 
-Read on for details.
+All ObjectBox build tools also generate a data model JSON file. This 
 
-### **Create and** Provide a Data Model to Sync Server
-
-In general, the ObjectBox Sync server requires a data model to be provided (a JSON file, see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB. On how this works, see the chapter on [data mapping](./#syncing-and-mapping-data-with-mongodb) below.
+Sync server requires a  to be provided (a JSON file, see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")). This data model is also used by the MongoDB Sync Connector to map data between ObjectBox and MongoDB (see the [data mapping page](mongodb-data-mapping.md)).
 
 ### **Run and test Sync Server**
 
@@ -34,7 +35,11 @@ To avoid any later issues, run and test Sync Server without connecting to MongoD
 
 See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page on how to run Sync Server.
 
-### Configure the MongoDB connection and run Sync Server
+## Configure the MongoDB connection
+
+{% hint style="warning" %}
+Use a separate MongoDB instance for testing purposes.
+{% endhint %}
 
 To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
 
@@ -72,10 +77,6 @@ Alternatively, configure the MongoDB connection in the Sync Server configuration
     }
 }
 ```
-
-{% hint style="warning" %}
-If your Sync server version's date is lower than 2024-10-07, use `{"mongoUrl": "1.2.3.4"}` without the `mongoDb` config node.
-{% endhint %}
 
 ### **Verify the MongoDB connection**
 
