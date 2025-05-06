@@ -116,3 +116,41 @@ During the import you can see the progress on the page. There are two main phase
 As you can see in the image above, you have the possibility to abort an ongoing import process. This is to be used very cautiously, as it can yield in inconsistent states of data if importing has already started (e.g. dangling relations). Then the best thing you can do is to start a new full sync again and let it complete. You already guessed it: aborting an ongoing import should be reserved for emergencies only.
 
 A finished import will show up in as "Completed" in the "State" column on green background. At that point, it's a good time to check the logs to ensure the sync went smoothly. Also having a look at the "Data" page will give you a good overview of the data imported.
+
+## Viewing Imports
+
+As seen in an previous screenshot above, the "Full Sync" MongoDB page shows a table of all current and past import processes. This history gives you a good overview of what was imported and when. These are the columns:
+
+* Started: when the import started
+* State: the current state of the import; it typically goes through these phases: "Started", "Exporting", "Importing", "Completed"
+* "Export: DBs/Coll./Docs": the counts of MongoDB databases, collections and documents exported
+* "Changed/Objects": the count of objects actually changed in ObjectBox and the total count of all checked objects, which should roughly match the number of documents in MongoDB
+* Warnings/Errors: the count of warnings and errors; details can be found in the logs
+* Triggered by: the name entered for this import (in the import confirmation dialog)
+* Note: the note entered for this import (in the import confirmation dialog)
+* Schema Version: The ObjectBox schema version that was current when the import started. The Admin has a "Schema Versions" page showing the history of past versions of the data model. Thus, you can track changes to the data model over time.
+* MongoDB: the URL and MongoDB version used for this import
+* Logs: A link to the log events. Note: a future version will filter the logs for this import.
+
+You can also see the timeline of an import/sync process by clicking on the state. It shows when a new state was reached and should look like this:
+
+<figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt=""><figcaption><p>MongoDB Example Timeline of a completed sync</p></figcaption></figure>
+
+## Current Caveats of full Imports
+
+Now that you can import an entire MongoDB database into ObjectBox, you may get huge datasets in ObjectBox that span several GB and more. It's a good idea to validate full datasets on the ObjectBox Sync Server, but there are a few caveats to consider on the client side of as of now:
+
+* You need to update the ObjectBox sync clients to the new version 4.3 (will be available soon)
+* User-specific (rule-base) sync will be available in the next (major) beta release (see roadmap). Until then all data will be synced to the clients.
+
+We are working on that with high priority and will keep you updated on progress.
+
+### MongoDB Snapshot Isolation and Timeouts
+
+{% hint style="info" %}
+This section gives some technical details about MongoDB snapshot isolation. You can skip it if your import was completed successfully.
+{% endhint %}
+
+If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. To read the data from MongoDB, the ObjectBox Sync Connector uses [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from an database perspective). MongoDB does not keep snapshots for limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
+
+This issue is typically only starting at MongoDB databases containing at least 10 GB and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window by setting  [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
