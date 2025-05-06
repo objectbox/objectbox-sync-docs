@@ -31,7 +31,7 @@ All ObjectBox build tools also generate a data model JSON file, which must be pr
 
 To avoid any later issues, run and test Sync Server without connecting to MongoDB and your client application, and validate that data is synced.
 
-See the [ObjectBox Sync Server documentation](../objectbox-sync-server.md "mention") page on how to run Sync Server.
+See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page on how to run Sync Server.
 
 By then you should be able to reach the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look similar to this:
 
@@ -47,10 +47,10 @@ Use a separate MongoDB instance for testing purposes.
 
 Now that the Sync Server is up and running, let us connect it to MongoDB. This can be done via CLI arguments or via the configuration file.
 
-To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [ObjectBox Sync Server documentation](../objectbox-sync-server.md "mention")), you can use the following options:
+To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
 
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
-* `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default, this is "objectbox_sync".
+* `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default, this is "objectbox\_sync".
 
 {% hint style="info" %}
 If you are using Docker on Windows/macOS to run an instance of the ObjectBox Sync server, use `host.docker.internal` as the host in the MongoDB connection string for the `--mongo-url` parameter, for example,
@@ -72,7 +72,7 @@ docker run --rm -it \
 This enables the Sync server running within the container to access the MongoDB instance running on the host system. Note, **it only works on Windows and macOS**.
 {% endhint %}
 
-Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [Sync Server Configuration](../sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
+Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](../sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
 
 ```json
 {
@@ -83,12 +83,6 @@ Alternatively, configure the MongoDB connection in the Sync Server configuration
     }
 }
 ```
-
-<!-- not working at the moment
-### **Verify the MongoDB connection**
-
-Use the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui) to verify the MongoDB connection works.
--->
 
 ## Initial Import from MongoDB
 
@@ -102,7 +96,7 @@ When you navigate to a MongoDB page in the Admin UI, you will see a prominent me
 
 On the "Full Sync" page beneath the "MongoDB Connector" menu, tap the "Full Import from MongoDB" button and a dialog like this will appear:
 
-<figure><img src="../.gitbook/assets/mongodb-full-import-dialog.webp" alt="Full MongoDB import dialog showing info and input fields for name and notes"><figcaption><p>Figure 3: MongoDB import confirmation dialog</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/mongodb-full-import-dialog.webp" alt="Full MongoDB import dialog showing info and input fields for name and notes" width="563"><figcaption><p>Figure 3: MongoDB import confirmation dialog</p></figcaption></figure>
 
 It shows you some information and input fields. You must enter your name (required) and optional notes to help you identify this import in the future. Then tap "Import" to start the import process.
 
@@ -134,7 +128,7 @@ As seen in a previous screenshot above, the "Full Sync" MongoDB page shows a tab
 
 You can also see the timeline of an import/sync process by clicking on the state. It shows when a new state was reached and should look like this:
 
-<figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt="MongoDB Example Timeline of a completed sync process in Admin UI"><figcaption><p>Figure 5: MongoDB Example Timeline of a completed sync</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt="MongoDB Example Timeline of a completed sync process in Admin UI" width="563"><figcaption><p>Figure 5: MongoDB Example Timeline of a completed sync</p></figcaption></figure>
 
 ## Current Caveats of full Imports
 
@@ -151,6 +145,6 @@ We are working on these aspects with high priority and will keep you updated on 
 This section gives some technical details about MongoDB snapshot isolation. You can skip it if your import was completed successfully.
 {% endhint %}
 
-If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. To read the data from MongoDB, the ObjectBox Sync Connector uses [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from a database perspective). MongoDB keeps snapshots for a limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
+If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. To read the data from MongoDB, the ObjectBox Sync Connector uses the [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from a database perspective). MongoDB keeps snapshots for a limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
 
-This issue typically only starts with MongoDB databases containing at least 10 GB, and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window by setting  [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
+This issue typically only starts with MongoDB databases containing at least 10 GB, and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window by setting [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
