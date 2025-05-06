@@ -12,20 +12,20 @@ description: >-
 Prefer to look at example code? Check out [our examples repository](https://github.com/objectbox/objectbox-sync-examples).
 {% endhint %}
 
-The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, but won't provide any Sync logic due to the missing implementation.
+The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, but will not provide any Sync logic due to the missing implementation.
 
 {% hint style="info" %}
-If you haven't used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
+If you have not used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
 {% endhint %}
 
-By now, you were likely in touch with the ObjectBox team and have access to Sync Server and potentially a special Sync Client version. For some platforms, we maintain packages that you can include as dependencies.
+It is assumed that you have been in contact with the ObjectBox team and have access to Sync Server and potentially a special Sync Client version. For some platforms, we maintain packages that you can include as dependencies.
 
 {% tabs %}
 {% tab title="Java/Kotlin (JVM, Android)" %}
 Follow the [Getting Started](https://docs.objectbox.io/getting-started) page instructions. Then change the applied Gradle plugin to the sync variant:
 
 ```groovy
-// This will try to add the native dependency automatically:
+// This automatically adds the native dependency:
 apply plugin: "io.objectbox.sync"  // instead of "io.objectbox"
 ```
 
@@ -51,7 +51,7 @@ implementation("io.objectbox:objectbox-sync-linux-armv7:$objectboxVersion")
 This gives you specific information about how to get the Sync-enabled version of ObjectBox. Please also check our [general installation and update ](https://swift.objectbox.io/install)docs for in-depth information.
 {% endhint %}
 
-We may distribute ObjectBox Sync for Swift in our **Cocoapods** staging repository (we let you know). In that case, these are some typical lines to put in your Podfile (please check the version, there might be a newer one available):
+We may distribute ObjectBox Sync for Swift in our **Cocoapods** staging repository (details will be provided by the ObjectBox team). In that case, these are some typical lines to put in your Podfile (please check the version, there might be a newer one available):
 
 ```
 target 'MyCoolSyncProject' do
@@ -74,12 +74,12 @@ bash <(curl -s https://raw.githubusercontent.com/objectbox/objectbox-c/main/down
 Or use [CMake's FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) to get ObjectBox headers and library ready to use in your project:
 
 {% code title="CMakeLists.txt" %}
-```
+```cmake
 include(FetchContent)
 FetchContent_Declare(
     objectbox
     GIT_REPOSITORY https://github.com/objectbox/objectbox-c.git
-    GIT_TAG        v0.15.2
+    GIT_TAG        v0.15.2 # Or a newer sync-enabled version
 )
 
 FetchContent_MakeAvailable(objectbox)
@@ -91,17 +91,17 @@ target_link_libraries(myapp objectbox-sync)
 {% endtab %}
 
 {% tab title="Go" %}
-```
+```bash
 bash <(curl -s https://raw.githubusercontent.com/objectbox/objectbox-go/main/install.sh) --sync
 ```
 {% endtab %}
 
 {% tab title="Others" %}
-Please reach out to the ObjectBox team
+Please reach out to the ObjectBox team.
 {% endtab %}
 {% endtabs %}
 
-Now it's time to **verify** the setup using a flag telling if Sync is available; for example, simply log the result:
+Now it is time to **verify** the setup using a flag telling if Sync is available; for example, simply log the result:
 
 {% tabs %}
 {% tab title="Java" %}
@@ -123,39 +123,60 @@ Log.d(App.TAG, "ObjectBox Sync is $syncAvailable")
 {% endtab %}
 
 {% tab title="Swift" %}
-```
-Sync.isAvailable()
+```swift
+let isSyncAvailable = Sync.isAvailable()
+print("ObjectBox Sync is \(isSyncAvailable ? "available" : "unavailable")")
 ```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
-Sync.isAvailable()
+final isSyncAvailable = Sync.isAvailable();
+print('ObjectBox Sync is ${isSyncAvailable ? "available" : "unavailable"}');
 ```
 {% endtab %}
 
 {% tab title="C++" %}
 ```cpp
-obx::Sync::isAvailable()
+#include <iostream>
+#include "objectbox-sync.hpp"
+
+// ...
+bool isSyncAvailable = obx::Sync::isAvailable();
+std::cout << "ObjectBox Sync is " << (isSyncAvailable ? "available" : "unavailable") << std::endl;
 ```
 {% endtab %}
 
 {% tab title="C" %}
 ```c
-obx_has_feature(OBXFeature_Sync)
+#include <stdio.h>
+#include "objectbox-sync.h"
+
+// ...
+bool hasSync = obx_has_feature(OBXFeature_Sync);
+printf("ObjectBox Sync is %s\n", hasSync ? "available" : "unavailable");
 ```
 {% endtab %}
 
 {% tab title="Go" %}
 ```go
-objectbox.SyncIsAvailable()
+import "fmt"
+import "github.com/objectbox/objectbox-go/objectbox"
+
+// ...
+var syncAvailable = "unavailable"
+if objectbox.SyncIsAvailable() {
+    syncAvailable = "available"
+}
+fmt.Printf("ObjectBox Sync is %s\n", syncAvailable)
 ```
 {% endtab %}
 
 {% tab title="Others" %}
 ```
 // Depending on the platform something like:
-Sync.isAvailable()
+// bool isAvailable = Sync.isAvailable();
+// print("ObjectBox Sync is " + (isAvailable ? "available" : "unavailable"));
 ```
 {% endtab %}
 {% endtabs %}
@@ -191,7 +212,7 @@ data class User(
 ```swift
 // objectbox: sync
 class User: Entity {
-    ...
+    // ...
 }
 ```
 {% endtab %}
@@ -201,16 +222,16 @@ class User: Entity {
 @Entity
 @Sync
 class User {
-    ...
+    // ...
 }
 ```
 {% endtab %}
 
 {% tab title="C/C++ (using Generator)" %}
-```
+```cpp
 /// objectbox: sync
 table User {
-    ...
+    // ...
 }
 ```
 {% endtab %}
@@ -228,14 +249,14 @@ type User struct {
 Once the sync annotation is set on the intended types, you need to rebuild (e.g. Java/Kotlin) or trigger the ObjectBox generator (e.g. C and C++). This activates a "sync flag" in the metamodel (e.g. the model JSON file is updated).
 
 {% hint style="info" %}
-At this point, it is not allowed to change a non-synced object type to a synced one. This would raise questions on how to handle pre-existing data, e.g. should it be deleted, synced (how exactly? using how many transactions? ...), or kept locally until objects are put again? We welcome your input on your use case.
+At this point, it is not allowed to change a non-synced object type to a synced one. This would raise questions on how to handle pre-existing data, e.g. should it be deleted, synced (how exactly? using how many transactions? ...), or kept locally until objects are put again? We welcome your input on your use case if this is a scenario you encounter.
 
-Additionally, there may only be relations between sync-enabled or non-sync entities, not across the boundary.
+Additionally, there may only be relations between sync-enabled or non-sync entities, not across this boundary.
 {% endhint %}
 
 If you already have a non-synced type that you now want to sync (see also the info box above), these are the typical options you have:
 
-1. If you are still in development, add the sync annotation and wipe your database(s) to start fresh with that new data model
+1. If you are still in development, add the sync annotation and wipe your database(s) to start fresh with that new data model.
 2. "Replace" the entity type using a new UID (check schema changes docs for the ObjectBox binding you are using). You can keep the type name; to ObjectBox it will be a different type as the UID is different. This will delete all existing data in that type.
 3. Have a second, synced, object type and migrate your data in your code following your rules.
 
@@ -266,15 +287,15 @@ val syncClient = Sync.client(
 
 {% tab title="Swift" %}
 ```swift
-try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
-  credentials: SyncCredentials.makeNone())
+let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
+                                 credentials: SyncCredentials.makeNone())
 try client.start()
 ```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
-SyncClient syncClient = Sync.client(
+final syncClient = Sync.client(
         store,
         'ws://127.0.0.1:9999', // wss for SSL, ws for unencrypted traffic
         SyncCredentials.none());
@@ -308,20 +329,24 @@ syncClient, err := objectbox.NewSyncClient(
 		"ws://127.0.0.1", // wss for SSL, ws for unencrypted traffic
 		objectbox.SyncCredentialsNone())
 
-if err != nil {
+if err == nil { // Corrected: check if err is nil before starting
 		err = syncClient.Start() // Connect and start syncing.
-}		
+}
+if err != nil {
+    // Handle error, e.g., log it
+    fmt.Printf("Error starting sync client: %v\n", err)
+}
 ```
 {% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
-The example uses wss://127.0.0.1 for the server endpoint. This is the IP address of localhost and assumes that you run the server and client(s) on the same machine. If it's separate machines, you need to exhange 127.0.0.1 with an reachable IP address of the server, or, some valid DNS name.
+The example uses ws://127.0.0.1 for the server endpoint. This is the IP address of localhost and assumes that you run the server and client(s) on the same machine. If it is separate machines, you need to exchange 127.0.0.1 with a reachable IP address of the server, or some valid DNS name.
 
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). [Details](https://developer.android.com/studio/run/emulator-networking)
 {% endhint %}
 
-Sync client is started by calling `start()/buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
+Sync client is started by calling `start()` or `buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
 
 Once the client is logged in, the server will push any changes it has missed. The server will also push any future changes while the client remains connected. This [sync updates behavior](sync-client.md#controlling-sync-updates-behavior) can be configured.
 
@@ -333,7 +358,7 @@ Should the client get disconnected, e.g. due to internet connection issues, it w
 
 ### Drop-off, send-only clients
 
-For some use cases, client should only report data and thus only send updates without ever receiving any data. We call those "drop-off clients". Technically, from an API perspective, these clients do not request updates from the server. Because requesting updates is the default, the sync client API has to be configured to do "manual" updates to actually disable updates from the server. This configuration has to happen before the client starts.
+For some use cases, a client should only report data and thus only send updates without ever receiving any data. We call those "drop-off clients". Technically, from an API perspective, these clients do not request updates from the server. Because requesting updates is the default, the sync client API has to be configured to do "manual" updates to actually disable updates from the server. This configuration has to happen before the client starts.
 
 ```cpp
 // C++; create syncClient as above, but do not start() just yet
@@ -343,7 +368,7 @@ syncClient->start();
 
 ### Secure Connection
 
-When using `wss` as the protocol in the server URL a TLS encrypted connection is established. Use `ws` instead to turn off transport encryption (insecure, not recommended! e.g. only use for testing).
+When using `wss` as the protocol in the server URL a TLS encrypted connection is established. Use `ws` instead to turn off transport encryption (insecure, not recommended; e.g. only use for testing).
 
 ## Authentication options
 
@@ -356,7 +381,7 @@ Clients can be authenticated using tokens in JWT (JSON web token) format. The ge
 {% tabs %}
 {% tab title="Java" %}
 ```java
-String idToken = "<token>"; // Get from JWT authentication provider
+String idToken = "<your_jwt_id_token>"; // Get from JWT authentication provider
 SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
 // Options for other types of JWT are available:
 // jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
@@ -365,7 +390,7 @@ SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
 
 {% tab title="Kotlin" %}
 ```kotlin
-val idToken: String = TODO() // Get from JWT authentication provider
+val idToken: String = "<your_jwt_id_token>" // Get from JWT authentication provider
 val credential = SyncCredentials.jwtIdToken(idToken)
 // Options for other types of JWT are available:
 // jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
@@ -374,7 +399,7 @@ val credential = SyncCredentials.jwtIdToken(idToken)
 
 {% tab title="Swift" %}
 ```swift
-let idToken: String = "TODO" // Get from JWT authentication provider
+let idToken: String = "<your_jwt_id_token>" // Get from JWT authentication provider
 let credential = SyncCredentials.makeJwtIdToken(idToken)
 // Options for other types of JWT are available:
 // makeJwtAccessToken(...), makeJwtRefreshToken(...), makeJwtCustomToken(...)
@@ -383,7 +408,7 @@ let credential = SyncCredentials.makeJwtIdToken(idToken)
 
 {% tab title="Dart/Flutter" %}
 ```dart
-String idToken = "<token>"; // Get from JWT authentication provider
+String idToken = "<your_jwt_id_token>"; // Get from JWT authentication provider
 SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
 // Options for other types of JWT are available:
 // jwtAccessToken(token), jwtRefreshToken(token), jwtCustomToken(token)
@@ -392,19 +417,27 @@ SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
 
 {% tab title="C++" %}
 ```cpp
-// TODO
+std::string idToken = "<your_jwt_id_token>"; // Get from JWT authentication provider
+obx::SyncCredentials credential = obx::SyncCredentials::jwtIdToken(idToken);
+// Options for other types of JWT are available:
+// obx::SyncCredentials::jwtAccessToken(token), obx::SyncCredentials::jwtRefreshToken(token), obx::SyncCredentials::jwtCustomToken(token)
 ```
 {% endtab %}
 
 {% tab title="C" %}
 ```c
-// TODO
+const char* idToken = "<your_jwt_id_token>"; // Get from JWT authentication provider
+// Assuming obx_sync_credentials_jwt_id_token exists or similar mechanism
+obx_sync_credentials_jwt(sync_client, OBXSyncJwtTokenType_ID_TOKEN, idToken, strlen(idToken));
+// Other token types would use different OBXSyncJwtTokenType enum values.
+// The exact C API for JWT might vary; consult specific C API docs or headers.
 ```
 {% endtab %}
 
 {% tab title="Go" %}
 ```go
-// TODO
+idToken := "<your_jwt_id_token>" // Get from JWT authentication provider
+credential := objectbox.SyncCredentialsJwtId([]byte(idToken))
 ```
 {% endtab %}
 {% endtabs %}
@@ -416,37 +449,37 @@ This can be any pre-shared secret string or a byte sequence.
 {% tabs %}
 {% tab title="Java" %}
 ```java
-SyncCredentials credential = SyncCredentials.sharedSecret("<secret>");
+SyncCredentials credential = SyncCredentials.sharedSecret("<your_secret>");
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val credential = SyncCredentials.sharedSecret("<secret>")
+val credential = SyncCredentials.sharedSecret("<your_secret>")
 ```
 {% endtab %}
 
 {% tab title="Swift" %}
 ```swift
-let credential = SyncCredentials.makeSharedSecret("<secret>")
+let credential = SyncCredentials.makeSharedSecret("<your_secret>")
 ```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
 // use a string
-SyncCredentials credential = SyncCredentials.sharedSecretString("<secret>");
+final credential = SyncCredentials.sharedSecretString("<your_secret>");
 
 // or a byte vector
-Uint8List secret = Uint8List.fromList([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]);
-SyncCredentials credential = SyncCredentials.sharedSecretUint8List(secret);
+final secret = Uint8List.fromList([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]);
+final credentialBytes = SyncCredentials.sharedSecretUint8List(secret);
 ```
 {% endtab %}
 
 {% tab title="C++" %}
 ```cpp
 // use a string
-obx::SyncCredentials cred = obx::SyncCredentials::sharedSecret("string");
+obx::SyncCredentials cred = obx::SyncCredentials::sharedSecret("your_secret_string");
 
 // or a byte vector
 std::vector<uint8_t> secret = {0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186};
@@ -457,19 +490,19 @@ obx::SyncCredentials cred = obx::SyncCredentials::sharedSecret(std::move(secret)
 {% tab title="C" %}
 ```c
 // use a string
-const char* secret = "secret"
+const char* secretStr = "your_secret_string";
 obx_sync_credentials(sync_client, 
     OBXSyncCredentialsType_SHARED_SECRET, 
-    secret, 
-    strlen(secret)
+    secretStr, 
+    strlen(secretStr)
 );
 
 // or a byte vector
-uint8_t secret[] = {0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186};
+uint8_t secretBytes[] = {0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186};
 obx_sync_credentials(sync_client, 
     OBXSyncCredentialsType_SHARED_SECRET, 
-    secret, 
-    sizeof(secret)
+    secretBytes, 
+    sizeof(secretBytes)
 );
 ```
 {% endtab %}
@@ -477,11 +510,11 @@ obx_sync_credentials(sync_client,
 {% tab title="Go" %}
 ```go
 // use a string
-var cred = objectbox.SyncCredentialsSharedSecret([]byte("string"))
+credStr := objectbox.SyncCredentialsSharedSecret([]byte("your_secret_string"))
 
 // or a byte vector
-var secret = []byte{0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186}
-var cred = objectbox.SyncCredentialsSharedSecret(secret)
+secretBytes := []byte{0, 46, 79, 193, 185, 65, 73, 239, 15, 5, 189, 186}
+credBytes := objectbox.SyncCredentialsSharedSecret(secretBytes)
 ```
 {% endtab %}
 {% endtabs %}

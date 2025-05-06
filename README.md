@@ -2,7 +2,7 @@
 description: >-
   Offline-first out-of-the-box Data Sync for the ObjectBox database. Seamless,
   bi-directional, selective data flows across devices, offline as well as
-  online, becomes easy with ObjectBox Data Sync.
+  online, is simplified with ObjectBox Data Sync.
 ---
 
 # Data Synchronization
@@ -31,26 +31,26 @@ What follows is an overview of how the Sync feature works.
 
 ## Sync Architecture
 
-<figure><img src=".gitbook/assets/Sync Architecture for Docs.jpg" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/Sync Architecture for Docs.jpg" alt="ObjectBox Sync Architecture Diagram"><figcaption>Figure 1: ObjectBox Sync Architecture Overview</figcaption></figure>
 
 ## Sync Concepts
 
-Typically you **interact with your local ObjectBox database**. It does not matter if the device is online or offline. You get and put objects using the regular ObjectBox APIs. If you are interested in details how that is done, please refer to the language binding of your choice:\
+Typically you **interact with your local ObjectBox database**. It does not matter if the device is online or offline. You get and put objects using the regular ObjectBox APIs. If you are interested in details on how this is done, please refer to the language binding of your choice:\
 [Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [Go](https://golang.objectbox.io/), [C++](https://cpp.objectbox.io/), [Dart/Flutter](https://github.com/objectbox/objectbox-dart) (beta), [Python](https://github.com/objectbox/objectbox-python) (alpha).
 
 The same APIs apply to synced objects, e.g. you use the same `put` call on a synced object as you would do for any (non-synced) object. Under the hood however, ObjectBox will synchronize those objects to their destination device, e.g. some server. Thus, those objects will become available outside of originating device.
 
 ### Online, Offline, :person\_shrugging:
 
-When you write applications with ObjectBox Sync, you usually do not bother if the device is online or offline. It does not matter. You work with the objects that you have at hand and let ObjectBox Sync "do its thing". But what is that exactly?
+When you write applications with ObjectBox Sync, you usually do not need to be concerned if the device is online or offline. It does not matter. You work with the objects that you have at hand and let ObjectBox Sync manage the synchronization process. But what does this entail?
 
 So, let's look a bit behind the scenes. Whenever you change data (on sync-enabled types), ObjectBox **tracks these changes** and stores them safely in an **outgoing queue**. In the background, ObjectBox Sync tries to connect to the data synchronization destination (Sync server). If the connection was successfully established, the outgoing queue is "processed". This means that enqueued data is sent, and once the sync destination acknowledges the receipt, that piece of data can be safely removed from the queue.
 
-When disconnected, Sync clients will **periodically try to reconnect** in the background. By default, this is done using increasing backoff intervals. While details may change, the backoffs should stay similar to this sequence \[seconds]: 0.5, 1, 2, 4, 8, 15, 30, 30, 60. This resembles pretty much an exponential backoff, but also ensures not to delay a (re-)connection attempt for longer than one minute.
+When disconnected, Sync clients will **periodically try to reconnect** in the background. By default, this is done using increasing backoff intervals. While details may change, the backoffs should stay similar to this sequence \[seconds]: 0.5, 1, 2, 4, 8, 15, 30, 30, 60. This closely resembles an exponential backoff, but also ensures not to delay a (re-)connection attempt for longer than one minute.
 
 ### Delta synchronization
 
-When you look at typical REST applications, a often used pattern is that clients request all data from the server. This happens regardless of any previous interaction; often because it's a simple approach and avoids caching (of course you are aware of the 3 hard problems in software: cache invalidation and off-by-one errors). Needless to say that this is not the most resource efficient setup as it involves redundant data processing and sub-optimal network traffic.
+When you look at typical REST applications, an often used pattern is that clients request all data from the server. This happens regardless of any previous interaction, often because it is a simple approach and avoids complex caching strategies (of course you are aware of the 3 hard problems in software: cache invalidation and off-by-one errors). Needless to say that this is not the most resource-efficient setup as it involves redundant data processing and sub-optimal network traffic.
 
 ObjectBox Sync does not follow the request-response paradigm. Instead, it **pushes changes**. This has several advantages like significantly reducing traffic while using less computing resources. Also, this enables "real-time" data updates out of the box.
 
@@ -64,10 +64,10 @@ While WebSockets is a great match for ObjectBox Sync for most cases, we are not 
 
 ### Robust data synchronization
 
-Sync is tightly integrated with the ObjectBox database. When you put object in the database, this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database_transaction). This is great to ensure that your data is always consistent. A cool thing about ObjectBox Sync is that it uses **the same database transaction** for meta data used by synchronization. Thus, this high level of consistency extends to Sync; as Sync meta data can not diverge from the actual data.
+Sync is tightly integrated with the ObjectBox database. When you put an object in the database, this always happens inside a [database transaction](https://en.wikipedia.org/wiki/Database_transaction). This is great to ensure that your data is always consistent. A notable feature of ObjectBox Sync is that it uses **the same database transaction** for metadata used by synchronization. Thus, this high level of consistency extends to Sync, as Sync metadata cannot diverge from the actual data.
 
-OK, this may sound a bit abstract, so let's look at an example. Let's say device A is constantly computing data based on a never ending stream of sensor data. Also that computed data is synced to a edge gateway B. Now at any point in time, device A suddenly looses power. Don't worry, your data is safe and consistent. Transactions ensure that the state on device A is consistent with what will be synchronized to gateway B. ObjectBox takes care of all that; no matter if A and B were connected to each other or whatever the synchronization state was at the point when the power went out. Once device A boots up again, ObjectBox will synchronize data to gateway B from the point it was interrupted.
+OK, this may sound a bit abstract, so let's look at an example. Let's say device A is constantly computing data based on a never-ending stream of sensor data. Also, that computed data is synced to an edge gateway B. Now at any point in time, device A suddenly loses power. Don't worry, your data is safe and consistent. Transactions ensure that the state on device A is consistent with what will be synchronized to gateway B. ObjectBox takes care of all that; no matter if A and B were connected to each other or whatever the synchronization state was at the point when the power went out. Once device A boots up again, ObjectBox will synchronize data to gateway B from the point it was interrupted.
 
 ## Future Sync
 
-Our vision of providing data where it's needed when it's needed goes way beyond what we already have implemented. Contact us and be part of that exciting journey. We will listen to where you want to go; let us provide the infrastructure so you can focus on your core product.
+Our vision of providing data where it's needed, when it's needed, goes way beyond what we have already implemented. We encourage you to contact us and be part of that exciting journey. We will listen to where you want to go; let us provide the infrastructure so you can focus on your core product.
