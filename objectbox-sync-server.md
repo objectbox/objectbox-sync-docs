@@ -96,7 +96,7 @@ Ensure that running `docker run hello-world` works before you continue with the 
 
 #### Docker image file distribution
 
-If we sent you a Docker image for download (e.g. via a [Sync trial](https://objectbox.io/sync/)), you can import it with Docker's [load](https://docs.docker.com/engine/reference/commandline/load/) command (YYYY-MM-DD is the actual date of the image, e.g. "2025-03-10"):
+If we sent you a Docker image for download, you can import it with Docker's [load](https://docs.docker.com/engine/reference/commandline/load/) command (YYYY-MM-DD is the actual date of the image, e.g. "2025-03-10"):
 
 ```bash
 $ docker load --input ~/Downloads/YYYY-MM-DD-objectbox-sync-server-docker.tar.gz
