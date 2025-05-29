@@ -6,9 +6,9 @@ description: >-
 
 # Sync Server
 
-The ObjectBox Sync Server is the centerpiece of ObjectBox Sync. It lets ObjectBox Sync clients connect for data exchange (data synchronization).
+The ObjectBox Sync Server is the centerpiece of ObjectBox Sync. It lets ObjectBox Sync clients connect to exchange data both ways (data synchronization).
 
-ObjectBox Sync Server is a very efficient making it usable on a wide range of devices. By itself, it needs only a few MB RAM and disk space. It even runs on small devices, like a Raspberry Pi and mobile phones. Nevertheless, it seamlessly scales to the cloud serving millions of clients when set up as a cluster.
+ObjectBox Sync Server is a very efficient making it usable on a wide range of devices. By itself, it needs only a few MB RAM and disk space. It even runs on small devices like a Raspberry Pi and mobile phones. Nevertheless, it seamlessly scales to the cloud serving millions of clients when set up as a cluster.
 
 ## Get the Sync Server
 
@@ -57,7 +57,7 @@ Keep your data model file safe and secure. It contains the schema of your data m
 
 ## Run the Docker container
 
-Once the image is pulled, you can [run](Once the image is pulled, you can [run](https://docs.docker.com/reference/cli/docker/container/run/) the container. The following example starts Sync Server using the current directory as the data folder and exposes the sync-server on localhost:9999 and admin web UI on [http://localhost:9980](http://localhost:9980). Ensure to have the file objectbox-model.json in the current directory on your host (it's mapped to /data inside the container):
+Once the image is pulled, you can \[run]\(Once the image is pulled, you can [run](https://docs.docker.com/reference/cli/docker/container/run/) the container. The following example starts Sync Server using the current directory as the data folder and exposes the sync-server on localhost:9999 and admin web UI on [http://localhost:9980](http://localhost:9980). Ensure to have the file objectbox-model.json in the current directory on your host (it's mapped to /data inside the container):
 
 {% hint style="info" %}
 Note: the following command assumes objectbox-model.json is in the current directory.
@@ -79,6 +79,7 @@ docker run --rm -it \
     --admin-bind 0.0.0.0:9980
 ```
 {% endtab %}
+
 {% tab title="PowerShell" %}
 ```powershell
 docker run --rm -it ^
@@ -104,14 +105,15 @@ If you run into any problems, please check the [troubleshooting guide](../troubl
 
 ## Activating the trial
 
-Once the ObjectBox Sync Server is started, open the Admin web UI at [http://127.0.0.1:9980](http://127.0.0.1:9980) and you should be taken to the [Sync Trial](http://localhost:9980/#/sync-trial) page. It shows the conditions for the trial version, e.g. that you have a testing period of 30 days **per dataset**. After you consent, you are forwarded to log in with your ObjectBox user account. If you don't have an account yet, you can register using email/password, a GitHub or a Google account.  
+Once the ObjectBox Sync Server is started, open the Admin web UI at [http://127.0.0.1:9980](http://127.0.0.1:9980) and you should be taken to the [Sync Trial](http://localhost:9980/#/sync-trial) page. It shows the conditions for the trial version, e.g. that you have a testing period of 30 days **per dataset**. After you consent, you are forwarded to log in with your ObjectBox user account. If you don't have an account yet, you can register using email/password, a GitHub or a Google account.
 
-<figure><img src="../.gitbook/assets/objectbox-admin-sync-trial.png" alt="ObjectBox Sync Architecture Diagram"><figcaption><p>ObjectBox Sync Trial</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/objectbox-admin-sync-trial.png" alt="ObjectBox Sync Architecture Diagram" width="375"><figcaption><p>ObjectBox Sync Trial</p></figcaption></figure>
 
 Once consented, the Sync Trial page displays trial status, which should look like this:
-![objectbox-admin-sync-trial-status.webp](../.gitbook/assets/objectbox-admin-sync-trial-status.webp)
 
-You have plenty of time to explore ObjectBox Sync. You can always restart the trial after expires:
+<figure><img src="../.gitbook/assets/objectbox-admin-sync-trial-status.webp" alt="" width="312"><figcaption><p>ObjectBox Sync Trial Status</p></figcaption></figure>
+
+You have plenty of time to explore ObjectBox Sync. You can always restart the trial:
 
 * If the "trial version" expired, it is a sign that the software is out of date. Renew the Docker image by pulling (`docker pull objectboxio/sync-server-trial`).
 * If the dataset expired, create a new dataset. Start with a fresh database, e.g. by using another mount for the data folder. Alternatively, delete the database folder, which is typically called "objectbox" and contains a data.mdb file. Making a backup of the folder first is recommended.
@@ -129,9 +131,9 @@ The ObjectBox Sync Server Admin UI runs as part of the sync-server executable an
 * view runtime information, like version number, database size, network interfaces, ...
 * manage Admin UI user credentials
 
-### Sync Stats
+### Sync Statistics
 
-\*\*"\*\*Sync" main menu item will bring you to a page with numerous charts with server runtime information. This can be valuable in multiple ways, e.g. during development, you can verify your applications connect to the server (show up in "Connects" and "Connected clients") and synchronize data (see "Client applied \*"). Also, there are multiple charts showing errors - watch for those when trying to figure out issues with your clients.
+The "Sync Statistics" item of the menu on the left contains numerous charts with server runtime information. This can be valuable in multiple ways, e.g. during development and in production, you can verify your applications connect to the server (show up in "Connects" and "Connected clients") and synchronize data (see "Client applied \*"). Also, there are multiple charts showing errors - watch for those when trying to figure out issues with your clients.
 
 ### Status
 

@@ -33,6 +33,26 @@ For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB ob
 @Id @ExternalType(UUID) int64 id;
 ```
 
+<mark style="background-color:yellow;">TODO Below does not match the text above (UUID and others requires the property to be ByteVector), so e.g. can't use on ID property in Java which must be Long)</mark>&#x20;
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@ExternalType(ExternalPropertyType.UUID)
+private byte[] externalId;
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// objectbox: externalType="uuid"
+var externalId: Int
+```
+
+For supported type values see the `ExternalPropertyType` enum in the [PropertyType file](https://github.com/objectbox/objectbox-swift/blob/main/Source/ios-framework/CommonSource/Entities/PropertyType.swift) of the Swift library.
+{% endtab %}
+{% endtabs %}
+
 The following table shows the supported ID types:
 
 <table><thead><tr><th width="198.5333251953125">MongoDB type</th><th width="216.6998291015625" align="center">Incoming from MongoDB</th><th align="center">IDs for new documents created in ObjectBox</th></tr></thead><tbody><tr><td>Object ID</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>This is the default type</td></tr><tr><td>UUID (Binary with UUID subtype)</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: Uuid (V7) or UuidV4</td></tr><tr><td>String</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: UuidString (V7) or UuidV4String</td></tr><tr><td>Binary</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int64</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int32</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr></tbody></table>
