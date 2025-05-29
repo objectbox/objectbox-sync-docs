@@ -93,7 +93,7 @@ More details about the options can be found in the section on the configuration 
 
 ## Configuration file
 
-Alternatively, you can choose to provide the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can checkin the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
+Alternatively, you can choose to provide the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
 
 By default, the configuration file is read from `sync-server-config.json` in the current working directory. To use a different location, supply it via the `--conf <path-to-config>` option.
 
@@ -132,12 +132,36 @@ Example file:
 * `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `auth.sharedSecret` if not empty, enables the shared secret authentication with the given key
 * `auth.google.clientIds` a list of GoogleAuth client IDs (strings)
+* `auth.obxAdmin` set it to `true` to enable ObjectBox Admin users for sync authentication (e.g. for small deployments and tests)
 * `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and shall only be used to simplify test setups.
 * `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
 
+
+## Clusters
+To set up a cluster, please refer to the [cluster](sync-cluster.md) page for specific configuration options.
+
+## Authentication
+
+Authentication settings for clients are required; the Sync Server won't start without. If you try, it should look something like this:
+
+```
+$ ./sync-server --model=objectbox-model.json
+...
+001-13:05:07.3526 [ERROR] [SySvAp] Runtime error: Authenticator must be set before starting
+001-13:05:07.4524 [INFO ] [SvSync] Stopped (port 0)
+Authenticator must be set before starting
+```
+
 {% hint style="info" %}
-To **setup a cluster**, please refer to the [cluster](sync-cluster.md) page for specific configuration options.
+During development on your private network, you can disable authentication altogether using the option `--unsecured-no-authentication`. This allows all clients, which know the server's URL, to connect without additional checks.
+
+_Warning:_ it should be obvious that this setting is not intended for production usage.
 {% endhint %}
+
+For production usage, please refer to the [JWT authentication](./jwt-authentication.md) page on how to authenticate your clients.
+
+Other authentication methods are mentioned above in the configuration overview, i.e. Google Authentication with client IDs, shared secret, Admin users.
+Typically, we recommend using JWT, but there maybe be occasions where you need to use other authentication methods. Let the ObjectBox team know about your use case and requirements. E.g. it is possible to define multiple authenticators.
 
 ## Combining CLI and file configuration
 

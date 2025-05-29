@@ -40,7 +40,7 @@ The same APIs apply to synced objects, e.g. you use the same `put` call on a syn
 
 ### Online, Offline, :person\_shrugging:
 
-When you write applications with ObjectBox Sync, you usually do not need to be concerned if the device is online or offline. It does not matter. You work with the objects that you have at hand and let ObjectBox Sync manage the synchronization process. But what does this entail?
+When you write applications with ObjectBox Sync, it does not matter if the device is online or offline. You work with the objects that you have at hand and let ObjectBox Sync manage the synchronization process. But what does this entail?
 
 So, let's look a bit behind the scenes. Whenever you change data (on sync-enabled types), ObjectBox **tracks these changes** and stores them safely in an **outgoing queue**. In the background, ObjectBox Sync tries to connect to the data synchronization destination (Sync server). If the connection was successfully established, the outgoing queue is "processed". This means that enqueued data is sent, and once the sync destination acknowledges the receipt, that piece of data can be safely removed from the queue.
 
