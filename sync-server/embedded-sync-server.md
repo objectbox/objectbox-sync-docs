@@ -6,7 +6,7 @@ description: How to set up an ObjectBox Sync server that is embedded in your app
 
 {% hint style="warning" %}
 This page refers to the **embedded** sync server, **not the standalone** sync server.\
-Usually, you want to use the [standalone server](../objectbox-sync-server.md).
+Usually, you want to use the [standalone server](./).
 {% endhint %}
 
 {% hint style="info" %}

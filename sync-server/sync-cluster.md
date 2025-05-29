@@ -31,7 +31,7 @@ Some general notes:
 
 ### Configuration
 
-The base configuration of the Sync Server is described [here](sync-server-configuration/#configuration-file). Using the same configuration file, these are the Cluster specific options:
+The base configuration of the Sync Server is described [here](configuration.md#configuration-file). Using the same configuration file, these are the Cluster specific options:
 
 ```json
 {
@@ -60,7 +60,7 @@ The base configuration of the Sync Server is described [here](sync-server-config
   * `credentials` (required): given `credentialsType`, this is actual secret.
 
 {% hint style="info" %}
-**Note:** while most of the options can be specified either in the Sync Server command line and in the JSON file, the `serversToConnect` options is JSON file only. Thus, if you want to configure clustering for your Sync Server, please use a JSON configuration file as [described here](objectbox-sync-server.md#configuration-file).
+**Note:** while most of the options can be specified either in the Sync Server command line and in the JSON file, the `serversToConnect` options is JSON file only. Thus, if you want to configure clustering for your Sync Server, please use a JSON configuration file as [described here](./#configuration-file).
 {% endhint %}
 
 ## Overview of the clustering architecture
@@ -79,18 +79,18 @@ The Sync Client changes are sent either to a follower node or to a leader node. 
 
 The Sync Cluster page of ObjectBox Admin web app helps you to visualize the Cluster activity and possibly debug your configuration and the network connection.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption><p>Sync Cluster page from Admin UI</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Sync Cluster page from Admin UI</p></figcaption></figure>
 
 In the top panel of the Admin app, you will find general information on the current Sync Server:
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption><p>General information of the Sync Server</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>General information of the Sync Server</p></figcaption></figure>
 
 Below the Admin app top panel, follow two tables that show the peers of the current Sync Server.
 
 The first table lists all the **client** peers: these are the other Sync Server(s) that are connected to the current one. In the image, we can see that the current Sync Server has other two Sync Server(s) connected to it.
 
-<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption><p>Client peers table</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption><p>Client peers table</p></figcaption></figure>
 
 While the second table lists the **connected peers**:
 
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption><p>Connected peers table</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Connected peers table</p></figcaption></figure>

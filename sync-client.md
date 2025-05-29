@@ -376,7 +376,7 @@ There are currently multiple supported options for authenticating clients with a
 
 ### JWT authentication
 
-Clients can be authenticated using tokens in JWT (JSON web token) format. The general process is outlined in the [server-side JWT documentation](sync-server-configuration/jwt-authentication.md). Your client application typically will use a JWT authentication provider SDK to get a token in JWT format. This token is then set as a credential using the ObjectBox Sync client API:
+Clients can be authenticated using tokens in JWT (JSON web token) format. The general process is outlined in the [server-side JWT documentation](sync-server/jwt-authentication.md). Your client application typically will use a JWT authentication provider SDK to get a token in JWT format. This token is then set as a credential using the ObjectBox Sync client API:
 
 {% tabs %}
 {% tab title="Java" %}

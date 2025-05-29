@@ -19,7 +19,7 @@ Using Android emulator? You can use 10.0.2.2 to reach the host (the machine runn
 If it looks like data is not synchronized, usually the first thing to check is the network connection between the devices. Usually it's helpful to start the Sync server with the admin web app enabled, so you can e.g. check the connection using the HTTP server URL in the standard browser of clients.
 
 {% hint style="info" %}
-See [Sync Server configuration](objectbox-sync-server.md) on how to enable HTTP and options.
+See [Sync Server configuration](sync-server/) on how to enable HTTP and options.
 {% endhint %}
 
 1. Using a standard web browser, can you reach the Sync host on port 9980? E.g. first try it on the machine running Sync server via [http://127.0.0.1:9980](http://127.0.0.1:9980). The ObjectBox Admin web app should show up. If this fails, check the server's configuration.
@@ -34,12 +34,12 @@ If one of those steps fail, you need to check your network configuration. Like a
 The network connection seems fine? OK, let's get additional information! The Sync server comes with a switch to turn on debug logging. Logs go to standard output and are typically very sparse. Debug logs on the other hand provide you with a lot of information. Once you get used to the amount of information, you will learn to identify problems. For example, a client got disconnected? The debug logs usually tell why.
 
 {% hint style="info" %}
-In the ObjectBox Browser, you can enable debug logs in the "Status" page. See [Sync Server configuration](objectbox-sync-server.md) for details.
+In the ObjectBox Browser, you can enable debug logs in the "Status" page. See [Sync Server configuration](sync-server/) for details.
 {% endhint %}
 
 ## IDs do not match across devices
 
-You may notice that IDs of objects stored on one device may not always match the IDs on another device. Well, that's not a bug, but a feature. :slight\_smile:  Check the [docs on Object ID mapping](advanced/object-ids.md) and the possibility to use global IDs instead.
+You may notice that IDs of objects stored on one device may not always match the IDs on another device. Well, that's not a bug, but a feature. :slight\_smile:  Check the [docs on Object ID mapping](data-model/object-ids.md) and the possibility to use global IDs instead.
 
 ## Other hiccups
 

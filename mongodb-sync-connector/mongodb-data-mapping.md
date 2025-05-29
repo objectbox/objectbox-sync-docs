@@ -1,7 +1,7 @@
 ---
 description: >-
-  Ensure smooth data synchronization between MongoDB
-  and ObjectBox by correctly mapping data and types.
+  Ensure smooth data synchronization between MongoDB and ObjectBox by correctly
+  mapping data and types.
 ---
 
 # MongoDB Data Mapping
@@ -21,8 +21,8 @@ Note: nested documents are supported via the ObjectBox "Flex" property type, whi
 ObjectBox Sync automatically maps IDs when syncing with an external system like MongoDB. This way, you can use the native IDs in each system: 64-bit integer IDs in ObjectBox and, for example, 12-byte object IDs in MongoDB. This also means that the MongoDB ID is not present in ObjectBox objects and vice versa.
 
 {% hint style="warning" %}
-ObjectBox IDs are only valid on their local device. Do not store them manually (apart from relations) e.g. as a custom list or vector, when you want to sync to other devices.
-For details, you can refer to the [internal ID mapping docs](../advanced/object-ids.md) that occurs on each ObjectBox device.
+ObjectBox IDs are only valid on their local device. Do not store them manually (apart from relations) e.g. as a custom list or vector, when you want to sync to other devices.\
+For details, you can refer to the [internal ID mapping docs](../data-model/object-ids.md) that occurs on each ObjectBox device.
 {% endhint %}
 
 Besides the Object ID, ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
@@ -56,12 +56,12 @@ The supported ID types also apply for relations. For example, if a "Person" docu
 Many-to-many relations work a bit differently. As illustrated in the table above, many-to-many relations work differently in ObjectBox and MongoDB. For mapping between them, the following rules apply:
 
 * On the MongoDB side, many-to-many relations are stored as an array of ID references:
-    * The IDs are stored inside the document "owning" the relationship.
-    * The owning side of a relationship is always the same type (collection).
-    * If you want to, you can make this relation bidirectional by adding IDs to the "target side" of the relationship. Do not make this visible in the ObjectBox data model.
+  * The IDs are stored inside the document "owning" the relationship.
+  * The owning side of a relationship is always the same type (collection).
+  * If you want to, you can make this relation bidirectional by adding IDs to the "target side" of the relationship. Do not make this visible in the ObjectBox data model.
 * On the ObjectBox side, its native many-to-many relationships are used:
-    * They are bidirectional, e.g. you can define it on the owning and target side.
-    * They can be updated efficiently without touching the object.
-    * They can be used in queries to link types (aka join).
+  * They are bidirectional, e.g. you can define it on the owning and target side.
+  * They can be updated efficiently without touching the object.
+  * They can be used in queries to link types (aka join).
 
 As to-many relations consist of ID values, all supported types can be used. In theory, different ID types can be used in the same to-many relation. However, it is usually good practice to stick to a single ID type per MongoDB collection if possible.

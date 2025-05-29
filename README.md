@@ -16,7 +16,7 @@ To learn more about the ObjectBox **database**, have a look at its [website](htt
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
 
 1. Set up your data model using one of the [ObjectBox Sync Client](sync-client.md) language bindings (Java, Dart, Swift, C, ...) to get a data model JSON file.
-2. [Start the server](objectbox-sync-server.md) using the data model file.
+2. [Start the server](sync-server/) using the data model file.
 3. Point your sync client to the server URL to start syncing.
 
 Please use the navigation on the left for more detailed information.
@@ -29,7 +29,7 @@ What follows is an overview of how the Sync feature works.
 
 ## Sync Architecture
 
-<figure><img src=".gitbook/assets/Sync Architecture for Docs.jpg" alt="ObjectBox Sync Architecture Diagram"><figcaption>Figure 1: ObjectBox Sync Architecture Overview</figcaption></figure>
+<figure><img src=".gitbook/assets/Sync Architecture for Docs.jpg" alt="ObjectBox Sync Architecture Diagram"><figcaption><p>Figure 1: ObjectBox Sync Architecture Overview</p></figcaption></figure>
 
 ## Sync Concepts
 

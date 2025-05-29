@@ -31,9 +31,9 @@ All ObjectBox build tools also generate a data model JSON file, which must be pr
 
 To avoid any later issues, run and test Sync Server without connecting to MongoDB and your client application, and validate that data is synced.
 
-See the [objectbox-sync-server.md](../objectbox-sync-server.md "mention") page on how to run Sync Server.
+See the [sync-server](../sync-server/ "mention") page on how to run Sync Server.
 
-By then you should be able to reach the ObjectBox Sync Server [Admin web app](../objectbox-sync-server.md#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look similar to this:
+By then you should be able to reach the ObjectBox Sync Server [Admin web app](../sync-server/#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look similar to this:
 
 <figure><img src="../.gitbook/assets/sync-server-schema.webp" alt="Admin web app schema page showing a Tape with its properties"><figcaption><p>Figure 1: Data model (schema), which will be synced with MongoDB</p></figcaption></figure>
 
@@ -47,7 +47,7 @@ Use a separate MongoDB instance for testing purposes.
 
 Now that the Sync Server is up and running, let us connect it to MongoDB. This can be done via CLI arguments or via the configuration file.
 
-To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [objectbox-sync-server.md](../objectbox-sync-server.md "mention")), you can use the following options:
+To configure the ObjectBox MongoDB Sync Connector **via CLI arguments** when starting Sync Server (see [sync-server](../sync-server/ "mention")), you can use the following options:
 
 * `--mongo-url`: The [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host.
 * `--mongo-db`: The primary MongoDB database name; the "database" containing the collections used for sync. By default, this is "objectbox\_sync".
@@ -72,7 +72,7 @@ docker run --rm -it \
 This enables the Sync server running within the container to access the MongoDB instance running on the host system. Note, **it only works on Windows and macOS**.
 {% endhint %}
 
-Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [sync-server-configuration](../sync-server-configuration/ "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
+Alternatively, configure the MongoDB connection in the Sync Server configuration file (see [configuration.md](../sync-server/configuration.md "mention")). In your `sync-server-config.json`, add a new `mongoDb` node which contains key/value pairs for MongoDB specific configuration attributes:
 
 ```json
 {
