@@ -11,6 +11,7 @@
     * [GraphQL Queries](sync-server/graphql-database/graphql-queries.md)
     * [GraphQL Mutations](sync-server/graphql-database/graphql-mutations.md)
     * [GraphQL Python Client](sync-server/graphql-database/graphql-python-client.md)
+  * [Changelog](sync-server/changelog.md)
 * [Data model](data-model/README.md)
   * [Object IDs and Sync](data-model/object-ids.md)
 * [MongoDB Sync Connector](mongodb-sync-connector/README.md)

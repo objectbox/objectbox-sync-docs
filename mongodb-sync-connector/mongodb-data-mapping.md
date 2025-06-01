@@ -29,12 +29,6 @@ Besides the Object ID, ObjectBox supports most common ID types offered by MongoD
 
 For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB object ID (OID) is created by default. You can customize the MongoDB ID types in the ObjectBox data model: for the ID property, define an "external property type" on the ID property. For example, a definition of the ID field in the ObjectBox entities would look similar to this pseudo code (syntax varies according to programming language):
 
-```
-@Id @ExternalType(UUID) int64 id;
-```
-
-<mark style="background-color:yellow;">TODO Below does not match the text above (UUID and others requires the property to be ByteVector), so e.g. can't use on ID property in Java which must be Long)</mark>&#x20;
-
 {% tabs %}
 {% tab title="Java" %}
 ```java
