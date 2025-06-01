@@ -27,7 +27,7 @@ For details, you can refer to the [internal ID mapping docs](../data-model/objec
 
 Besides the Object ID, ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
 
-For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB object ID (OID) is created by default. You can customize the MongoDB ID types in the ObjectBox data model: for the ID property, define an "external property type" on the ID property. For example, a definition of the ID field in the ObjectBox entities would look similar to this pseudo code (syntax varies according to programming language):
+For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB object ID (OID) is created by default. You can customize the MongoDB ID types in the ObjectBox data model: for the ID property, define an "external property type" on the ID property. Then, ObjectBox will create a new UUID-based ID for the MongoDB document. 
 
 {% tabs %}
 {% tab title="Java" %}
@@ -35,6 +35,7 @@ For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB ob
 @ExternalType(ExternalPropertyType.UUID)
 private byte[] externalId;
 ```
+Recommended types for IDs: `UUID` (UUIDv7), `UUIDString` (UUIDv7 as string), `UUIDV4`, `UUIDV4String`.
 {% endtab %}
 
 {% tab title="Swift" %}
@@ -43,7 +44,17 @@ private byte[] externalId;
 var externalId: Int
 ```
 
-For supported type values see the `ExternalPropertyType` enum in the [PropertyType file](https://github.com/objectbox/objectbox-swift/blob/main/Source/ios-framework/CommonSource/Entities/PropertyType.swift) of the Swift library.
+Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uuidV4`, `uuidV4String`.
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+  @Id()
+  @ExternalType(type: ExternalPropertyType.uuid)
+  int id = 0;
+```
+
+Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uuidV4`, `uuidV4String`.
 {% endtab %}
 {% endtabs %}
 
