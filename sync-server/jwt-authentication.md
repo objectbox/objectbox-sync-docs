@@ -54,16 +54,24 @@ The configuration parameters match their counterparts in the JSON file, so you c
 
 ### Configuring the public key URL
 
-The public key URL must point to a JSON resource that contains an RSA-256 certificate. Its public key is used to verify tokens. Currently, Sync Server can handle two cases depending on the JSON returned from `publicKeyUrl`:
+A public key is required to verify the signature of the JWT. This validates that the token was issued by the correct authentication provider, and that the token hasn't been tampered with.
 
-1. The JSON contains elements of the form `"<kid>": "<x509-certificate>"`. The first `<x509-certificate>` is converted to a RSA-256 public key using OpenSSL.
+The public key URL must point to either a PEM public key directly or a JSON file. JSON formats are recommended for production use as they support key rotation. Single keys are also supported, but when changing the key, there is delay until the signatures will match the new key. These are the supported formats:
+
+1. **Key-value JSON file:** contains JSON elements of the form `"<key-id>": "<x509-certificate>"`.
 
    This format is [used by Firebase](https://firebase.google.com/docs/auth/admin/verify-id-tokens).
 
    **To configure authentication with Firebase**, use the URL: `https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com`
 
-4. The JSON represents a [JWKS](https://datatracker.ietf.org/doc/html/rfc7517) (JSON Web Key Set). Each key in the JSON must contain the `x5c` (X.509 certificate chain) property. The public key of the first certificate is converted to a RSA-256 key.
+2. **[JWKS](https://datatracker.ietf.org/doc/html/rfc7517) (JSON Web Key Set):** Each key in the JSON must contain the `x5c` (X.509 certificate chain) property.
 
-   This format is [used by Auth0](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens).
+   This format is a standard used by many authentication providers, including [Auth0](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens).
 
    **To configure authentication with Auth0**, use an URL like: `https://obx-auth-demo.eu.auth0.com/.well-known/jwks.json`
+
+3. **PEM public keyfile:** This is a text file that contains a PEM-encoded public key.
+
+   Generic PEM files start with `-----BEGIN PUBLIC KEY-----` and are supported by all OpenSSL versions. The more specific PKCS#1 PEM files, e.g. starting with `-----BEGIN RSA PUBLIC KEY-----`, require a is not supported by the default Sync Server docker container. You can convert PKCS#1 keys to generic PKCS#8 PEM files using `ssh-keygen -f jwtRS256.key -e -m PKCS8 > jwtRS256_public.pem`.
+
+4. **PEM certificate file:** This is a text file that contains a PEM-encoded X.509 certificate and start with `-----BEGIN CERTIFICATE-----`.
