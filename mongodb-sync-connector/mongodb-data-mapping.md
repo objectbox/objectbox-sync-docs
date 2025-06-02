@@ -160,6 +160,13 @@ var name: String? = myNestedDocumentJson
 String? myNestedDocumentJson;
 ```
 {% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// objectbox: externalType="jsonToNative"
+var myNestedDocumentJson: String?
+```
+{% endtab %}
 {% endtabs %}
 
 JSON string characteristics and notes:
