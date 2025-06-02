@@ -168,3 +168,33 @@ JSON string characteristics and notes:
 * Nested documents and arrays are supported
 * The precision of integer types on the MongoDB side may change, e.g. Int32 to Long (64-bit)
 * The order of keys is preserved
+
+## Heterogeneous Arrays
+
+{% hint style="info" %}
+Homogeneous arrays (all values of the same type) are mapped automatically by ObjectBox.
+{% endhint %}
+
+Similar to nested documents, arrays with values of different types can be used inside a MongoDB document. This is supported in ObjectBox and MongoDB. The same rules apply as for nested documents.
+
+### Flex Properties Mapping
+
+To map nested arrays, you define lists in your entity definition directly on the ObjectBox side:
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@Nullable List<Object> myArray;
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+var myArray: MutableList<Any?>? = null
+```
+{% endtab %}
+{% endtabs %}
+
+### JSON String Mapping
+
+Exactly the same approach as for nested documents applies (see above). Instead of a JSON object, a JSON array is used.
