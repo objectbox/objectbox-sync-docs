@@ -14,7 +14,7 @@ When you compare the data structure of simple data elements, the difference is n
 
 <figure><img src="../.gitbook/assets/ObjectVsDocument (1).png" alt="Comparison of ObjectBox Object and MongoDB Document structure" width="563"><figcaption><p>Figure 1: ObjectBox Object vs. MongoDB Document (Simplified)</p></figcaption></figure>
 
-Note: nested documents are supported via the ObjectBox "Flex" property type, which can hold a map-like (JSON-like) structure. We are also considering alternatives to this, so please let us know if you have specific requirements.
+Note: nested documents are supported via the ObjectBox "flex properties" type or JSON strings. See the section below for details. 
 
 ## ID mapping
 
@@ -25,7 +25,11 @@ ObjectBox IDs are only valid on their local device. Do not store them manually (
 For details, you can refer to the [internal ID mapping docs](../data-model/object-ids.md) that occurs on each ObjectBox device.
 {% endhint %}
 
-Besides the Object ID, ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
+### Special ID types
+
+If you only use standard MongoDB object IDs, you do not need to do anything special. This section is only relevant if you want to use other ID types.
+
+ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
 
 For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB object ID (OID) is created by default. You can customize the MongoDB ID types in the ObjectBox data model: for the ID property, define an "external property type" on the ID property. Then, ObjectBox will create a new UUID-based ID for the MongoDB document. 
 
@@ -68,7 +72,7 @@ The following table shows the supported ID types:
 If you want to learn more about ObjectBox relations, check the [relation documentation](https://docs.objectbox.io/relations).
 {% endhint %}
 
-ObjectBox Sync also automatically maps IDs used in relations (starting with version Alpha 3 of MongoDB Sync Connector).
+ObjectBox Sync also automatically maps IDs used in relations.
 
 Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This becomes a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
 
@@ -90,3 +94,77 @@ Many-to-many relations work a bit differently. As illustrated in the table above
   * They can be used in queries to link types (aka join).
 
 As to-many relations consist of ID values, all supported types can be used. In theory, different ID types can be used in the same to-many relation. However, it is usually good practice to stick to a single ID type per MongoDB collection if possible.
+
+## Nested Documents
+
+MongoDB documents are key-value pairs. And because values may be documents, it is possible to have documents inside a document. This is known as "nested documents", "embedded documents" or "sub documents". ObjectBox offers two ways to handle this: [flex properties](https://docs.objectbox.io/advanced/custom-types#flex-properties) and JSON strings.
+
+The following table shows the current support for the two variants per programming language:
+
+| Programming Language | Flex | JSON String |
+|----------------------|:----:|:-----------:|
+| Java                 |  ✅   |      ✅      |
+| Kotlin               |  ✅   |      ✅      |
+| Swift                |      |      ✅      |
+| Dart/Flutter         |      |      ✅      |
+| C and C++            |      |    (✅)*     |
+
+*) C and C++ via API (Generator support is pending)
+
+### Flex Properties Mapping
+
+To map nested documents with [flex properties](https://docs.objectbox.io/advanced/custom-types#flex-properties), you define maps with string keys in your entity definition directly on the ObjectBox side:
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@Nullable Map<String, Object> stringMap;
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+var myStringMap: MutableMap<String, Any?>? = null
+```
+{% endtab %}
+{% endtabs %}
+
+Flex properties characteristics and notes:
+
+* Directly access the data as maps in your code
+* Nested documents and arrays are supported
+* The precision of integer types on the MongoDB side may change, e.g. Int32 to Long (64-bit) 
+* The order of keys is not preserved
+
+### JSON String Mapping
+
+An alternative is to store the nested document as a JSON string on the ObjectBox side. This is done with a standard string property and the external property type "JSON to native". Thus, on the ObjectBox side, you can use a JSON API of your choice to access the nested document.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@ExternalType(ExternalPropertyType.JSON_TO_NATIVE)
+private String myNestedDocumentJson;
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+@ExternalType(ExternalPropertyType.JSON_TO_NATIVE)
+var name: String? = myNestedDocumentJson
+```
+{% endtab %}
+{% tab title="Dart/Flutter" %}
+```dart
+@ExternalType(type: ExternalPropertyType.jsonToNative)
+String? myNestedDocumentJson;
+```
+{% endtab %}
+{% endtabs %}
+
+JSON string characteristics and notes:
+
+* JSON API to access the data
+* Nested documents and arrays are supported
+* The precision of integer types on the MongoDB side may change, e.g. Int32 to Long (64-bit)
+* The order of keys is preserved
