@@ -356,6 +356,10 @@ The client will now also push changes to the server for each Store transaction.
 
 Should the client get disconnected, e.g. due to internet connection issues, it will automatically try to reconnect using an exponential back-off. Once the connection succeeds, data synchronization resumes.
 
+{% hint style="warning" %}
+Always close the client **before** closing the store. Closing the store with a still running sync client results in undefined behavior (e.g. crashes). Keep in mind that it typically is fine to **leave the sync client and store open**; once the application exits, they will be automatically closed properly.  
+{% endhint %}
+
 ### Drop-off, send-only clients
 
 For some use cases, a client should only report data and thus only send updates without ever receiving any data. We call those "drop-off clients". Technically, from an API perspective, these clients do not request updates from the server. Because requesting updates is the default, the sync client API has to be configured to do "manual" updates to actually disable updates from the server. This configuration has to happen before the client starts.
