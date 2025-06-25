@@ -8,7 +8,7 @@ description: >-
 
 ## How to reach the Sync Server
 
-Sync Clients must specify how to reach the Sync Server. In a test setting, both my be running on the same machine. In this case, you can use ws://127.0.0.1 as the destination; 127.0.0.1 is the IP address of localhost. If it's separate machines, you need to exchange 127.0.0.1 with an reachable IP address of the server, or, some valid DNS name.
+Sync Clients must specify how to reach the Sync Server. In a test setting, both may be running on the same machine. In this case, you can use ws://127.0.0.1 as the destination; 127.0.0.1 is the IP address of localhost. If it's separate machines, you need to exchange 127.0.0.1 with an reachable IP address of the server, or, some valid DNS name.
 
 {% hint style="info" %}
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). Thus, specify "ws://10.0.2.2" in your client if you run the Sync Server on the same machine. For details on Android emulator networking, see [here](https://developer.android.com/studio/run/emulator-networking).
@@ -36,6 +36,23 @@ The network connection seems fine? OK, let's get additional information! The Syn
 {% hint style="info" %}
 In the ObjectBox Browser, you can enable debug logs in the "Status" page. See [Sync Server configuration](sync-server/) for details.
 {% endhint %}
+
+## Clients do not connect
+
+If Sync clients do not connect to the server, please doublecheck the [Sync Client setup](sync-client.md), specifically: 
+
+* You are using a sync-enabled library of the ObjectBox SDK.
+* The URL to the Sync Server is correct (see above to ensure the URL is reachable).
+
+## Clients connect but do not sync
+
+Can you see the clients connecting to the server in the (debug) logs, but no data is synchronized?
+Double check that your entity types are sync enabled. If they are not, ObjectBox will store the objects only locally.
+Follow this checklist:
+
+* Did you add a "sync annotation" for the types you want to sync? The [Sync Client setup](sync-client.md) page has the details for the ObjectBox API of the programming language you are using.     
+* Ensure that the generated files data model are up-to-date. Hint: in the model JSON file you should see `"flags": 2` for the entity types you want to sync (`2` is actually a bit flag that enables sync). 
+* Ensure that the up-to-date model JSON is also used for the server config.
 
 ## IDs do not match across devices
 
