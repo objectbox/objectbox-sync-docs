@@ -118,6 +118,7 @@ Example file:
     }
 }
 ```
+### Primary options
 
 * `dbDirectory` directory where the database is stored (default: "objectbox").
 * `dbMaxSize` database size limit; use a number with a unit, e.g. 256G (default: 100G)&#x20;
@@ -128,14 +129,24 @@ Example file:
 * `modelFile` schema (model) file to create the database with or to use for a schema update
 * `bind` Sync server will bind on this URL (schema, host and port). It should look like `ws://hostname:port`, for example `ws://127.0.0.1:9000`. You can also bind to a specific IP address on the server machine by providing the exact address, as given by `ifconfig` or `ip addr`, e.g.  `ws://192.168.0.125:9999`.
 * `adminBind` HTTP server (admin/web UI) will bind on this URL (schema, host and port combination).
+
+### Developer and debug options
+
+* `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and shall only be used to simplify test setups.
+* `debugLog` enable debug logs with `true`
+
+### Authentication options
+
+* `auth.jwt` JWT is the primary method for authentication. See the [JWT authentication page](jwt-authentication.md) for details.
+
+### Advanced options
+
 * `adminThreads` number of threads the HTTP server uses (default: 4). A low number is typically enough as it's for admins only. You may need to increase if running in some cloud setups that keep the connections active (e.g. Kubernetes).
-* `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `auth.sharedSecret` if not empty, enables the shared secret authentication with the given key
 * `auth.google.clientIds` a list of GoogleAuth client IDs (strings)
 * `auth.obxAdmin` set it to `true` to enable ObjectBox Admin users for sync authentication (e.g. for small deployments and tests)
-* `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and shall only be used to simplify test setups.
+* `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
-
 
 ## Clusters
 To set up a cluster, please refer to the [cluster](sync-cluster.md) page for specific configuration options.

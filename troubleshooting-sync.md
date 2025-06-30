@@ -8,7 +8,7 @@ description: >-
 
 ## How to reach the Sync Server
 
-Sync Clients must specify how to reach the Sync Server. In a test setting, both may be running on the same machine. In this case, you can use ws://127.0.0.1 as the destination; 127.0.0.1 is the IP address of localhost. If it's separate machines, you need to exchange 127.0.0.1 with an reachable IP address of the server, or, some valid DNS name.
+Sync Clients specify the URL of the Sync Server. In a test setting, both may be running on the same machine. In this case, you can use ws://127.0.0.1 as the destination; 127.0.0.1 is the IP address of localhost. If it's separate machines, you need to exchange 127.0.0.1 with an reachable IP address of the server, or, some valid DNS name.
 
 {% hint style="info" %}
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). Thus, specify "ws://10.0.2.2" in your client if you run the Sync Server on the same machine. For details on Android emulator networking, see [here](https://developer.android.com/studio/run/emulator-networking).
@@ -29,13 +29,35 @@ See [Sync Server configuration](sync-server/) on how to enable HTTP and options.
 
 If one of those steps fail, you need to check your network configuration. Like any networking application, ObjectBox Sync relies on a functioning network.
 
-## Enable debug logging
+## Check the logs
 
-The network connection seems fine? OK, let's get additional information! The Sync server comes with a switch to turn on debug logging. Logs go to standard output and are typically very sparse. Debug logs on the other hand provide you with a lot of information. Once you get used to the amount of information, you will learn to identify problems. For example, a client got disconnected? The debug logs usually tell why.
+Sync Server has two kind of logs: standard logs that go to standard output and "log events" that are persisted in the database.
+
+### Enable debug logging
 
 {% hint style="info" %}
-In the ObjectBox Browser, you can enable debug logs in the "Status" page. See [Sync Server configuration](sync-server/) for details.
+Debug logging is available for standard logs going to standard output.
 {% endhint %}
+
+The network connection seems fine? Then let's get additional information to the logs. The Sync server comes with a switch to turn on debug logging. Logs go to standard output and are typically very sparse. Debug logs on the other hand provide you with a lot of extra information, which can help you to diagnose problems. For example, a client got disconnected? The debug logs usually tell why.
+
+There are three ways to enable debug logs (see also [Sync Server configuration](sync-server/)):
+
+* Use the Admin UI on the "Status" page to find switch to enable debug logging. Note: since this requires the Sync Server to be already running, this will not log while the server starts. 
+* Use the `--debug` CLI argument when starting the server.
+* In the server configuration file, add `"debugLog": true`. If the server is running, you need to restart it to apply the change.
+
+### Log events
+
+Unlike standard logs, "log events" capture important events and are persisted to be available across server restarts. Thus, these may give additional context for issues that span multiple restarts. You can check them using the Admin UI on the "Log Events" page.
+
+{% hint style="info" %}
+You can export log events to a file using the download link at the bottom of the page.
+{% endhint %}
+
+### Client logs
+
+While the server logs are the first thing to check, the client logs can also help to diagnose certain issues. Sync clients log only sparsely, e.g. when problems occur. So when you don't see anything in the client logs, it's likely a connection problem, which are covered here too, or the issue can be found on the server side. The client logs go to standard output or logcat on Android.
 
 ## Clients do not connect
 
@@ -64,8 +86,16 @@ A checklist of other likely issues:
 
 * [ ] Do you have the latest versions running?
 * [ ] Does the server have the latest version of the data model?
-* [ ] Does the client version "match" the server version? This is fine most of the times, unless we announced breaking changes during a beta phase.
+* [ ] Does the client version "match" the server version? Typically, Sync Server updates are maintain backward compatibility for clients. But to be safe, check if any breaking changes were announced in the release notes.
 
 ## Contact us
 
-The ObjectBox team is here to help you. If you already investigated a bit (e.g. "hey, this debug log there looks odd, no?") it will help to get issues resolved quickly. In any case, do not hesitate to reach out! :heart:&#x20;
+The ObjectBox team is here to help you. If you already investigated a bit (e.g. "hey, this debug log there looks odd, no?") it will help to get issues resolved quickly. Here's a checklist to provide the relevant information, so we can help you efficiently:
+
+* [ ] Let us know the server and client version you are running (are these up-to-date?).
+* [ ] Describe the steps that lead to the problem. Is this reproducible? 
+* [ ] Attach the server debug logs (from standard output); see above for how to do this.
+* [ ] If you do not have the server logs anymore, check the log events in the Admin UI. Ensure that all relevant log events are visible on the page: you can navigate and set the number of events displayed per page. Then, download the log events via the download link at the bottom of the page.
+* [ ] If it affects Sync clients: check the client logs (standard output or logcat on Android) and attach them for us.
+
+In any case, do not hesitate to reach out! :heart:&#x20;
