@@ -36,12 +36,12 @@ Sync Server has two kind of logs: standard logs that go to standard output and "
 ### Enable debug logging
 
 {% hint style="info" %}
-Debug logging is available for standard logs going to standard output.
+Debug logging is available for standard logs (not log events). You need access to the **standard output** of the Sync Server. This may be straight-forward for most configurations, but may be "hidden" for some setups. For example, when running with Docker Compose, you may need to run `docker compose logs` or something like `docker compose logs -f --tail=50 sync-server` to follow Sync Server logs.
 {% endhint %}
 
 The network connection seems fine? Then let's get additional information to the logs. The Sync server comes with a switch to turn on debug logging. Logs go to standard output and are typically very sparse. Debug logs on the other hand provide you with a lot of extra information, which can help you to diagnose problems. For example, a client got disconnected? The debug logs usually tell why.
 
-There are three ways to enable debug logs (see also [Sync Server configuration](sync-server/)):
+There are three ways to enable debug logs (see also [Sync Server configuration](sync-server/configuration.md)):
 
 * Use the Admin UI on the "Status" page to find switch to enable debug logging. Note: since this requires the Sync Server to be already running, this will not log while the server starts. 
 * Use the `--debug` CLI argument when starting the server.
