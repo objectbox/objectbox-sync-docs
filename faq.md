@@ -6,7 +6,7 @@ description: Frequently asked question about ObjectBox Sync.
 
 ## Data Model
 
-_ObjectBox (mostly) has a fixed schema, aka the data model._ 
+_ObjectBox has a (mostly) fixed schema, aka the data model._ 
 
 **How do I get the data model (objectbox-model.json) for the Sync Server?**
 
@@ -24,6 +24,10 @@ For details, please refer to the general [Data Model Updates](https://docs.objec
 
 <hr>
 
+**I want to sync non-structured data - how can I do that?**
+
+There are to ways: [Flex Properties](https://docs.objectbox.io/advanced/custom-types#flex-properties) (only for Java/Kotlin at this point) and, when syncing to MongoDB, JSON strings that contain MongoDB sub-documents. For the latter, please check the [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md) page and its sections on nested documents and heterogeneous arrays.
+
 ## Sync Server
 
 _General questions about the ObjectBox Sync Server that do not fit into any other category._
@@ -36,7 +40,7 @@ The typical ObjectBox Sync setup is to have a centralized. However, alternative 
 
 _The Admin UI is a web interface for ObjectBox Sync Server._
 
-**Can I edit/remove data directly in the Admin interface or via API? Or only via Sync clients?
+**Can I edit/remove data directly in the Admin interface or via API? Or only via Sync clients?**
 
 The Admin allows to browse data in a read-only way. You can modify data directly on the Sync Server via the [GraphQL API](sync-server/graphql-database/README.md). 
 
