@@ -88,14 +88,15 @@ A checklist of other likely issues:
 * [ ] Does the server have the latest version of the data model?
 * [ ] Does the client version "match" the server version? Typically, Sync Server updates are maintain backward compatibility for clients. But to be safe, check if any breaking changes were announced in the release notes.
 
-## Contact us
+## Still having trouble?
 
-The ObjectBox team is here to help you. If you already investigated a bit (e.g. "hey, this debug log there looks odd, no?") it will help to get issues resolved quickly. Here's a checklist to provide the relevant information, so we can help you efficiently:
+We try to provide common troubleshooting tips on this page. If this did not help with your issue, please let us know. The ObjectBox team is here to help you. Here's a checklist to provide us with relevant information, so we can efficiently help you in the best possible way:
 
 * [ ] Let us know the server and client version you are running (are these up-to-date?).
-* [ ] Describe the steps that lead to the problem. Is this reproducible? 
-* [ ] Attach the server debug logs (from standard output); see above for how to do this.
-* [ ] If you do not have the server logs anymore, check the log events in the Admin UI. Ensure that all relevant log events are visible on the page: you can navigate and set the number of events displayed per page. Then, download the log events via the download link at the bottom of the page.
+* [ ] Describe the steps that have led to the problem. Does this reproduce the issue? 
+* [ ] Attach the server debug logs (from standard output) at the time of the problem and a bit before that. See above on how to enable debug logs.
+* [ ] Check the log events in the Admin UI. Ensure that all relevant log events are visible on the page: you can navigate through log events and set the number of events displayed per page. Then, download the log events via the download link at the bottom of the page. Attach this file for us.
 * [ ] If it affects Sync clients: check the client logs (standard output or logcat on Android) and attach them for us.
+* [ ] Is there anything else you consider noteworthy? What could be related to the issue? Was there a recent change on your side?
 
 In any case, do not hesitate to reach out! :heart:&#x20;
