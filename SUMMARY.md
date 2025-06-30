@@ -19,6 +19,7 @@
   * [ObjectBox Sync Connector Setup](mongodb-sync-connector/objectbox-sync-connector-setup.md)
   * [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md)
 * [Troubleshooting Sync](troubleshooting-sync.md)
+* [FAQ](faq.md)
 
 ## ObjectBox Database Developer Docs
 
