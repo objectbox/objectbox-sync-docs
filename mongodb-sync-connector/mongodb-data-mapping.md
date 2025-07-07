@@ -6,7 +6,9 @@ description: >-
 
 # MongoDB Data Mapping
 
-The data model used by ObjectBox defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to keys inside a MongoDB document. Thus, you should **ensure that the ObjectBox data model matches the MongoDB schema**. For example, if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
+The data model used by ObjectBox defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to fields (keys) inside a MongoDB document. Thus, you should **ensure that the ObjectBox data model matches the MongoDB schema**. For example, if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
+
+Some MongoDB field types like strings match ObjectBox types and thus do not need additional mapping information. More specialized types need "external types" to be defined in the ObjectBox data model to match the MongoDB field types. This page explains how to do this.
 
 ## Objects and Documents
 
@@ -65,6 +67,60 @@ Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uu
 The following table shows the supported ID types:
 
 <table><thead><tr><th width="198.5333251953125">MongoDB type</th><th width="216.6998291015625" align="center">Incoming from MongoDB</th><th align="center">IDs for new documents created in ObjectBox</th></tr></thead><tbody><tr><td>Object ID</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>This is the default type</td></tr><tr><td>UUID (Binary with UUID subtype)</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: Uuid (V7) or UuidV4</td></tr><tr><td>String</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: UuidString (V7) or UuidV4String</td></tr><tr><td>Binary</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int64</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int32</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr></tbody></table>
+
+## Property/Field type mapping
+
+### Standard Types
+
+Most standard types do not need an explicit mapping between ObjectBox (also used in your programming language) and MongoDB:
+
+* Strings
+* Integers: integers with 8, 16 or 32 bits map to MongoDB Int32, integers with 64 bits map to MongoDB Int64
+* Floating point numbers: double and float types both map to MongoDB Double
+* Booleans
+* Dates: Date maps to MongoDB Date, DateNano maps to MongoDB Int64
+* Arrays/Vectors of standard types map to a MongoDB array (all elements have the same type, heterogeneous types are discussed below)
+
+### Special Types
+
+MongoDB also has some special types, that do not directly map to ObjectBox types. To disambiguate, ObjectBox allows you to define "external property types" in the data model (also used in the ID mapping above). For example, a string on the ObjectBox (your programming language) side can  represent several types on the MongoDB side string, a UUID, or a few more. The following table shows the possible mappings:
+
+| ObjectBox Property Type | External Property Type |   MongoDB Field Type   |
+|:-----------------------:|:----------------------:|:----------------------:|
+|   Bytes (byte vector)   |           -            |         Binary         |
+|   Bytes (byte vector)   |       Decimal128       |       Decimal128       |
+|   Bytes (byte vector)   |        MongoId         |        ObjectId        |
+|   Bytes (byte vector)   |      MongoBinary       | Binary/dynamic subtype |
+|   Bytes (byte vector)   |          Uuid          |      Binary/UUID       |
+|   Bytes (byte vector)   |         UuidV4         |      Binary/UUID       |
+|          Flex           |           -            |         Object         |
+|          Flex           |        FlexMap         |         Object         |
+|          Flex           |       FlexVector       |         Array          |
+|    Long (64-bit int)    |           -            |         Int64          |
+|    Long (64-bit int)    |     MongoTimestamp     |       Timestamp        |
+|         String          |           -            |         String         |
+|         String          |       JavaScript       |   JavaScript (Code)    |
+|         String          |      JsonToNative      |      Object/Array      |
+|         String          |        MongoId         |        ObjectId        |
+|         String          |          Uuid          |      Binary/UUID       |
+|         String          |         UuidV4         |      Binary/UUID       |
+|      String Vector      |           -            |  Array (strings only)  |
+|      String Vector      |       MongoRegex       |         Regex          |
+
+The external property types are defined as part of your data model on the "client" side using the external property types annotation. Check your the docs for your specific ObjectBox API.
+
+Notes:
+
+* The **Flex type** is discussed in more detail in separate sections below (nested documents and arrays).. Note that the flex type is not available on all ObjectBox platforms yet.
+* **JsonToNative** is discussed in more detail in separate sections below (nested documents and arrays).
+* **MongoBinary**: on the ObjectBox side, this is encoded as a byte vector with a 4 bytes prefix.
+  The first 3 bytes are reserved and must be zero. The 4th byte defines the MongoDB binary sub type.
+  After the 4 bytes prefix, the actual binary content follows.
+* **MongoRegex**: on the ObjectBox a string vector with exactly 2 elements is created.
+  The first element is the regex pattern, the second element is the regex options (index 0: pattern, index 1: options).
+* MongoDB has the following deprecated types, which are currently not supported: Undefined, DBPointer, Symbol.
+  If you rely on these types, please contact us. We may provide at least some support for these types.
+* IDs and relations are documented separately on this page.
 
 ## To-One Relations
 
