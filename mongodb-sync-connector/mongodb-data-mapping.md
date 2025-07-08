@@ -107,11 +107,11 @@ MongoDB also has some special types, that do not directly map to ObjectBox types
 |      String Vector      |           -            |  Array (strings only)  |
 |      String Vector      |       MongoRegex       |         Regex          |
 
-The external property types are defined as part of your data model on the "client" side using the external property types annotation. Check your the docs for your specific ObjectBox API.
+The external property types are defined as part of your data model on the "client" side using the external property types annotation. Check the docs for your specific ObjectBox API.
 
 Notes:
 
-* The **Flex type** is discussed in more detail in separate sections below (nested documents and arrays).. Note that the flex type is not available on all ObjectBox platforms yet.
+* The **Flex type** is discussed in more detail in separate sections below (nested documents and arrays). Note that the flex type is not available on all ObjectBox platforms yet.
 * **JsonToNative** is discussed in more detail in separate sections below (nested documents and arrays).
 * **MongoBinary**: on the ObjectBox side, this is encoded as a byte vector with a 4 bytes prefix.
   The first 3 bytes are reserved and must be zero. The 4th byte defines the MongoDB binary sub type.
