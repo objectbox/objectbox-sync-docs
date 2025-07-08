@@ -80,6 +80,10 @@ Follow this checklist:
 
 You may notice that IDs of objects stored on one device may not always match the IDs on another device. Well, that's not a bug, but a feature. :slight\_smile:  Check the [docs on Object ID mapping](data-model/object-ids.md) and the possibility to use global IDs instead.
 
+## MongoDB-specific issues
+
+Please check the page [MongoDB Sync Connector](mongodb-sync-connector/README.md) and its subpage for MongoDB-specific issues and troubleshooting. Typical issues include the MongoDB user configuration, and not triggering the initial "Full Sync".
+
 ## Other hiccups
 
 A checklist of other likely issues:

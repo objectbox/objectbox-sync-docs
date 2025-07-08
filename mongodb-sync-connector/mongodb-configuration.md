@@ -54,8 +54,47 @@ Note: If you are running MongoDB within a Docker container, the general principl
 
 ## Prepare a user account for the MongoDB Sync Connector
 
-It is recommended to use a separate MongoDB user account for the MongoDB Sync Connector. To create a MongoDB user account, see [MongoDB User Accounts](https://www.mongodb.com/docs/manual/tutorial/create-users/). Ensure that the user account has read and write access to the database and collections that you want to synchronize.
+It is recommended to use a separate MongoDB user account for the MongoDB Sync Connector. To create a MongoDB user account, see [MongoDB User Accounts](https://www.mongodb.com/docs/manual/tutorial/create-users/).
+The user must have certain privileges, for which you have two options, which we will discuss next:
 
-Note: the ObjectBox Sync Connector will store a few small metadata documents in a collection named `__ObjectBox_Metadata` within the database being synced. Therefore, the user account must have read and write permissions for this collection as well. Typically, granting the `readWrite` role on the database being synchronized will cover this requirement.
+* Database-level privileges: simple to setup
+* Collection-level privileges: more granular control
+
+### Database-level privileges
+
+This is the easiest way to set up a user account for the MongoDB Sync Connector:
+give the user the `readWrite` role on the database being synchronized.
+The `readWrite` is a built-in role that gives read and write access to all collections in the database.
+
+### Collection-level privileges
+
+If you have additional collections in the database, which you do not want to synchronize with ObjectBox, granting privileges on the collection level is an alternative. 
+Ensure that the user account has read and write access to the database and collections that you want to synchronize.
+
+The setup requires three steps:
+
+1. Grant the `readWrite` role on each of the collection that takes part in syncing.
+2. Grant the `readWrite` role on the collection named `__ObjectBox_Metadata`.
+   The ObjectBox Sync Connector will store a few small metadata documents in this collection.
+3. Grant the `find` and `changeStream` action on the database, e.g. via the predefined `read` role.
+   This is required for the change stream processing, which allows ObjectBox to updates from MongoDB (in "realtime").
+
+### Use the configured user 
 
 Once the user account is set up, you can get the MongoDB connection URL for the [ObjectBox Sync Connector setup](objectbox-sync-connector-setup.md), which is the next step.
+
+### Troubleshooting user privileges
+
+If you encounter errors, please enable debug logs (see [troubleshooting sync](../troubleshooting-sync.md)) and check the logs.
+
+#### Change stream processing
+
+Issue: Changes from MongoDB do not sync to ObjectBox (after the full sync was made).
+
+Error 1: "Could not start change stream processing (operation error code 13): not authorized on objectbox_sync to execute command { aggregate: 1, pipeline: [ { $changeStream: ..."
+
+Error 2: "Could not start change stream processing (operation error code 8000): user is not allowed to do action [changeStream] on ..."
+
+Solution (primary): Doublecheck if the `find` and `changeStream` actions are granted to the database for the user. See the section on collection-level privileges above for details. 
+
+Solution (alternative; try the primary solution first): In the Atlas UI, edit the database user and either disable "Restrict Access to Specific Clusters/Federated Database Instances/Stream Processing Instances", or, if the UI allows it, enable the Stream Processing Instances.
