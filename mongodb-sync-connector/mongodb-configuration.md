@@ -57,8 +57,8 @@ Note: If you are running MongoDB within a Docker container, the general principl
 It is recommended to use a separate MongoDB user account for the MongoDB Sync Connector. To create a MongoDB user account, see [MongoDB User Accounts](https://www.mongodb.com/docs/manual/tutorial/create-users/).
 The user must have certain privileges, for which you have two options, which we will discuss next:
 
-* Database-level privileges: simple to setup
-* Collection-level privileges: more granular control
+* Database-level privileges: simple to setup, e.g. for evaluating and to quickly get started
+* Collection-level privileges: more granular control, safer
 
 ### Database-level privileges
 
@@ -66,18 +66,25 @@ This is the easiest way to set up a user account for the MongoDB Sync Connector:
 give the user the `readWrite` role on the database being synchronized.
 The `readWrite` is a built-in role that gives read and write access to all collections in the database.
 
+A disadvantage of the database level user config is that you may give more grants than strictly necessary to the user.
+On the other hand this setup is convenient during development, when new types/collection are added as it requires no changes.
+
 ### Collection-level privileges
 
 If you have additional collections in the database, which you do not want to synchronize with ObjectBox, granting privileges on the collection level is an alternative. 
 Ensure that the user account has read and write access to the database and collections that you want to synchronize.
 
-The setup requires three steps:
+The setup requires three steps (all are required):
 
 1. Grant the `readWrite` role on each of the collection that takes part in syncing.
+   ObjectBox obviously needs to read and write to the collections during sync.
 2. Grant the `readWrite` role on the collection named `__ObjectBox_Metadata`.
    The ObjectBox Sync Connector will store a few small metadata documents in this collection.
-3. Grant the `find` and `changeStream` action on the database, e.g. via the predefined `read` role.
+3. Grant the `find` and `changeStream` action on the database, e.g. by defining a custom role for the database.
+   Using the predefined `read` role works too, but we recommend to keep the grants as narrow as possible.
    This is required for the change stream processing, which allows ObjectBox to updates from MongoDB (in "realtime").
+
+Note: When new types/collections are added, do not forget to update the grants for the user!
 
 ### Use the configured user 
 
