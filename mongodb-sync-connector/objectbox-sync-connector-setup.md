@@ -148,3 +148,29 @@ This section gives some technical details about MongoDB snapshot isolation. You 
 If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. To read the data from MongoDB, the ObjectBox Sync Connector uses the [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from a database perspective). MongoDB keeps snapshots for a limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
 
 This issue typically only starts with MongoDB databases containing at least 10 GB, and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window by setting [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
+
+## Troubleshooting
+
+### Verify that the MongoDB Atlas cluster is reachable
+
+First, attach to the Docker container as the root user (for details, see [troubleshooting sync](../troubleshooting-sync.md)):
+
+```bash
+docker exec -it --user 0 <container-id> /bin/bash
+``` 
+
+Then, inside the container run this:
+
+```bash
+microdnf install -y bind-utils # needs root
+# From your MongoDB connection string, get the cluster address for the next command:
+dig +short SRV _mongodb._tcp.<your-cluster-address> 
+# This will should multiple host names, pick one host and run:
+nc -vz <host> 27017
+```
+When this succeeds, the output should look something like this:
+
+```
+Ncat: Connected to 1.2.3.4:27017.
+Ncat: 0 bytes sent, 0 bytes received in 0.05 seconds.
+```

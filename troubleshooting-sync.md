@@ -59,6 +59,41 @@ You can export log events to a file using the download link at the bottom of the
 
 While the server logs are the first thing to check, the client logs can also help to diagnose certain issues. Sync clients log only sparsely, e.g. when problems occur. So when you don't see anything in the client logs, it's likely a connection problem, which are covered here too, or the issue can be found on the server side. The client logs go to standard output or logcat on Android.
 
+## System utilities inside the Docker container
+
+If you are familiar with Linux utilities, you can use them directly inside the Docker Sync Server container.
+Starting with version 2025-07-17 of the Docker container, these packages are pre-installed:
+iputils, iproute, procps-ng, strace, lsof, and nmap-ncat.
+
+### Attach to a running container
+
+Example to "attach" to a running Sync Server container:
+
+```bash
+docker ps # Copy the container ID for objectboxio/sync-server-trial
+docker exec -it --user 0 <container-id> /bin/bash # root shell
+# or, if you do not want to run as root:
+ docker exec -it <container-id> /bin/bash # non-root
+```
+
+### Pre-installed commands
+
+Then you are inside the running container. For starters, try these commands:
+
+* `top`: shows system info and the running processes;
+  you should see the Sync Server process with process ID (PID) 1 and "sync-server" as the command.
+  Also, since you "attached" to the container you should see a "bash" and a "top" process.
+* `ss -ltnp`: show listening sockets; at "Local Address:Port" you should see 0.0.0.0:9999 and 0.0.0.0:9980.
+  The IP address 0.0.0.0 tells that it listens on all interfaces. 9999 is the Sync endpoint, 9980 is the Admin UI.
+* `ping 8.8.8.8`: ping Google's DNS server to check if container can reach the Internet.
+
+### Install additional packages
+
+The base image is a Rocky Linux container, so you can use `microdnf` to install additional packages.
+To do so, ensure that you have a root shell using `--user 0` for the docker `exec command` (see above).
+For example, to install the bind-utils package to get `dig` and `nslookup` commands: `microdnf install -y bind-utils`.
+(Note: bind-utils comes with larger dependencies and thus is not pre-installed.)
+
 ## Clients do not connect
 
 If Sync clients do not connect to the server, please doublecheck the [Sync Client setup](sync-client.md), specifically: 
