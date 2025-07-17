@@ -63,7 +63,7 @@ Keep your data model file safe and secure. It contains the schema of your data m
 
 ## Run the Docker container
 
-Once the image is pulled, you can \[run]\(Once the image is pulled, you can [run](https://docs.docker.com/reference/cli/docker/container/run/) the container. The following example starts Sync Server using the current directory as the data folder and exposes the sync-server on localhost:9999 and admin web UI on [http://localhost:9980](http://localhost:9980). Ensure to have the file objectbox-model.json in the current directory on your host (it's mapped to /data inside the container):
+Once the image is pulled, you can [run](https://docs.docker.com/reference/cli/docker/container/run/) the container. The following example starts Sync Server using the current directory as the data folder and exposes the sync-server on localhost:9999 and admin web UI on [http://localhost:9980](http://localhost:9980). Ensure to have the file objectbox-model.json in the current directory on your host (it's mapped to /data inside the container):
 
 {% hint style="info" %}
 Note: the following command assumes objectbox-model.json is in the current directory.
@@ -107,7 +107,15 @@ Now the server should be running and accessible:
 * Admin web UI on localhost, port 9980:\
   Have a look at [http://127.0.0.1:9980](http://127.0.0.1:9980) in your web browser.
 
-If you run into any problems, please check the [troubleshooting guide](../troubleshooting.md).
+If you run into any problems, please check the [troubleshooting guide](../troubleshooting-sync.md).
+
+### Update the Docker image
+
+To get the latest version of the Docker image, you simply pull it again:
+
+```shell
+docker pull objectboxio/sync-server-trial
+```
 
 ## Activating the trial
 
@@ -151,7 +159,7 @@ The "Debug logging" switch on the status page enables a very detailed logging (t
 
 ## Logging
 
-By default only logs with "info" level and above are enabled, which are relatively rare. For example, there's nothing logged about standard interactions with clients. That might be overwhelming with a few hundred clients already. Info logs should never "spam" you, no matter how many clients are connected.
+By default, only logs with "info" level and above are enabled. After startup info level logs are relatively rare. For example, there's nothing logged about standard interactions with clients. That might be overwhelming with a few hundred clients already. Info logs should never "spam" you, no matter how many clients are connected.
 
 Let's look at a typical log during startup:
 
@@ -209,7 +217,7 @@ The model JSON is used to initialize the data model for sync (and also the datab
 * Starting the server with an updated model file.
 * Upload the model file through the Admin web UI.
 
-For details, please refer to the [data model evolution](../data-model/) section.
+For details, please refer to the [data model evolution](../data-model/README.md) section.
 
 ## Feedback
 
