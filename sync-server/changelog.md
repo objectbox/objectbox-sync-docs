@@ -6,6 +6,10 @@ description: Recent Sync Server releases
 
 Version numbers refer to the Docker images and are in the format "YYYY-MM-DD". This changelog covers releases since May 2025.
 
+2025-07-21: MongoDB grant check fix
+-----------------------------------
+* MongoDB Connector: when using a MongoDB without authentication, do not display warnings in the status page.
+ 
 2025-07-17: MongoDB user grant checks and maintenance
 -----------------------------------------------------
 * MongoDB Connector: improved error handling; some errors only showed up in debug logs.
