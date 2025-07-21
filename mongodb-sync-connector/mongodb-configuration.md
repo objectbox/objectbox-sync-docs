@@ -92,7 +92,12 @@ Once the user account is set up, you can get the MongoDB connection URL for the 
 
 ### Troubleshooting user privileges
 
-If you encounter errors, please enable debug logs (see [troubleshooting sync](../troubleshooting-sync.md)) and check the logs.
+If you encounter errors, the MongoDB status page in the Admin UI should be the first place to check.
+This page shows you potential issues with the user privileges and also the last error message:
+
+<figure><img src="../.gitbook/assets/mongodb-connection-user-grants-missing.png" alt="ObjectBox MongoDB User grants missing"><figcaption><p>Figure 1: Example when MongoDB user grants are missing</p></figcaption></figure>
+
+If this does not help, please enable debug logs (see [troubleshooting sync](../troubleshooting-sync.md)) and check the logs for irregular messages.
 
 #### Change stream processing
 
