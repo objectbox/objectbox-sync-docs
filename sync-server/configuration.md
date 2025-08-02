@@ -8,8 +8,8 @@ description: >-
 
 There are two approaches to configure ObjectBox Sync Server:
 
-* command line parameters (CLI): simple/quick approach for most settings
-* configuration file (JSON): recommended for complex settings and required for clusters
+* command line parameters (CLI): simple/quick approach for most settings (limitations apply)
+* configuration file (JSON): recommended for complex settings and required for sync filters and clusters
 
 Note that both approaches can be [combined](configuration.md#combining-cli-and-file-configuration).
 
@@ -93,7 +93,7 @@ More details about the options can be found in the section on the configuration 
 
 ## Configuration file
 
-Alternatively, you can choose to provide the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
+In the long run, you should store the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure  a [cluster](sync-cluster.md).
 
 By default, the configuration file is read from `sync-server-config.json` in the current working directory. To use a different location, supply it via the `--conf <path-to-config>` option.
 
@@ -118,6 +118,7 @@ Example file:
     }
 }
 ```
+
 ### Primary options
 
 * `dbDirectory` directory where the database is stored (default: "objectbox").
@@ -138,6 +139,12 @@ Example file:
 ### Authentication options
 
 * `auth.jwt` JWT is the primary method for authentication. See the [JWT authentication page](jwt-authentication.md) for details.
+
+### Sync filter expressions
+
+* `syncFilters` this JSON object contains all filter expressions.
+  Each filter has the type as key and a string value as the expression.
+  Details are in the [sync filters](sync-filters.md) page.
 
 ### Advanced options
 

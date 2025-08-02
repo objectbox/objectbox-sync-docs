@@ -16,21 +16,6 @@ This changelog covers releases since May 2025.
   Data send by the clients via JWT is available to the sync filter expressions.
   Check your JWT provider how you can add the claims that you need to your JWT.
 
-This beta version has a few known limitations that will be addressed in one of the next versions:
-
-* When sync filter expressions changed, it's not yet handled.
-  Clients may still keep old data previously synced by old filters.
-  In a new version, we will likely enforce a complete sync from scratch when filters change
-  so that clients have consistent data.
-* It's possible to change the value of a property, which is used in a sync filter expression.
-  For example, consider a property `team` that is used in a sync filter expression.
-  One client changes the team from "blue" to "green".
-  The server now correctly syncs the change to "team green" clients.
-  However, it is not yet deleted from "team blue" clients.
-* JWT claims are only the first variables available to sync filter expressions.
-  We are currently collecting customer requirements to add more variables and user information.
-  Check with the ObjectBox to ensure that your needs are covered.
-
 2025-07-21: MongoDB grant check fix
 -----------------------------------
 * MongoDB Connector: when using a MongoDB without authentication, do not display warnings in the status page.
