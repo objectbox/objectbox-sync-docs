@@ -7,6 +7,11 @@ description: Recent Sync Server releases
 Version numbers refer to the Docker images and are in the format "YYYY-MM-DD".
 This changelog covers releases since May 2025.
 
+2025-08-02: Filter expression string value improvements
+-------------------------------------------------------
+* Sync filter expression improvements for string values:
+  allow single quotes in addition to double quotes, allow escapes using the `\` character.
+
 2025-08-01: Sync filters and user-specific sync (beta)
 ------------------------------------------------------
 * Sync filters: configure expressions for the Sync Server to filter objects that are to by synced.
