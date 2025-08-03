@@ -1,0 +1,125 @@
+---
+title: "ObjectBox Sync Server Updates: Public Docker Images and E..."
+description: "Latest updates to ObjectBox Sync Server include public Docker images, enhanced MongoDB data mapping, improved JWT authentication, and admin UI fixes."
+keywords:
+  - objectbox
+  - c++
+  - cpp
+  - cmake
+  - database
+  - blog
+---
+
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+
+
+
+import { TechnicalArticleSchema } from '@site/src/components/Schema';
+
+<TechnicalArticleSchema
+  headline="ObjectBox Sync Server Updates: Public Docker Images and E..."
+  description="Latest updates to ObjectBox Sync Server include public Docker images, enhanced MongoDB data mapping, improved JWT authentication, and admin UI fixes."
+  url="https://cpp.objectbox.io/2025-06-02-blog-post"
+  datePublished="2025-07-17"
+  dateModified="2025-07-17"
+/>
+
+# ObjectBox Sync Server: Recent Updates and Improvements
+
+Latest updates to ObjectBox Sync Server include public Docker images, enhanced MongoDB data mapping, improved JWT authentication, and admin UI fixes.
+
+
+We're excited to announce the latest updates to ObjectBox Sync Server with our recent 2025-06-02 and 2025-05-27 releases. These updates bring significant improvements to data handling, authentication, and user interface, making your data synchronization experience even smoother.
+
+## Public Docker Images Now Available
+
+Starting from late May 2025, we've made ObjectBox Sync Server trials publicly available as Docker images! This means you can now easily pull our Docker image directly from Docker Hub with:
+
+```shell
+docker pull objectboxio/sync-server-trial
+```
+
+This provides a straightforward way to start testing the Sync Server with your data. The trial gives you 30 days per dataset to explore all the capabilities of ObjectBox Sync.
+
+## New "JSON to Native" External Property Type
+
+One of the most powerful additions in the 2025-05-27 release is the new "JSON to native" property type mapping. This feature allows you to convert strings to nested documents in MongoDB, providing a more elegant way to handle complex data structures. This feature requires the 4.3 client releases to work properly.
+
+Here's how you can implement it in your applications (Java, Kotlin, Dart/Flutter, Swift):
+
+```java
+@ExternalType(ExternalPropertyType.JSON_TO_NATIVE)
+private String myNestedDocumentJson;
+```
+
+```kotlin
+@ExternalType(ExternalPropertyType.JSON_TO_NATIVE)
+var name: String? = myNestedDocumentJson
+```
+
+```dart
+@ExternalType(type: ExternalPropertyType.jsonToNative)
+String? myNestedDocumentJson;
+```
+
+```swift
+// objectbox: externalType="jsonToNative"
+var myNestedDocumentJson: String?
+```
+
+This property type mapping offers several advantages:
+- You can use your preferred JSON API to access the data
+- It supports nested documents and arrays
+- The order of keys is preserved, unlike with flex properties
+
+## Increased Maximum Sync Message Size
+
+We've increased the maximum Sync message size to 32 MB, allowing for larger data transfers between clients and the server. This improvement is particularly useful for applications that need to synchronize larger chunks of data or complex documents. Clients version 4.3.0 and above are required.
+
+## Enhanced JWT Authentication
+
+JWT authentication has been improved with more flexible options for public key configurations. Public key URLs can now refer directly to PEM public key or X509 certificate files, in addition to the previously supported JSON formats.
+
+This means you can now use the following formats for your public key URL:
+1. Key-value JSON file
+2. JWKS (JSON Web Key Set)
+3. PEM public keyfile
+4. PEM certificate file
+
+This enhancement provides more flexibility when integrating with various authentication providers.
+
+## Admin UI Improvements
+
+The 2025-06-02 release includes several improvements to the Admin UI:
+- Fixed the GraphQL page
+- Enhanced menu UI with improved icons and padding
+
+## Getting Started
+
+If you haven't tried ObjectBox Sync Server yet, now is a great time to start! With our publicly available Docker images, you can quickly set up and start testing:
+
+```bash
+docker run --rm -it \
+    --volume "$(pwd):/data" \
+    --publish 127.0.0.1:9999:9999 \
+    --publish 127.0.0.1:9980:9980 \
+    --user $UID \
+    objectboxio/sync-server-trial \
+    --model /data/objectbox-model.json \
+    --unsecured-no-authentication \
+    --admin-bind 0.0.0.0:9980
+```
+
+Then, visit [http://127.0.0.1:9980](http://127.0.0.1:9980) in your web browser to access the Admin UI and activate your trial.
+
+## What's Next?
+
+We're continuously working to improve ObjectBox Sync to make your data synchronization experience seamless and robust. Stay tuned for more updates and improvements in the coming months!
+
+For detailed information about these features, please refer to our documentation:
+- [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping)
+- [JWT Authentication](sync-server/jwt-authentication)
+- [Sync Server Configuration](sync-server/configuration)

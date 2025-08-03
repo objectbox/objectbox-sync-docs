@@ -1,0 +1,920 @@
+/* Import Roboto font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* ===== TEAL COLOR THEME ===== */
+:root {
+  /* Update primary colors to teal */
+  --ifm-color-primary: #17A6A6;
+  --ifm-color-primary-dark: #138a8a;
+  --ifm-color-primary-darker: #118080;
+  --ifm-color-primary-darkest: #0e6666;
+  --ifm-color-primary-light: #1bb8b8;
+  --ifm-color-primary-lighter: #1fc2c2;
+  --ifm-color-primary-lightest: #2dd4d4;
+  
+  /* Keep original code settings */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  
+  /* Custom colors for consistent design */
+  --objectbox-grey-light: #F6F6F6;
+  --objectbox-grey-border: #DADFDF;
+  --objectbox-grey-text: #697070;
+    /* Add Roboto font family */
+    --ifm-font-family-base: 'Roboto', sans-serif;
+}
+
+/* Apply Roboto to all text elements */
+* {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+/* Restore default monospace font for code elements */
+code,
+pre,
+pre code,
+.prism-code,
+.token,
+kbd,
+samp,
+tt,
+var {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
+/* ===== CODE BLOCK WIDTH AND FONT SIZE IMPROVEMENTS ===== */
+/* Reduce code font size by 1 point and limit width for better readability */
+pre,
+.prism-code {
+  font-size: 13px !important; /* Reduced from default ~14px */
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  line-height: 1.4 !important;
+}
+
+/* Limit code block content width for better split-screen viewing */
+pre code,
+.prism-code code {
+  max-width: 800px !important; /* Limit width to 800px for better split-screen */
+  display: block !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+/* Inline code styling - also reduce by 1px */
+code:not(pre code) {
+  font-size: 12px !important; /* Reduced from default ~13px */
+}
+
+/* Ensure code blocks in tabs also follow the width limits */
+div[role="tabpanel"] pre,
+div[role="tabpanel"] .prism-code {
+  max-width: 800px !important;
+  font-size: 13px !important;
+}
+
+/* Sidebar menu styling - smaller font and normal weight */
+.theme-doc-sidebar-container .menu__list-item {
+  font-size: 14px; /* Smaller font size for sidebar */
+}
+
+/* Remove bold from all sidebar menu items by default */
+.theme-doc-sidebar-container .menu__link {
+  font-weight: 400 !important; /* Normal weight, not bold */
+  font-size: 14px;
+}
+
+/* Keep selected/active menu item in teal and bold */
+.theme-doc-sidebar-container .menu__link--active {
+  font-weight: 700 !important; /* Bold for active item */
+  color: #20b2aa !important; /* Teal color for active item */
+}
+
+
+/* External links styling (keep consistent) */
+.theme-doc-sidebar-container .menu__link[href^="http"] {
+  font-weight: 400 !important;
+  font-size: 14px;
+}
+
+/* Ensure category labels are not bold */
+.theme-doc-sidebar-container .menu__list-item--collapsed .menu__link,
+.theme-doc-sidebar-container .menu__list-item .menu__link {
+  font-weight: 400 !important;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #17A6A6;
+  --ifm-color-primary-dark: #138a8a;
+  --ifm-color-primary-darker: #118080;
+  --ifm-color-primary-darkest: #0e6666;
+  --ifm-color-primary-light: #1bb8b8;
+  --ifm-color-primary-lighter: #1fc2c2;
+  --ifm-color-primary-lightest: #2dd4d4;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== NAVBAR STYLING ===== */
+.navbar {
+  padding: 1.5rem 0 !important;
+  min-height: 80px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  width: 100% !important;
+}
+
+.navbar__inner {
+  /* Layout properties from the original rule */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  /* Centering and width properties from the layout container rule */
+  max-width: 1650px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 5rem !important; /* Start of top Navbar on the left, currently for desktop adjusted to visually be aligned with the left menu beneath it*/
+}
+
+/* LEFT BRAND - Keep normal styling 
+.navbar__brand {
+  margin-right: 3rem !important;
+}*/
+
+/* Make navbar title black (not teal) */
+.navbar__title {
+  color: #000 !important;
+  /*font-size: 1rem !important;*/
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+/* Navbar title hover - teal */
+.navbar__title:hover {
+  color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+}
+
+/* STRONGER NAVBAR FIXES */
+.navbar__brand,
+.navbar__title,
+.navbar__brand .navbar__title {
+  color: #000 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+.navbar__brand:hover,
+.navbar__title:hover,
+.navbar__brand:hover .navbar__title {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* RIGHT MENU ITEMS - Use same grey as sidebar menu */
+.navbar__items--right {
+  margin-left: auto !important;
+  gap: 1rem !important; /* gaps between the menu items of the top nav bar*/
+  padding: 0 4.5rem !important; /* Top Navbar right "alignment", currently for desktop adjusted to visually be aligned with the right menu beneath it*/
+}
+
+.navbar__items--right .navbar__link {
+  color: var(--objectbox-grey-text) !important;
+  font-weight: 300 !important;
+  font-size: 0.9rem !important;
+}
+
+.navbar__items--right .navbar__link:hover {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* Ensure all navbar links are consistent */
+.navbar__item .navbar__link {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .navbar__title {
+  color: #fff !important;
+}
+
+[data-theme='dark'] .navbar__link {
+  color: #fff !important;
+}
+
+[data-theme='dark'] .navbar__title:hover,
+[data-theme='dark'] .navbar__link:hover,
+[data-theme='dark'] .navbar__link--active {
+  color: var(--ifm-color-primary) !important;
+}
+
+[data-theme='dark'] .navbar__items--right .navbar__link {
+  color: #ccc !important;
+}
+
+/* ===== REMOVE EXTERNAL LINK ICONS ===== */
+/* Hide any SVG icons in navbar links */
+.navbar__link svg,
+.navbar__link .icon {
+  display: none !important;
+}
+
+/* ===== SIDEBAR EXPANSION ARROWS ===== */
+/* Add expansion arrows to collapsible menu items */
+.menu__list-item--collapsible > .menu__link {
+  position: relative !important;
+}
+
+.menu__list-item--collapsible > .menu__link::after {
+  content: "›" !important;
+  position: absolute !important;
+  right: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 1.2rem !important;
+  color: var(--objectbox-grey-text) !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+}
+
+/* Rotate arrow when expanded */
+.menu__list-item--collapsible.menu__list-item--collapsed > .menu__link::after {
+  transform: translateY(-50%) rotate(0deg) !important;
+}
+
+.menu__list-item--collapsible:not(.menu__list-item--collapsed) > .menu__link::after {
+  transform: translateY(-50%) rotate(90deg) !important;
+  color: var(--ifm-color-primary) !important;
+  
+}
+
+/* ===== SIDEBAR MENU - GREY INACTIVE TEXT ===== */
+.menu__link:not(.menu__link--active) {
+  color: var(--objectbox-grey-text) !important;
+  /*outline: 1px solid red !important;*/
+}
+
+.menu__link--active {
+  color: var(--ifm-color-primary) !important;
+  /*outline: 1px solid rgb(255, 119, 0) !important;*/
+}
+
+/* ===== FINAL TAB STYLING ===== */
+/* Tab header container - light grey background for entire header area */
+.tabs {
+  background-color: var(--objectbox-grey-light) !important;
+  /*background-color: rgb(228, 195, 48) !important; */
+  border-left: 1px solid var(--objectbox-grey-border) !important;
+  border-right: 1px solid var(--objectbox-grey-border) !important;
+  border-top: 1px solid var(--objectbox-grey-border) !important;
+  border-bottom: 1px solid var(--objectbox-grey-border) !important;
+  border-radius: 6px 6px 0 0 !important;
+  /*margin: 0 0 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  box-sizing: border-box !important;*/
+}
+
+/* Tab content area */
+div[role="tabpanel"] {
+  border-left: 1px solid var(--objectbox-grey-border) !important;
+  border-right: 1px solid var(--objectbox-grey-border) !important;
+  border-top: 0px solid var(--objectbox-grey-border) !important;
+  border-bottom: 1px solid var(--objectbox-grey-border) !important;
+  border-radius: 0 0 6px 6px !important;
+  /background-color: rgb(255, 255, 255) !important;
+  /*background-color: rgb(152, 231, 27) !important; /* DEBUG */
+  padding: 20px !important;
+  /*margin: 0 !important; we also tried margin-top, but this did not influence the missing line between the tab header and the actual tab*/
+  width: 100% !important;
+  margin-top: -19px !important;
+  box-sizing: border-box !important;
+  position: relative;
+  z-index: 1;
+}
+
+.tabs__item {
+  background-color: var(--objectbox-grey-light) !important;
+  /*background-color: rgb(228, 9, 137) !important; */
+  border-right: 1px solid var(--objectbox-grey-border) !important;/* This are the lines between the tabs at the tob of the tabs menu*/
+  color: var(--objectbox-grey-text) !important;
+  font-weight: 400 !important;
+  padding: 10px 16px !important;
+  border-bottom: none !important;
+  /*
+  border-top: none !important;
+  border-left: none !important;
+  border-radius: 0 !important;*/
+  /*margin: 0 !important; commenting this out also made no change, neither did   margin-top: 0;*/
+  border-radius: 6px 6px 0 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+/*
+ * Fix for unwanted vertical margin above the ObjectBox library section.
+ * This specifically targets the utility class ONLY when it appears
+ * inside the main documentation content area.
+ */
+ .theme-doc-markdown .margin--top--lg {
+  margin-top: 100 !important;
+}
+
+.tabs__item:first-child {
+  border-radius: 0 !important;
+  margin-left: 0 !important;
+}
+
+.tabs__item:last-child {
+  border-right: none !important;
+  margin-right: 0 !important;
+}
+
+.tabs__item:hover {
+  color: var(--ifm-color-primary) !important;
+  background-color: var(--objectbox-grey-light) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tabs__item--active {
+  position: relative;
+  z-index: 2;
+  background-color: white !important;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 500 !important;
+  border-bottom: none !important;
+}
+
+/* ===== CODE BLOCKS - PRESERVE DOCUSAURUS STYLING ===== */
+div[role="tabpanel"] pre,
+div[role="tabpanel"] .prism-code {
+  background-color: var(--objectbox-grey-light) !important;
+  border: 1px solid var(--objectbox-grey-border) !important;
+  border-radius: 4px !important;
+}
+
+div[role="tabpanel"] code:not(pre code) {
+  background-color: var(--objectbox-grey-light) !important;
+  border: 1px solid var(--objectbox-grey-border) !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+}
+
+/* ===== FANCY BUTTONS LIKE YOUR ORIGINAL SITE ===== */
+.button--primary,
+.button.button--primary {
+  background: linear-gradient(135deg, #17A6A6 0%, #1bb8b8 100%) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(23, 166, 166, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.button--primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(23, 166, 166, 0.4) !important;
+}
+
+.button--secondary {
+  background: white !important;
+  border: 2px solid #17A6A6 !important;
+  color: #17A6A6 !important;
+  border-radius: 6px !important;
+  padding: 10px 22px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.button--secondary:hover {
+  background: #17A6A6 !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ===== INFO BOXES ===== */
+.admonition-info {
+  border-left: 3px solid #17A6A6 !important;
+  background-color: rgba(84, 199, 236, 0.05) !important;
+  border-radius: 0 4px 4px 0 !important;
+  padding: 0.75rem 1rem !important;
+  margin-left: 20px !important;
+}
+
+.admonition-info .admonition-heading {
+  display: none;
+}
+
+.admonition-info .admonition-icon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  vertical-align: top;
+  width: 1.5rem;
+}
+
+.admonition-info .admonition-content {
+  margin-left: 0;
+  padding-left: 0;
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 2rem);
+}
+
+.admonition-info .admonition-content > p:first-child {
+  margin-top: 0;
+}
+
+.admonition-info .admonition-content > p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== TIP BOXES WITH CHECKMARKS ===== */
+.admonition-tip .admonition-heading h5::before {
+  content: "✅ " !important;
+  margin-right: 6px !important;
+}
+
+.admonition-tip {
+  border-left: 3px solid var(--ifm-color-primary) !important;
+  background-color: rgba(23, 166, 166, 0.05) !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.admonition-tip .admonition-heading h5 {
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* ===== CUSTOM NAVIGATION CARDS ===== */
+.custom-nav-card {
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.custom-nav-card:hover {
+  border-color: #17A6A6;
+}
+
+.custom-nav-card-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.custom-nav-card-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.custom-nav-card-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-nav-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #24292f;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.custom-nav-card:hover .custom-nav-card-title {
+  color: #17A6A6;
+}
+
+.custom-nav-card-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #656d76;
+  line-height: 1.4;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-nav-card-arrow {
+  font-size: 1.5rem;
+  color: #656d76;
+  margin-left: 1rem;
+  transition: color 0.2s ease;
+  font-weight: normal;
+  flex-shrink: 0;
+}
+
+.custom-nav-card:hover .custom-nav-card-arrow {
+  color: #17A6A6;
+}
+
+/* ===== DARK MODE ADJUSTMENTS ===== */
+[data-theme='dark'] .tabs {
+  background-color: #2a2a2a !important;
+  border-color: #444 !important;
+}
+
+[data-theme='dark'] .tabs__item {
+  background-color: #2a2a2a !important;
+  border-color: #444 !important;
+  color: #aaa !important;
+}
+
+[data-theme='dark'] .tabs__item--active {
+  background-color: #1a1a1a !important;
+  color: var(--ifm-color-primary) !important;
+}
+
+[data-theme='dark'] div[role="tabpanel"] {
+  background-color: #1a1a1a !important;
+  border-color: #444 !important;
+}
+
+[data-theme='dark'] div[role="tabpanel"] pre,
+[data-theme='dark'] div[role="tabpanel"] .prism-code {
+  background-color: #2a2a2a !important;
+  border-color: #444 !important;
+}
+
+/* Dark mode support for custom cards */
+[data-theme='dark'] .custom-nav-card {
+  background: #1a1a1a;
+  border-color: #444;
+}
+
+[data-theme='dark'] .custom-nav-card:hover {
+  border-color: #17A6A6;
+}
+
+[data-theme='dark'] .custom-nav-card-title {
+  color: #fff;
+}
+
+[data-theme='dark'] .custom-nav-card:hover .custom-nav-card-title {
+  color: #17A6A6;
+}
+
+[data-theme='dark'] .custom-nav-card-description {
+  color: #aaa;
+}
+
+[data-theme='dark'] .custom-nav-card-arrow {
+  color: #aaa;
+}
+
+[data-theme='dark'] .custom-nav-card:hover .custom-nav-card-arrow {
+  color: #17A6A6;
+}
+
+/* ===== FORCE OVERFLOW VISIBLE ON PARENT CONTAINERS ===== */
+/* This fixes the sidebar clipping issue */
+.main-wrapper,
+.theme-doc-wrapper,
+.container,
+div[class*="docPage"],
+div[class*="docRoot"],
+div[class*="mainWrapper"] {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+/* ===== MAIN LAYOUT CONTAINER ===== */
+/* Set consistent max-width and centering for all main containers */
+.main-wrapper,
+div[class*="docRoot"],
+div[class*="mainWrapper"] {
+  max-width: 1650px !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+  width: 100% !important;
+ /* outline: 10px solid rgb(134, 209, 20) !important;*/
+}
+
+/* ===== CONTENT AREA LAYOUT ===== */
+/* Create proper flex layout with equal spacing */
+@media (min-width: 997px) {
+  .main-wrapper,
+  div[class*="docRoot"],
+  div[class*="mainWrapper"] {
+    display: flex !important;
+    gap: 2rem !important; /* Keep equal gaps for centered layout */
+    align-items: flex-start !important;
+    padding: 2rem !important;
+    padding: 1rem 2rem 2rem 2rem !important;
+    /*outline: 10px solid rgb(34, 95, 72) !important;*/
+  }
+  
+  /* ===== LEFT SIDEBAR - WIDER + ALIGNED WITH HOME ICON ===== */
+  .theme-doc-sidebar-container,
+  div[class*="docSidebarContainer"] {
+    /* POSITIONING */
+    position: sticky !important;
+    top: 100px !important; /*this line is most important to really have a sticky menu!!!*/
+    align-self: flex-start !important;
+
+    scrollbar-width: none !important; /* Firefox no scrollbar */
+    -ms-overflow-style: none !important; /* IE/Edge no scrollbar*/
+    
+    /* DIMENSIONS - Increased width but maintain centering */
+    width: 320px !important; /* Increased from 260px for better readability */
+    max-height: calc(100vh - 60px) !important;  /*cannot see this line making a difference */
+    flex-shrink: 0 !important;
+    
+    
+    /* SPACING - Align to top */
+    margin: 0 !important;
+    padding: 0 !important; /* Right padding for text spacing */
+    
+    /* VISIBILITY */
+    overflow-y: auto !important;
+    z-index: 100 !important;
+    visibility: visible !important;
+    display: block !important;
+    opacity: 1 !important;
+    
+    /* PREVENT CLIPPING 
+    clip: auto !important;
+    clip-path: none !important;
+    transform: none !important;
+    
+    /*  DEBUG 
+    outline: 1px solid rgb(17, 170, 170) !important;*/
+  }
+  
+  /* ===== RIGHT TOC - ALIGNED WITH BREADCRUMB NAVIGATION ===== */
+  .theme-doc-toc-desktop,
+  div[class*="tableOfContents"] {
+    /* POSITIONING */
+    position: sticky !important;
+    top: 80px !important;
+    align-self: flex-start !important;
+
+    scrollbar-width: none !important; /* Firefox no scrollbar */
+    -ms-overflow-style: none !important; /* IE/Edge no scrollbar*/
+    
+    /* DIMENSIONS - Keep proportional to left sidebar */
+    width: 240px !important; /* Slightly increased from 200px to balance the layout */
+    max-height: calc(100vh - 80px) !important;
+    flex-shrink: 0 !important;
+    
+    /* SPACING - Align with breadcrumb position */
+    margin: 0 !important;
+    margin-top: -5px !important; /* Force it up with negative margin */
+    padding: 0 !important; /* Left padding for text spacing */
+    
+    /* VISIBILITY */
+    overflow-y: auto !important;
+    z-index: 100 !important;
+    visibility: visible !important;
+    display: block !important;
+    opacity: 1 !important;
+    
+    /* PREVENT CLIPPING */
+    clip: auto !important;
+    clip-path: none !important;
+    transform: none !important;
+    
+    /* DEBUG 
+    outline: 5px solid rgb(4, 255, 0) !important;*/
+  }
+
+  .tableOfContents_bqdL {
+    /*position: sticky !important;*/
+    top: 80px !important;
+    margin-top: -5px !important; /* Keep your preferred positioning */
+    /*outline: 3px solid rgb(255, 98, 0) !important;*/
+  
+  
+    /* PREVENT AGGRESSIVE SCROLL BEHAVIOR */
+    transform: translateY(0) !important;
+    will-change: auto !important;
+    
+    /* Dimensions and visibility */
+    width: 240px !important;
+    max-height: calc(100vh - 80px) !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    z-index: 100 !important;
+  }
+  
+  /* Remove positioning from parent container */
+  .theme-doc-toc-desktop {
+    position: relative !important;
+    top: auto !important;
+    margin: 0 !important;
+  }
+
+  /* Add these right after: */
+.sidebar_njMd::-webkit-scrollbar {
+  display: none !important;
+}
+
+.theme-doc-toc-desktop::-webkit-scrollbar,
+div[class*="tableOfContents"]::-webkit-scrollbar {
+  display: none !important;
+}
+
+.sidebar-divider {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+  
+  /* ===== CENTER CONTENT - PERFECTLY CENTERED ===== */
+  .theme-doc-markdown,
+  .docItemContainer,
+  .docMainContainer,
+  div[class*="theme-doc-markdown"],
+  div[class*="docMainContainer"],
+  div[class*="docItemContainer"] {
+    flex: 1 !important; /* Takes remaining space equally */
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 1.5rem !important; /* Generous padding for readability */
+    /*outline: 5px solid rgb(255, 0, 200) !important;*/
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+  }
+  
+  /* ===== SIDEBAR MENU ITEMS - BETTER SPACING ===== 
+  .theme-doc-sidebar-container .menu__link,
+  div[class*="docSidebarContainer"] .menu__link {
+    padding: 0.5rem 1rem !important; /* More generous padding */
+    /*margin: 0.25rem 0 !important; /* Add vertical spacing between items */
+    /*border-radius: 4px !important; /* Rounded corners for better look */
+    /*line-height: 1.4 !important; /* Better line height for readability */
+   /* outline: 1px dashed rgb(9, 236, 156) !important;*/
+  /*}*/
+  
+  /* ===== TOC ITEMS - BETTER SPACING ===== 
+  .theme-doc-toc-desktop .table-of-contents li,
+  div[class*="tableOfContents"] .table-of-contents li {
+    padding: 0.25rem 0 !important;
+    line-height: 1.3 !important;
+    outline: 1px solid red !important;
+  }
+  
+  .theme-doc-toc-desktop .table-of-contents a,
+  div[class*="tableOfContents"] .table-of-contents a {
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 3px !important;
+
+  }*/
+}
+
+/* ===== VISUAL ALIGNMENT GUIDES ===== */
+/* These help show the alignment - remove when satisfied */
+
+/* Show alignment with breadcrumb area */
+.theme-doc-breadcrumbs {
+/*  outline: 2px dashed red !important;*/
+}
+
+/* Show alignment with home icon area */
+.breadcrumbs__item:first-child {
+  /*outline: 5px dashed blue !important;*/
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+/* Tablet breakpoint */
+@media (max-width: 996px) and (min-width: 769px) {
+  .navbar__inner,
+  .main-wrapper,
+  div[class*="docRoot"],
+  div[class*="mainWrapper"] {
+    max-width: 100% !important;
+    padding: 0 1.5rem !important;
+  }
+  
+  .main-wrapper,
+  div[class*="docRoot"],
+  div[class*="mainWrapper"] {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop,
+  div[class*="docSidebarContainer"],
+  div[class*="tableOfContents"] {
+    position: relative !important;
+    width: 100% !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    }
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  .navbar__inner,
+  .main-wrapper,
+  div[class*="docRoot"],
+  div[class*="mainWrapper"] {
+    max-width: 100% !important;
+    padding: 0 1rem !important;
+  }
+  
+  .main-wrapper,
+  div[class*="docRoot"],
+  div[class*="mainWrapper"] {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop,
+  div[class*="docSidebarContainer"],
+  div[class*="tableOfContents"] {
+    position: relative !important;
+    width: 100% !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .theme-doc-markdown,
+  .docItemContainer,
+  .docMainContainer,
+  div[class*="theme-doc-markdown"],
+  div[class*="docMainContainer"],
+  div[class*="docItemContainer"] {
+    padding: 0 0.5rem !important;
+  }
+}
+
+/* ===== DEBUG OUTLINES ===== 
+* {
+  outline: 1px solid red !important;
+}*/
+
+*[style*="overflow"] {
+ /*  outline: 3px solid blue !important;*/
+}
+
+div[style*="overflow"],
+.main-wrapper[style*="overflow"],
+.theme-doc-wrapper[style*="overflow"] {
+ /*  outline: 20px solid yellow !important;*/
+}
+
+/* ===== CLEANUP ===== */
+* {
+  box-sizing: border-box !important;
+}
+
+.container,
+.container-fluid {
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  
+}
+
+.docPage,
+div[class*="docPage"] {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  
+}
+/* This is the parent container of the left side menu */
+@media (min-width: 997px) {
+  .sidebar_njMd {
+    position: sticky !important;
+    top: 20px !important;
+    align-self: flex-start !important;
+    width: 320px !important;
+    max-height: calc(100vh - 60px) !important;
+    margin: 0 !important;
+    margin-top: -10px !important; /* Force it up with negative margin */
+    padding: 0 !important;
+    overflow-y: auto !important;
+    z-index: 100 !important;
+   /*  outline: 30px solid rgb(255, 98, 0) !important;*/
+  }
+}
+
