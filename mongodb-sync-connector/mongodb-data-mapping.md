@@ -31,7 +31,7 @@ For details, you can refer to the [internal ID mapping docs](../data-model/objec
 
 If you only use standard MongoDB object IDs, you do not need to do anything special. This section is only relevant if you want to use other ID types.
 
-ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs. This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
+ObjectBox supports most common ID types offered by MongoDB. IDs of **incoming documents from MongoDB** are automatically detected and mapped to ObjectBox local IDs (always 64-bit integers). This mapping is persisted, and thus any change made on the ObjectBox side can be mapped back to the initial ID type and value.
 
 For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB object ID (OID) is created by default. You can customize the MongoDB ID types in the ObjectBox data model: for the ID property, define an "external property type" on the ID property. Then, ObjectBox will create a new UUID-based ID for the MongoDB document. 
 
@@ -39,18 +39,18 @@ For **newly created (inserted) objects on the ObjectBox side,** a new MongoDB ob
 {% tab title="Java" %}
 ```java
 @ExternalType(ExternalPropertyType.UUID)
-private byte[] externalId;
+private long id;
 ```
-Recommended types for IDs: `UUID` (UUIDv7), `UUIDString` (UUIDv7 as string), `UUIDV4`, `UUIDV4String`.
+Available external types for IDs: `MongoId` (default), `UUID` (UUIDv7), `UUIDString` (UUIDv7 stored as string), `UUIDV4`, `UUIDV4String`.
 {% endtab %}
 
 {% tab title="Swift" %}
 ```swift
 // objectbox: externalType="uuid"
-var externalId: Int
+var id: Int
 ```
 
-Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uuidV4`, `uuidV4String`.
+Available external types for IDs: `mongoId` (default), `uuid` (UUIDv7), `uuidString` (UUIDv7 stored as string), `uuidV4`, `uuidV4String`.
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
@@ -60,7 +60,7 @@ Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uu
   int id = 0;
 ```
 
-Recommended types for IDs: `uuid` (UUIDv7), `uuidString` (UUIDv7 as string), `uuidV4`, `uuidV4String`.
+Available external types for IDs: `mongoId` (default), `uuid` (UUIDv7), `uuidString` (UUIDv7 stored as string), `uuidV4`, `uuidV4String`.
 {% endtab %}
 {% endtabs %}
 
