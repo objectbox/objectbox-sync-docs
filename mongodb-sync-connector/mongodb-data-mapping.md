@@ -99,6 +99,7 @@ MongoDB also has some special types, that do not directly map to ObjectBox types
 |    Long (64-bit int)    |           -            |         Int64          |
 |    Long (64-bit int)    |     MongoTimestamp     |       Timestamp        |
 |         String          |           -            |         String         |
+|         String          |       Decimal128       |       Decimal128       |
 |         String          |       JavaScript       |   JavaScript (Code)    |
 |         String          |      JsonToNative      |      Object/Array      |
 |         String          |        MongoId         |        ObjectId        |
@@ -121,6 +122,45 @@ Notes:
 * MongoDB has the following deprecated types, which are currently not supported: Undefined, DBPointer, Symbol.
   If you rely on these types, please contact us. We may provide at least some support for these types.
 * IDs and relations are documented separately on this page.
+
+Example: a string that is mapped to a Decimal128 on the MongoDB side
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@ExternalType(ExternalPropertyType.DECIMAL_128)
+private String decimalString;
+
+/** Constructs a BigDecimal from the decimal string */
+BigDecimal asBigDecimal() {
+    return new BigDecimal(decimalString);
+}
+```
+
+Note: the `asBigDecimal()` is optional as it only showcases how one could use more convenient native types on the Java side instead of strings. 
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+@ExternalType(ExternalPropertyType.DECIMAL_128)
+var decimalString: String? = null
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// objectbox: externalType="decimal128"
+var decimalString: String?
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+@ExternalType(type: ExternalPropertyType.decimal128)
+String decimalString;
+```
+{% endtab %}
+{% endtabs %}
 
 ## To-One Relations
 
