@@ -287,7 +287,8 @@ To map nested arrays, you define lists in your entity definition directly on the
 {% tabs %}
 {% tab title="Java" %}
 ```java
-@Nullable List<Object> myArray;
+@ExternalType(ExternalPropertyType.FLEX_VECTOR)
+Object myArray;
 ```
 {% endtab %}
 
