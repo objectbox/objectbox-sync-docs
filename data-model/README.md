@@ -14,16 +14,16 @@ This section refers mostly to the standard object model provided by ObjectBox. T
 
 In the [Sync Server docs](../sync-server/), you already saw data models in action. The server initially needs the JSON file containing the data model to start with. Over time this data model will evolve. New types and properties will be added, and sometimes old ones will be retired. The ObjectBox Sync Server tracks these versions and helps you manage clients using different model versions.
 
-Let's say you have a new client version of your application that also introduced new properties to a type. To prepare that for synchronization, you need to upload the updated data model to the server. This is done by the admin web UI - in "Schema Versions" section, click "New Version" button in the right and you'll get an upload dialog.&#x20;
+Let's say you have a new client version of your application that also introduced new properties to a type. To prepare that for synchronization, you need to upload the updated data model to the server. This is done via the Admin web UI — in the "Schema Versions" section, click the "New Version" button on the right, and you'll get an upload dialog.&#x20;
 
 ![](<../.gitbook/assets/image (8).png>)
 
-You can add the new ObjectBox model JSON file by clicking on the "Schema model JSON" text in the dialog. After a file is selected, the dialog window shows some preliminary information about the model, click Save to add the model version SyncServer.&#x20;
+You can add the new ObjectBox model JSON file by clicking the "Schema model JSON" text in the dialog. After a file is selected, the dialog window shows some preliminary information about the model; click Save to add the model version to Sync Server.&#x20;
 
 ![](<../.gitbook/assets/image (6).png>)
 
-The newly added model isn't active yet, you can switch the server to use it by clicking the "Change current version ID" button, which shows the dialog with version selection (if there re multiple possible options):
+The newly added model isn't active yet. You can switch the server to use it by clicking the "Change current version ID" button, which shows the dialog with version selection (if there are multiple options):
 
 ![](<../.gitbook/assets/image (4).png>)
 
-This causes the server to restart with the newly selected model version. Additionally, this disables logins of clients with an incompatible model version
+This causes the server to restart with the newly selected model version. Additionally, this disables logins of clients with an incompatible model version.

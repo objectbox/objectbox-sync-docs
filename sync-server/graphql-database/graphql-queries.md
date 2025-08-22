@@ -9,7 +9,7 @@ description: How to use queries to get data from the ObjectBox GraphQL database
 The name of a GraphQL query is similar but not equal to the corresponding database entity type:
 
 * for ObjectBox entities starting from a capital letter (e.g. TestEntity), the GraphQL query name has the first character in lowercase (testEntity);
-* for ObjectBox entities starting form a lowercase letter, the GraphQL query is called `query_typeName` (so, e.g. the query for testEntity is `query_testEntity`).
+* for ObjectBox entities starting from a lowercase letter, the GraphQL query is called `query_typeName` (so, e.g., the query for testEntity is `query_testEntity`).
 
 ### Query arguments
 
@@ -43,7 +43,7 @@ query getById {
 
 Use filters to query with more complicated query conditions. The query will only return objects matching all given conditions. Note that querying by ID is significantly more efficient, so prefer to use that if the local object IDs are known (e.g. from previous queries).
 
-Example using a filter to find all objects with a simpleString property equlal to `banana`.
+Example using a filter to find all objects with a simpleString property equal to `banana`.
 
 ```
 query getByString {
@@ -55,7 +55,7 @@ query getByString {
 }
 ```
 
-**Query Conditions for different property types**&#x20;
+**Query conditions for different property types**&#x20;
 
 Each property type has its own set of query conditions. These are listed in the box below.
 
@@ -78,7 +78,7 @@ The following query conditions apply to properties of type `Int`, `Int64` and `D
 {% endtab %}
 
 {% tab title="String" %}
-Property of type `String`  has all query conditions of `Int` and these in addition:
+A property of type `String` has all query conditions of `Int` and these in addition:
 
 * `contains` - filters objects by a property value that must contain the given value (substring).
 * `startsWith` - filters objects by a property value that must start with the given value (substring).

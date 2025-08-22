@@ -54,9 +54,9 @@ ObjectBox Sync does not follow the request-response paradigm. Instead, it **push
 
 ### Networking
 
-ObjectBox Sync exchanges **messages** over the network. You do not interact with messages directly, but it is good to remember that; e.g you may see some message related charts in Sync statistics.
+ObjectBox Sync exchanges **messages** over the network. You do not interact with messages directly, but it is good to remember that; e.g., you may see some message-related charts in Sync statistics.
 
-**WebSockets** is the standard protocol ObjectBox Sync uses to exchange messages. It borrows some advantages from HTTP for the handshake (e.g. usually plays nice with firewalls), while providing TCP-like properties. Thus and unlike HTTP, WebSockets enables fast two-way push communication. It also scales nicely: we have tested with hundreds of thousands concurrent clients connected to a single ObjectBox Sync server.
+**WebSockets** is the standard protocol ObjectBox Sync uses to exchange messages. It borrows some advantages from HTTP for the handshake (e.g., usually plays nice with firewalls), while providing TCP-like properties. Thus, unlike HTTP, WebSockets enables fast two-way push communication. It also scales nicely: we have tested with hundreds of thousands of concurrent clients connected to a single ObjectBox Sync server.
 
 While WebSockets is a great match for ObjectBox Sync for most cases, we are not strictly bound to it. Internally, we have a network abstraction layer, which allows us to quickly adapt to special networking requirements like supporting LoRaWAN or other non-IP based protocols. Reach out to us if you are interested.
 

@@ -22,9 +22,9 @@ The audience and issuer claims are initially configured with your authentication
 
 For signature verification, the Sync Server requires the public key from the authentication provider. This key is often provided via a URL, allowing for automatic rotation (i.e., the key may change over time). The Sync Server uses this public key to verify the signature that was created using the private key at the authentication provider.
 
-### File based JWT configuration
+### File-based JWT configuration
 
-The JWT configuration is part of the standard JSON configuration file used for the Sync server. All the JWT settings are done within the `auth.jwt` JSON element. Take a look at the  following example:
+The JWT configuration is part of the standard JSON configuration file used for the Sync server. All the JWT settings are done within the `auth.jwt` JSON element. Take a look at the following example:
 
 ```json
 {
@@ -46,7 +46,7 @@ It uses the following configuration fields:
 
 ### CLI based JWT configuration
 
-Starting the Sync Server with a JWT configuration using command line arguments looks like this:
+Starting the Sync Server with a JWT configuration using command-line arguments looks like this:
 
 `sync-server --jwt-public-key-url https://example.com/public-key --jwt-claim-aud myAUD --jwt-claim-iss myISS`
 
@@ -56,7 +56,7 @@ The configuration parameters match their counterparts in the JSON file, so you c
 
 A public key is required to verify the signature of the JWT. This validates that the token was issued by the correct authentication provider, and that the token hasn't been tampered with.
 
-The public key URL must point to either a PEM public key directly or a JSON file. JSON formats are recommended for production use as they support key rotation. Single keys are also supported, but when changing the key, there is delay until the signatures will match the new key. These are the supported formats:
+The public key URL must point to either a PEM public key directly or a JSON file. JSON formats are recommended for production use as they support key rotation. Single keys are also supported, but when changing the key there is a delay until the signatures match the new key. These are the supported formats:
 
 1. **Key-value JSON file:** contains JSON elements of the form `"<key-id>": "<x509-certificate>"`.
 
@@ -68,10 +68,10 @@ The public key URL must point to either a PEM public key directly or a JSON file
 
    This format is a standard used by many authentication providers, including [Auth0](https://auth0.com/docs/secure/tokens/json-web-tokens/validate-json-web-tokens).
 
-   **To configure authentication with Auth0**, use an URL like: `https://obx-auth-demo.eu.auth0.com/.well-known/jwks.json`
+   **To configure authentication with Auth0**, use a URL like: `https://obx-auth-demo.eu.auth0.com/.well-known/jwks.json`
 
-3. **PEM public keyfile:** This is a text file that contains a PEM-encoded public key.
+3. **PEM public key file:** This is a text file that contains a PEM-encoded public key.
 
-   Generic PEM files start with `-----BEGIN PUBLIC KEY-----` and are supported by all OpenSSL versions. The more specific PKCS#1 PEM files, e.g. starting with `-----BEGIN RSA PUBLIC KEY-----`, require a is not supported by the default Sync Server docker container. You can convert PKCS#1 keys to generic PKCS#8 PEM files using `ssh-keygen -f jwtRS256.key -e -m PKCS8 > jwtRS256_public.pem`.
+   Generic PEM files start with `-----BEGIN PUBLIC KEY-----` and are supported by all OpenSSL versions. The more specific PKCS#1 PEM files, e.g., starting with `-----BEGIN RSA PUBLIC KEY-----`, are not supported by the default Sync Server Docker container. You can convert PKCS#1 keys to generic PKCS#8 PEM files using `ssh-keygen -f jwtRS256.key -e -m PKCS8 > jwtRS256_public.pem`.
 
-4. **PEM certificate file:** This is a text file that contains a PEM-encoded X.509 certificate and start with `-----BEGIN CERTIFICATE-----`.
+4. **PEM certificate file:** This is a text file that contains a PEM-encoded X.509 certificate and starts with `-----BEGIN CERTIFICATE-----`.

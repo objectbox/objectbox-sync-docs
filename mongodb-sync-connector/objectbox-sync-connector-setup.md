@@ -45,7 +45,7 @@ For a visual overview, you can also try the "Type dependencies" and "Class" diag
 Use a separate MongoDB instance for testing purposes.
 {% endhint %}
 
-Now that the Sync Server is up and running, let us connect it to MongoDB. This can be done via CLI arguments or via the configuration file. These two configurations are the essential ones:
+Now that the Sync Server is up and running, let us connect it to MongoDB. This can be done via CLI arguments or via the configuration file. These two settings are essential:
 
 * The **"MongoDB URL"** is the [MongoDB connection string](https://www.mongodb.com/docs/manual/reference/connection-string/) (URL or URI). This can be an empty string for the default `127.0.0.1:27017` host (i.e. a MongoDB instance running locally for development).
 * The **"primary MongoDB database name"** is the "database" containing the collections used for sync. By default, this is "objectbox\_sync". This value must not be changed after the full sync with MongoDB was made. See below for more information.
@@ -74,7 +74,7 @@ docker run --rm -it \
     --mongo-db test-db
 ```
 
-This enables the Sync server running within the container to access the MongoDB instance running on the host system. Note, **it only works on Windows and macOS**, but not on Linux.
+This enables the Sync server running within the container to access the MongoDB instance running on the host system. Note: **it only works on Windows and macOS**, but not on Linux.
 {% endhint %}
 
 ### Configure via configuration file
@@ -106,7 +106,7 @@ In this case, it's recommended to delete the ObjectBox database and do a complet
 In the future we may provide additional options.
 
 Note that there is no way to **rename** a database inside MongoDB.
-Instead, one usually copy a database to a new name and delete the old one ("dump and restore" is a variation).
+Instead, one usually copies a database to a new name and deletes the old one ("dump and restore" is a variation).
 This is another case of "switching" the database,
 so you also must delete the ObjectBox database and do a complete full sync with MongoDB from scratch.
 
@@ -191,7 +191,7 @@ Then, inside the container run this:
 microdnf install -y bind-utils # needs root
 # From your MongoDB connection string, get the cluster address for the next command:
 dig +short SRV _mongodb._tcp.<your-cluster-address> 
-# This will should multiple host names, pick one host and run:
+# This will show multiple host names; pick one host and run:
 nc -vz <host> 27017
 ```
 When this succeeds, the output should look something like this:

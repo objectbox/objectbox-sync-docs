@@ -1,5 +1,5 @@
 ---
-description: Frequently asked question about ObjectBox Sync.
+description: Frequently asked questions about ObjectBox Sync.
 ---
 
 # FAQ
@@ -26,7 +26,7 @@ For details, please refer to the general [Data Model Updates](https://docs.objec
 
 **I want to sync non-structured data - how can I do that?**
 
-There are to ways: [Flex Properties](https://docs.objectbox.io/advanced/custom-types#flex-properties) (only for Java/Kotlin at this point) and, when syncing to MongoDB, JSON strings that contain MongoDB sub-documents. For the latter, please check the [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md) page and its sections on nested documents and heterogeneous arrays.
+There are two ways: [Flex Properties](https://docs.objectbox.io/advanced/custom-types#flex-properties) (only for Java/Kotlin at this point) and, when syncing to MongoDB, JSON strings that contain MongoDB sub-documents. For the latter, please check the [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md) page and its sections on nested documents and heterogeneous arrays.
 
 ## Sync Server
 
@@ -34,7 +34,7 @@ _General questions about the ObjectBox Sync Server that do not fit into any othe
 
 **Can I sync data directly between devices?**
 
-The typical ObjectBox Sync setup is to have a centralized. However, alternative setup are possible within given bounds. For example, for a limited amount of devices it is possible to configure peers that sync directly with each other. There's also "hybrid" nodes that are both a client and a server. And finally, there's also a "edge" setup, e.g. via a central MongoDB that allows to have multiple Sync Servers. Talk to us if you are interested in such a setup.
+The typical ObjectBox Sync setup is centralized. However, alternative setups are possible within given bounds. For example, for a limited number of devices it is possible to configure peers that sync directly with each other. There are also "hybrid" nodes that are both a client and a server. And finally, there's also an "edge" setup, e.g., via a central MongoDB that allows multiple Sync Servers. Talk to us if you are interested in such a setup.
 
 ## Admin UI
 
@@ -42,7 +42,7 @@ _The Admin UI is a web interface for ObjectBox Sync Server._
 
 **Can I edit/remove data directly in the Admin interface or via API? Or only via Sync clients?**
 
-The Admin allows to browse data in a read-only way. You can modify data directly on the Sync Server via the [GraphQL API](sync-server/graphql-database/).
+The Admin allows you to browse data in a read-only way. You can modify data directly on the Sync Server via the [GraphQL API](sync-server/graphql-database/).
 
 ## MongoDB Connector
 
@@ -50,7 +50,7 @@ _The MongoDB Connector allows to synchronize data between ObjectBox Sync Server 
 
 **When does the MongoDB Connector start syncing?**
 
-The MongoDB connector starts along with Sync Server. In the initial state, the connector won't "start" right away. It will only start syncing once the first full sync is completed. The idea not to do this automatically is to make this a conscious decision, so that this does not happen by accident. While the first sync did not happen yet, there is a prominent message in the admin UI for the MongoDB pages. Also the logs periodically print a "reminder".
+The MongoDB connector starts along with Sync Server. In the initial state, the connector won't "start" right away. It will only start syncing once the first full sync is completed. The idea not to do this automatically is to make this a conscious decision, so that this does not happen by accident. While the first sync has not happened yet, there is a prominent message in the Admin UI for the MongoDB pages. Also, the logs periodically print a "reminder".
 
 ***
 
@@ -66,7 +66,7 @@ When syncing ObjectBox to MongoDB, ObjectBox creates a collection called \_\_Obj
 
 ***
 
-**Do I have to create a objectbox\_sync database in MongoDB? Or can I use custom database and collection names for syncing?**
+**Do I have to create an objectbox\_sync database in MongoDB? Or can I use custom database and collection names for syncing?**
 
 The database name can be configured via CLI and JSON; see [the MongoDB connector setup](mongodb-sync-connector/objectbox-sync-connector-setup.md#configure-the-mongodb-connection) for details.
 
@@ -88,4 +88,4 @@ If a field/property is present on both sides, it will be synced. If a property i
 
 **Is it possible to connect multiple Sync Servers to one MongoDB instance?**
 
-Yes, that's what we call "tiered sync" or "edge sync". The MongoDB database becomes the central instance, where all ObjectBox Sync Servers are connected to synchronize data. Each Sync Server can be deployed at its own location and can have its own set of clients. You can setup this with the Server trial on your own, or talk to us if you are interested in further details.
+Yes, that's what we call "tiered sync" or "edge sync". The MongoDB database becomes the central instance where all ObjectBox Sync Servers are connected to synchronize data. Each Sync Server can be deployed at its own location and can have its own set of clients. You can set this up with the Server trial on your own, or talk to us if you are interested in further details.

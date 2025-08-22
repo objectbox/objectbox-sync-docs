@@ -14,11 +14,11 @@ This changelog covers releases since May 2025.
 
 2025-08-01: Sync filters and user-specific sync (beta)
 ------------------------------------------------------
-* Sync filters: configure expressions for the Sync Server to filter objects that are to by synced.
+* Sync filters: configure expressions for the Sync Server to filter objects that are to be synced.
 * User-specific sync: sync filter expression can use user-specific variables and thus enable user-specific sync.
   This is a major feature that allows clients to sync only partial (individual) data.
 * JWT claims available as user-specific sync filter variables.
-  Data send by the clients via JWT is available to the sync filter expressions.
+  Data sent by clients via JWT is available to the sync filter expressions.
   Check your JWT provider how you can add the claims that you need to your JWT.
 
 2025-07-21: MongoDB grant check fix
@@ -46,12 +46,12 @@ This changelog covers releases since May 2025.
 * The Sync trial is now distributed publicly as a Docker image via Docker Hub
 * New "JSON to native" property type to convert strings to nested documents in MongoDB; requires 4.3 client releases
 * Increase maximum Sync message size to 32 MB
-* JWT authentication: public keys URLs can now refer to directly to PEM public key or X509 certificate files
+* JWT authentication: public key URLs can now refer directly to PEM public key or X509 certificate files
 * Admin fixes
 
 2025-05-05: MongoDB initial Sync, etc.
 --------------------------------------
-* Import initial data from MongoDB, pick-up sync at any point.
+* Import initial data from MongoDB, pick up sync at any point.
 * Admin: new admin page for full-syncs with MongoDB
 * Admin: better display of large vectors in data view; display only the first element and the full vector in a dialog
 * Admin: detect images stored as bytes and show them as such (PNG, GIF, JPEG, SVG, WEBP)

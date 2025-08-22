@@ -117,7 +117,7 @@ Notes:
 * **MongoBinary**: on the ObjectBox side, this is encoded as a byte vector with a 4 bytes prefix.
   The first 3 bytes are reserved and must be zero. The 4th byte defines the MongoDB binary sub type.
   After the 4 bytes prefix, the actual binary content follows.
-* **MongoRegex**: on the ObjectBox a string vector with exactly 2 elements is created.
+* **MongoRegex**: on the ObjectBox side, a string vector with exactly 2 elements is created.
   The first element is the regex pattern, the second element is the regex options (index 0: pattern, index 1: options).
 * MongoDB has the following deprecated types, which are currently not supported: Undefined, DBPointer, Symbol.
   If you rely on these types, please contact us. We may provide at least some support for these types.
@@ -247,7 +247,7 @@ private String myNestedDocumentJson;
 {% tab title="Kotlin" %}
 ```kotlin
 @ExternalType(ExternalPropertyType.JSON_TO_NATIVE)
-var name: String? = myNestedDocumentJson
+var myNestedDocumentJson: String? = null
 ```
 {% endtab %}
 {% tab title="Dart/Flutter" %}

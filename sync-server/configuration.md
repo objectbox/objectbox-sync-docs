@@ -1,6 +1,6 @@
 ---
 description: >-
-  To setup ObjectBox Sync Server to your needs, there are various configuration
+  To set up ObjectBox Sync Server to your needs, there are various configuration
   options, which are presented on this page.
 ---
 
@@ -15,7 +15,7 @@ Note that both approaches can be [combined](configuration.md#combining-cli-and-f
 
 ## Configuration via command line (CLI)
 
-Running the Sync Server from the command line is simple way to get started. It's a idea to look at the output of running `sync-server --help` (your output may vary, e.g. when using a newer version of the Sync Server).
+Running the Sync Server from the command line is a simple way to get started. It's a good idea to look at the output of running `sync-server --help` (your output may vary, e.g. when using a newer version of the Sync Server).
 
 <details>
 
@@ -93,7 +93,7 @@ More details about the options can be found in the section on the configuration 
 
 ## Configuration file
 
-In the long run, you should store the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure  a [cluster](sync-cluster.md).
+In the long run, you should store the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
 
 By default, the configuration file is read from `sync-server-config.json` in the current working directory. To use a different location, supply it via the `--conf <path-to-config>` option.
 
@@ -128,12 +128,12 @@ Example file:
   * `G` for gibibytes, i.e. 1024 mebibytes
   * `T` for tebibytes, i.e. 1024 gibibytes
 * `modelFile` schema (model) file to create the database with or to use for a schema update
-* `bind` Sync server will bind on this URL (schema, host and port). It should look like `ws://hostname:port`, for example `ws://127.0.0.1:9000`. You can also bind to a specific IP address on the server machine by providing the exact address, as given by `ifconfig` or `ip addr`, e.g.  `ws://192.168.0.125:9999`.
+* `bind` Sync server will bind on this URL (scheme, host and port). It should look like `ws://hostname:port`, for example `ws://127.0.0.1:9000`. You can also bind to a specific IP address on the server machine by providing the exact address, as given by `ifconfig` or `ip addr`, e.g. `ws://192.168.0.125:9999`.
 * `adminBind` HTTP server (admin/web UI) will bind on this URL (schema, host and port combination).
 
 ### Developer and debug options
 
-* `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and shall only be used to simplify test setups.
+* `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and should only be used to simplify test setups.
 * `debugLog` enable debug logs with `true`
 
 ### Authentication options
@@ -160,7 +160,7 @@ To set up a cluster, please refer to the [cluster](sync-cluster.md) page for spe
 
 ## Authentication
 
-Authentication settings for clients are required; the Sync Server won't start without. If you try, it should look something like this:
+Authentication settings for clients are required; the Sync Server won't start without them. If you try, it should look something like this:
 
 ```
 $ ./sync-server --model=objectbox-model.json
@@ -179,7 +179,7 @@ _Warning:_ it should be obvious that this setting is not intended for production
 For production usage, please refer to the [JWT authentication](./jwt-authentication.md) page on how to authenticate your clients.
 
 Other authentication methods are mentioned above in the configuration overview, i.e. Google Authentication with client IDs, shared secret, Admin users.
-Typically, we recommend using JWT, but there maybe be occasions where you need to use other authentication methods. Let the ObjectBox team know about your use case and requirements. E.g. it is possible to define multiple authenticators.
+Typically, we recommend using JWT, but there may be occasions where you need to use other authentication methods. Let the ObjectBox team know about your use case and requirements. E.g. it is possible to define multiple authenticators.
 
 ## Combining CLI and file configuration
 

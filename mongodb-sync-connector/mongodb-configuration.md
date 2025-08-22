@@ -19,7 +19,7 @@ ObjectBox Sync Connector supports all MongoDB variants:
 * MongoDB Enterprise Advanced (self-hosted)
 * MongoDB Atlas or similar cloud services (hosted)
 
-Note: you can use the [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) Cloud service, which offers a free tier (M0), which is known to work well with the MongoDB Sync Connector.
+Note: you can use the [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) Cloud service, which offers a free tier (M0) that is known to work well with the MongoDB Sync Connector.
 
 ## Separate MongoDB Instance for Testing
 
@@ -57,7 +57,7 @@ Note: If you are running MongoDB within a Docker container, the general principl
 It is recommended to use a separate MongoDB user account for the MongoDB Sync Connector. To create a MongoDB user account, see [MongoDB User Accounts](https://www.mongodb.com/docs/manual/tutorial/create-users/).
 The user must have certain privileges, for which you have two options, which we will discuss next:
 
-* Database-level privileges: simple to setup, e.g. for evaluating and to quickly get started
+* Database-level privileges: simple to set up, e.g. for evaluating and to quickly get started
 * Collection-level privileges: more granular control, safer
 
 ### Database-level privileges
@@ -76,13 +76,13 @@ Ensure that the user account has read and write access to the database and colle
 
 The setup requires three steps (all are required):
 
-1. Grant the `readWrite` role on each of the collection that takes part in syncing.
+1. Grant the `readWrite` role on each of the collections that take part in syncing.
    ObjectBox obviously needs to read and write to the collections during sync.
 2. Grant the `readWrite` role on the collection named `__ObjectBox_Metadata`.
    The ObjectBox Sync Connector will store a few small metadata documents in this collection.
 3. Grant the `find` and `changeStream` action on the database, e.g. by defining a custom role for the database.
    Using the predefined `read` role works too, but we recommend to keep the grants as narrow as possible.
-   This is required for the change stream processing, which allows ObjectBox to updates from MongoDB (in "realtime").
+   This is required for the change stream processing, which allows ObjectBox to receive updates from MongoDB (in "real-time").
 
 Note: When new types/collections are added, do not forget to update the grants for the user!
 
@@ -107,6 +107,6 @@ Error 1: "Could not start change stream processing (operation error code 13): no
 
 Error 2: "Could not start change stream processing (operation error code 8000): user is not allowed to do action [changeStream] on ..."
 
-Solution (primary): Doublecheck if the `find` and `changeStream` actions are granted to the database for the user. See the section on collection-level privileges above for details. 
+Solution (primary): Double-check if the `find` and `changeStream` actions are granted to the database for the user. See the section on collection-level privileges above for details. 
 
 Solution (alternative; try the primary solution first): In the Atlas UI, edit the database user and either disable "Restrict Access to Specific Clusters/Federated Database Instances/Stream Processing Instances", or, if the UI allows it, enable the Stream Processing Instances.
