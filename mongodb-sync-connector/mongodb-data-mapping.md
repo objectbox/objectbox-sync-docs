@@ -6,7 +6,7 @@ description: >-
 
 # MongoDB Data Mapping
 
-The data model used by ObjectBox defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to fields (keys) inside a MongoDB document. Thus, you should **ensure that the ObjectBox data model matches the MongoDB schema**. For example, if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
+The ObjectBox data model defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to fields (keys) inside a MongoDB document. Thus, you should **ensure that the ObjectBox data model matches the MongoDB schema**. For example, if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
 
 Some MongoDB field types like strings match ObjectBox types and thus do not need additional mapping information. More specialized types need "external types" to be defined in the ObjectBox data model to match the MongoDB field types. This page explains how to do this.
 
@@ -83,7 +83,7 @@ Most standard types do not need an explicit mapping between ObjectBox (also used
 
 ### Special Types
 
-MongoDB also has some special types, that do not directly map to ObjectBox types. To disambiguate, ObjectBox allows you to define "external property types" in the data model (also used in the ID mapping above). For example, a string on the ObjectBox (your programming language) side can  represent several types on the MongoDB side string, a UUID, or a few more. The following table shows the possible mappings:
+MongoDB defines several special types that do not have direct equivalents in ObjectBox. To handle these types, you can define **external property types** in your ObjectBox data model. This allows you to map ObjectBox properties to more specific MongoDB field types. For example, a string in your programming language can represent various MongoDB field types, such as a string, UUID, a Decimal128, etc. The following table lists the possible mappings:
 
 | ObjectBox Property Type | External Property Type |   MongoDB Field Type   |
 |:-----------------------:|:----------------------:|:----------------------:|
@@ -110,7 +110,7 @@ MongoDB also has some special types, that do not directly map to ObjectBox types
 
 The external property types are defined as part of your data model on the "client" side using the external property types annotation. Check the docs for your specific ObjectBox API.
 
-Notes:
+**Notes:**
 
 * The **Flex type** is discussed in more detail in separate sections below (nested documents and arrays). Note that the flex type is not available on all ObjectBox platforms yet.
 * **JsonToNative** is discussed in more detail in separate sections below (nested documents and arrays).
@@ -123,7 +123,7 @@ Notes:
   If you rely on these types, please contact us. We may provide at least some support for these types.
 * IDs and relations are documented separately on this page.
 
-Example: a string that is mapped to a Decimal128 on the MongoDB side
+**Example:** a string that is mapped to a Decimal128 on the MongoDB side
 
 {% tabs %}
 {% tab title="Java" %}
