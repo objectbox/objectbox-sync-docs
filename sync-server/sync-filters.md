@@ -136,6 +136,12 @@ To refer to these variables, you use a dollar sign (`$`) followed by the variabl
 email == $auth.email
 ```
 
+If the variable name includes special characters, you use the braces syntax, e.g. `${variable}`. Note that there are no escape sequences for variables, e.g. the backslash has no special meaning.
+
+```
+myProperty == ${auth.https://example.com/custom-claim}
+```
+
 Currently, the only source where variables are defined is ObjectBox Sync authenticators.
 More accurately, only the JWT authenticator provides variables as of now.
 Sync clients can use JWTs to authenticate with the Sync Server; see [JWT authentication](./jwt-authentication.md) for details.
