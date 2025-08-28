@@ -7,6 +7,17 @@ description: Recent Sync Server releases
 Version numbers refer to the Docker images and are in the format "YYYY-MM-DD".
 This changelog covers releases since May 2025.
 
+2025-08-28: JSON model fix for external types and names
+-------------------------------------------------------
+* Parsing the JSON model file with externalType or externalName field fixed
+* Sync filters: added `${...}` variable syntax for special characters
+
+2025-08-21: Sync filter fix for vector types
+--------------------------------------------
+* Fixes "Float vector indexes are not supported" when using vectors in sync filter expressions
+* MongoDB Sync Connector: add mapping for MongoDB's decimal128 type to string (via external property type)
+* Minor dependency updates
+
 2025-08-02: Filter expression string value improvements
 -------------------------------------------------------
 * Sync filter expression improvements for string values:
