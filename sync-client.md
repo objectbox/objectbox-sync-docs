@@ -6,19 +6,19 @@ description: >-
 
 # Sync Client
 
-## ObjectBox Sync enabled library
-
 {% hint style="info" %}
-Prefer to look at example code? Check out [our examples repository](https://github.com/objectbox/objectbox-sync-examples).
+Prefer to look at example code? Check out [our Sync examples repository](https://github.com/objectbox/objectbox-sync-examples).
 {% endhint %}
 
-The standard ObjectBox (database) library does not include an ObjectBox Sync implementation. Depending on the programming language, it will include the Sync **API**, but not the **implementation**. For example, ObjectBox Java in its standard version allows compiling using the Sync API, but will not provide any Sync logic due to the missing implementation.
+## ObjectBox Sync enabled library
+
+The standard ObjectBox (database) library does not include ObjectBox Sync (but may provide Sync **API interfaces**, to allow compiling).
 
 {% hint style="info" %}
 If you have not used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
 {% endhint %}
 
-It is assumed that you have been in contact with the ObjectBox team and have access to Sync Server and potentially a special Sync Client version. For some platforms, we maintain packages that you can include as dependencies.
+To get the ObjectBox Sync client library follow the instructions for your programming language:
 
 {% tabs %}
 {% tab title="Java/Kotlin (JVM, Android)" %}
@@ -29,7 +29,7 @@ Follow the [Getting Started](https://docs.objectbox.io/getting-started) page ins
 apply plugin: "io.objectbox.sync"  // instead of "io.objectbox"
 ```
 
-This will automatically add the Sync variant of the required JNI library for your platform.
+This will automatically add the Sync variant for your platform.
 
 If needed, e.g. to publish a JVM app that supports multiple platforms or to add Linux ARM support, add the libraries manually:
 
@@ -360,6 +360,66 @@ Should the client get disconnected, e.g. due to internet connection issues, it w
 Always close the client **before** closing the store. Closing the store with a still running sync client results in undefined behavior (e.g. crashes). Keep in mind that it typically is fine to **leave the sync client and store open**; once the application exits, they will be automatically closed properly.  
 {% endhint %}
 
+### Sync filter client variables
+
+Sync clients may provide variables for sync filters, see [sync filters](sync-server/sync-filters.md) and specifically the [the section on client variables](sync-server/sync-filters.md#client-variables) for general information.
+
+The client API to add sync filter variables looks like this:
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+// Init as before, but only call build():
+// SyncClient syncClient = Sync.client(...).build(); 
+syncClient.putFilterVariable("name", "value")
+syncClient.start();
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+// Init as before, but only call build():
+// val syncClient = Sync.client(...).build()
+syncClient.putFilterVariable("name", "value")
+syncClient.start()
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// coming soon!
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+// coming soon!
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+// Init as before: std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(...);
+syncClient->putFilterVariable("name", "value");
+syncClient->start();  // connect and start syncing
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+// Init as before: OBX_sync* sync_client = obx_sync(...); // plus credentials
+obx_sync_filter_variables_put(sync_client, "name", "value");
+obx_sync_start(sync_client);  // connect and start syncing
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// coming soon!
+```
+{% endtab %}
+{% endtabs %}
+
 ### Drop-off, send-only clients
 
 For some use cases, a client should only report data and thus only send updates without ever receiving any data. We call those "drop-off clients". Technically, from an API perspective, these clients do not request updates from the server. Because requesting updates is the default, the sync client API has to be configured to do "manual" updates to actually disable updates from the server. This configuration has to happen before the client starts.
@@ -581,7 +641,7 @@ var cred = objectbox.SyncCredentialsGoogleAuth(secret)
 {% endtab %}
 {% endtabs %}
 
-### No authentication (insecure)
+### No authentication (unsecure)
 
 {% hint style="danger" %}
 Never use this option in an app shipped to customers. It is inherently insecure and allows anyone to connect to the sync server.
@@ -633,7 +693,7 @@ var cred = objectbox.SyncCredentialsNone()
 
 ## Manually start
 
-Using the example above, the sync client automatically connects to the server and starts to sync. It is also possible to just build the client and then start to sync once your code is ready to.
+In the Java and Kotlin example above, the sync client automatically connects to the server and starts to sync. It is also possible to just build the client and then start to sync once your code is ready to.
 
 {% tabs %}
 {% tab title="Java" %}
