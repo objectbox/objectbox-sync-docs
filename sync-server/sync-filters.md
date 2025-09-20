@@ -9,6 +9,11 @@ Unless you want to replicate all data to all clients, you want to use sync filte
 For each user, sync filters select the data that is synchronized to the user (client).
 This enables "user-specific sync".
 
+{% hint style="info" %}
+Sync filters are generally available since ObjectBox 5, i.e. Sync Server version 2025-09-16.
+Older clients must be updated to ObjectBox 5 to use sync filters.
+{% endhint %}
+
 ## Configuration
 
 Sync filters are configured on the server side.
@@ -129,24 +134,33 @@ price >= 19.99
 
 #### Variables
 
-Variables are provided by the Sync Server to allow filtering based on user-specific data.
-To refer to these variables, you use a dollar sign (`$`) followed by the variable name.
+Variables can be used in sync filter expressions.
+Sync filter variables are resolved when a client logs in using client-specific values.
+Thus, variables enable user-specific data sync.
+
+Variables are referenced using a dollar sign (`$`) followed by the variable name:
 
 ```
 email == $auth.email
 ```
 
-If the variable name includes special characters, you use the braces syntax, e.g. `${variable}`. Note that there are no escape sequences for variables, e.g. the backslash has no special meaning.
+If the variable name includes special characters, you use the braces syntax, e.g. `${variable}`:
 
 ```
 myProperty == ${auth.https://example.com/custom-claim}
 ```
 
-Currently, the only source where variables are defined is ObjectBox Sync authenticators.
-More accurately, only the JWT authenticator provides variables as of now.
-Sync clients can use JWTs to authenticate with the Sync Server; see [JWT authentication](./jwt-authentication.md) for details.
-If successful, the Sync Server will set the JWT's claims as variables that can be used in the filter expressions.
-For example, JWTs typically have an "email" claim, which is then exposed as a variable using the "auth." prefix as "auth.email".
+{% hint style="info" %}
+Note that variable names do not support escape sequences, e.g. the backslash has no special meaning.
+{% endhint %}
+
+#### Auth variables
+
+"Auth" variables are defined by ObjectBox Sync Server authenticators when a client logs in.
+At this point, only the JWT authenticator provides variables.
+It is used when Sync clients provide JWTs to authenticate; see [JWT authentication](./jwt-authentication.md) for details.
+Once the JWT has been validated, the Sync Server sets the JWT's claims as sync variables using the "auth." prefix.
+For example, JWTs typically have an "email" claim, which is then exposed as a variable named "auth.email".
 
 Let's say you want to group users into teams.
 Check with your JWT provider how to add custom claims to your JWTs.
@@ -156,17 +170,34 @@ Then, you can use a filter expression like `team == $auth.team` to enable group-
 Note: future versions of ObjectBox Sync will have additional variables.
 If the JWT-based variables are not sufficient for your use case, please contact ObjectBox support.
 
+#### Client variables
+
+ObjectBox Sync Clients can also define variables for sync filters.
+Before logging in, the client API allows to add variables using key/value pairs (strings).
+These are sent to the Sync Server with the login request and can be used in sync filter expressions using the `client.` prefix.
+
+For example, assume we want to group data into teams and allow clients can freely choose a team.
+Let's say a client adds a filter variable "team" with value "red" before logging in.
+A filter expression `team == $client.team` would then match only objects where the `team` property is "red" for this client.
+
+{% hint style="warning" %}
+Client variables are by definition provided by clients.
+Given a certain effort, an attacker could forge requests to provide arbitrary values.
+The server has no way to verify the values.
+Thus, avoid client variables for security- or business-critical matters.
+{% endhint %}
+
 ### Logical Operators
 
 In filter expressions, you can use the logical operators to combine conditions.
 
-`AND` combines conditions where both must be true. `AND` has higher precedence than `OR`.
+`AND` combines two conditions where both must be true. `AND` has higher precedence than `OR` (`AND` is evaluated first).
 
 ```
 age >= 18 AND status == "active"
 ```
 
-`OR` combines conditions where at least one must be true. `OR` has lower precedence than `AND`.
+`OR` combines two conditions where at least one must be true. `OR` has lower precedence than `AND`.
 
 ```
 category == "urgent" OR priority > 5
@@ -174,10 +205,20 @@ category == "urgent" OR priority > 5
 
 #### Precedence and Grouping
 
-Use parentheses to control the order of evaluation:
+Without parentheses, `AND` has higher precedence than `OR`. 
+
+Thus, the following two expressions are equivalent, e.g. requires the "premium" status or a combination of minimum age and score:
+```
+status == "premium" OR age >= 21 AND score >= 100 
+```
 
 ```
-(age >= 18 AND age <= 65) OR status == "premium"
+status == "premium" OR (age >= 21 AND score >= 100) 
+```
+
+Use parentheses to control the order of evaluation; e.g. to (always) require a minimum score and either premium status or a minimum age:  
+```
+(status == "premium" OR age >= 21) AND score >= 100 
 ```
 
 #### Complex Examples
@@ -200,20 +241,26 @@ Numeric ranges and string patterns:
 (price >= 10.0 AND price <= 100.0) AND description *= "sale"
 ```
 
-## Current limitations
+## Performance
 
-Sync filters are still in beta.
-They have a few known limitations that will be addressed in one of the next versions:
+Since sync filters are used to create queries, especially when clients sync for the first time.
+Thus, what makes a query performant also applies to sync filters.
 
-* When sync filter expressions change, it's not yet handled.
-  Clients may still keep old data previously synced by old filters.
-  In a new version, we will likely enforce a complete sync from scratch when filters change
-  so that clients have consistent data.
-* It's possible to change the value of a property, which is used in a sync filter expression.
+Especially for equality conditions (`==`), it is highly recommended to use indexes for the properties used in the filter expressions (unless you only have a few objects of a type, e.g. less than a hundred).
+This is done in the standard ObjectBox way, i.e. using the index annotation (`@Index` for most languages) on the property in the data model.
+
+## Caveats
+
+Sync filters have some caveats to be aware of (future versions may or may not address them):
+
+* **Do not change values of properties used in Sync filters.** 
+  If you rely on this, delete the object with the old value instead and insert a new object with the new value.
   For example, consider a property `team` that is used in a sync filter expression.
   One client changes the team from "blue" to "green".
   The server now correctly syncs the change to "team green" clients.
-  However, it is not yet deleted from "team blue" clients.
+  However, it is not yet deleted from "team blue" clients that have synced before.
+  Thus, use the delete and insert approach instead:
+  the server will correctly remove the object from "team blue" clients.
 * JWT claims are only the first variables available to sync filter expressions.
-  We are currently collecting customer requirements to add more variables and user information.
+  We are collecting customer requirements to add more variables and user information.
   Check with the ObjectBox team to ensure that your needs are covered.

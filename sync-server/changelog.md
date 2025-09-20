@@ -7,6 +7,15 @@ description: Recent Sync Server releases
 Version numbers refer to the Docker images and are in the format "YYYY-MM-DD".
 This changelog covers releases since May 2025.
 
+2025-09-16: Sync filter updates, client filter variables
+--------------------------------------------------------
+**Note: Sync filters require version 5.0 of ObjectBox sync clients.
+Until all client SDKs are updated to version 5.0, the Docker image is not tagged as "latest". Thus you need to use the specific version tag.**
+
+* ObjectBox version 5.0
+* Detect when sync filters are changed for a client and enforce a complete sync from scratch.
+* Client filter variables: clients can now send variables to the Sync Server, which are available in sync filter expressions.
+
 2025-08-28: JSON model fix for external types and names
 -------------------------------------------------------
 * Parsing the JSON model file with externalType or externalName field fixed
