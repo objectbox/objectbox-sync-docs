@@ -132,13 +132,15 @@ age == 25
 price >= 19.99
 ```
 
-#### Variables
+#### Variable Operands
 
-Variables can be used in sync filter expressions.
-Sync filter variables are resolved when a client logs in using client-specific values.
+Typically, sync filter operands are "variables", which are resolved when a client logs in using client-specific values.
 Thus, variables enable user-specific data sync.
+They are discussed in detail in the [Variables](#variables) section below.
 
-Variables are referenced using a dollar sign (`$`) followed by the variable name:
+## Variables
+
+In filter conditions, variables are referenced using a dollar sign (`$`) followed by the variable name:
 
 ```
 email == $auth.email
@@ -154,7 +156,14 @@ myProperty == ${auth.https://example.com/custom-claim}
 Note that variable names do not support escape sequences, e.g. the backslash has no special meaning.
 {% endhint %}
 
-#### Auth variables
+{% hint style="info" %}
+Stick to "reasonable" variable names.
+If possible, use only letters, numbers, and underscores, e.g. avoid special characters and spaces.
+One exce
+While the Sync Server may not enforce rules yet, this may become required in the future.
+{% endhint %}
+
+### Auth variables
 
 "Auth" variables are defined by ObjectBox Sync Server authenticators when a client logs in.
 At this point, only the JWT authenticator provides variables.
@@ -170,7 +179,7 @@ Then, you can use a filter expression like `team == $auth.team` to enable group-
 Note: future versions of ObjectBox Sync will have additional variables.
 If the JWT-based variables are not sufficient for your use case, please contact ObjectBox support.
 
-#### Client variables
+### Client variables
 
 ObjectBox Sync Clients can also define variables for sync filters.
 Before logging in, the client API allows to add variables using key/value pairs (strings).
@@ -181,11 +190,15 @@ Let's say a client adds a filter variable "team" with value "red" before logging
 A filter expression `team == $client.team` would then match only objects where the `team` property is "red" for this client.
 
 {% hint style="warning" %}
-Client variables are by definition provided by clients.
-Given a certain effort, an attacker could forge requests to provide arbitrary values.
-The server has no way to verify the values.
-Thus, avoid client variables for security- or business-critical matters.
+Client variables are by definition provided by clients; the server has no way to verify the values.
+They are fine for preferences-like data, which clients can freely choose from.
+Avoid client variables for security- or business-critical matters, especially if values can be looked up or are guessable.
+Given a certain effort, a malicious client could use another client's variable values.
+This can be mitigated by using none-guessable values like long enough random values, e.g. UUIDv4,
+which only the client can know.
 {% endhint %}
+
+## Combining Filter Conditions
 
 ### Logical Operators
 
@@ -203,7 +216,7 @@ age >= 18 AND status == "active"
 category == "urgent" OR priority > 5
 ```
 
-#### Precedence and Grouping
+### Precedence and Grouping
 
 Without parentheses, `AND` has higher precedence than `OR`. 
 
@@ -221,7 +234,7 @@ Use parentheses to control the order of evaluation; e.g. to (always) require a m
 (status == "premium" OR age >= 21) AND score >= 100 
 ```
 
-#### Complex Examples
+### Complex Examples
 
 Multiple conditions with different operators:
 
