@@ -26,8 +26,9 @@ While ObjectBox Sync is an established product, the MongoDB Connector is in its 
 <tr><td>End of May 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 2</td><td>Sync trials via public Docker images, map nested documents to JSON string</td></tr>
 <tr><td>July 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 3</td><td>Improved MongoDB grant checks and error reporting</td></tr>
 <tr><td>August, 1st, 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 4</td><td>Server-side rules to select data for sync per user</td></tr>
-<tr><td>August, 25th, 2025</td><td align="center"></td><td>Beta 5</td><td>Release candidate, improved user specific sync</td></tr>
-<tr><td>September, 1st, 2025</td><td align="center"></td><td>1.0</td><td>Initial release incorporating most important user feedback</td></tr>
+<tr><td>September, 16th, 2025</td><td align="center">✅</td><td>RC</td><td>Release candidate: client-provided sync filter variables, sync filter change detection</td></tr>
+<tr><td>End of September, 2025</td><td align="center"></td><td>GA</td><td>Generally available / production ready</td></tr>
+<tr><td>October 2025</td><td align="center"></td><td>1.0 (GA)</td><td>Production ready</td></tr>
 </tbody></table>
 
 We'll update the plan regularly. See also the general [Sync Server changelog](../sync-server/changelog.md) for details on releases.
