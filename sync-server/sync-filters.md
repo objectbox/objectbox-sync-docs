@@ -10,16 +10,17 @@ For each user, sync filters select the data that is synchronized to the user (cl
 This enables "user-specific sync".
 
 {% hint style="info" %}
-Sync filters are generally available since ObjectBox 5, i.e. Sync Server version 2025-09-16.
-Older clients must be updated to ObjectBox 5 to use sync filters.
+Sync filters are generally available since **ObjectBox 5**, i.e. Sync Server version 2025-09-16 or later.
+Older ObjectBox clients must be updated to ObjectBox 5 when using sync filters.
 {% endhint %}
 
 ## Configuration
 
-Sync filters are configured on the server side.
+The typical sync filters are configured on the server side.
 For each type of your data model, you can configure a filter expression (or "rule").
 This is done in the Sync Server JSON configuration file (there are no CLI parameters for this for good reasons).
-While it's a good idea to keep the configuration file in a version control system, e.g., git, it's especially important when you add sync filters.
+It's generally a good idea to keep this configuration file in a version control system (git)
+and with sync filters even more so.
 
 ### Add filter expressions to the JSON configuration
 
