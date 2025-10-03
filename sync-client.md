@@ -364,36 +364,39 @@ Always close the client **before** closing the store. Closing the store with a s
 
 Sync clients may provide variables for sync filters, see [sync filters](sync-server/sync-filters.md) and specifically the [the section on client variables](sync-server/sync-filters.md#client-variables) for general information.
 
-The client API to add sync filter variables looks like this:
+The client APIs to add sync filter variables take name/value pairs (both strings) and look like this:
 
 {% tabs %}
 {% tab title="Java" %}
 ```java
-// Init as before, but only call build():
-// SyncClient syncClient = Sync.client(...).build(); 
-syncClient.putFilterVariable("name", "value")
-syncClient.start();
+SyncClient syncClient = Sync.client(...)
+                            .filterVariable("name", "value")
+                            .buildAndStart(); 
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-// Init as before, but only call build():
-// val syncClient = Sync.client(...).build()
-syncClient.putFilterVariable("name", "value")
-syncClient.start()
+val syncClient = Sync.client(...)
+                     .filterVariable("name", "value")
+                     .buildAndStart()
 ```
 {% endtab %}
 
 {% tab title="Swift" %}
 ```swift
-// coming soon!
+let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
+                                 credentials: SyncCredentials.makeNone(),
+                                 filterVariables: ["name": "value"])
+try client.start()
 ```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
 ```dart
-// coming soon!
+final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none()
+                               filterVariables: {"name": "value"});
+syncClient.start();
 ```
 {% endtab %}
 
@@ -415,7 +418,7 @@ obx_sync_start(sync_client);  // connect and start syncing
 
 {% tab title="Go" %}
 ```go
-// coming soon!
+// coming soon
 ```
 {% endtab %}
 {% endtabs %}

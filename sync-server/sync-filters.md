@@ -184,17 +184,35 @@ If the JWT-based variables are not sufficient for your use case, please contact 
 
 ObjectBox Sync Clients can also define variables for sync filters.
 Before logging in, the client API allows to add variables using key/value pairs (strings).
+For API details, see [Sync Client](../sync-client.md#sync-filter-client-variables).
 These are sent to the Sync Server with the login request and can be used in sync filter expressions using the `client.` prefix.
 
 For example, assume we want to group data into teams and allow clients can freely choose a team.
 Let's say a client adds a filter variable "team" with value "red" before logging in.
 A filter expression `team == $client.team` would then match only objects where the `team` property is "red" for this client.
 
-{% hint style="warning" %}
+#### Property type conversion
+
+While you provide the filter variable values as a string, you can use it also for non-string properties.
+For example, if a filter condition refery to an int property "year" and the client provided value is `"2025"` (string),
+it's automatically parsed to the int value `2025`.
+The following (property) typesare supported:
+
+* Strings (no conversion needed)
+* Integers, e.g. "42" (all integer property types from 8 to 64 bits are supported)
+* Dates (timestamp in milliseconds/nanoseconds since the epoch)
+* Floating point numbers, e.g. "3.14159" 
+* Boolean ("true" vs. all other strings)
+
+#### When (not) to use client variables
+
 Client variables are by definition provided by clients; the server has no way to verify the values.
 They are fine for preferences-like data, which clients can freely choose from.
+
+{% hint style="warning" %}
 Avoid client variables for security- or business-critical matters, especially if values can be looked up or are guessable.
-Given a certain effort, a malicious client could use another client's variable values.
+Given a certain effort, if this information is "leaked" or guessed,
+a malicious client could use these values to access data it should not have access to.
 This can be mitigated by using none-guessable values like long enough random values, e.g. UUIDv4,
 which only the client can know.
 {% endhint %}
