@@ -8,6 +8,16 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-10-10: JWT and MongoDB improvements
+----------------------------------------
+Update advise: update asap if you are using MongoDB Sync Connector.
+
+ObjectBox version: 5.0.0-rc-2025-10-10
+
+* JWT and Sync filters: values from nested claims in the JWT JSON are now available in sync filters
+* JWT: allow `aud` to be a array (single string only)
+* MongoDB connector: making Sync to MongoDB more robust, e.g. always using majority read concern
+
 2025-10-02: Minor fixes and improvements
 ----------------------------------------
 **Note: Sync filters require version 5.0 of ObjectBox sync clients.**
