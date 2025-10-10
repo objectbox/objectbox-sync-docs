@@ -171,11 +171,44 @@ At this point, only the JWT authenticator provides variables.
 It is used when Sync clients provide JWTs to authenticate; see [JWT authentication](./jwt-authentication.md) for details.
 Once the JWT has been validated, the Sync Server sets the JWT's claims as sync variables using the "auth." prefix.
 For example, JWTs typically have an "email" claim, which is then exposed as a variable named "auth.email".
+In sync filters, you can refer to this as `$auth.email`.
+
+#### Custom claims
+
+JWTs are basically encoded and signed JSON objects.
+While some JWT properties are (more or less) standardized like the "aud" and "iss" claims,
+JWT allows you to add additional properties to the JSON.
+These "custom claims" can be very useful for sync filters 
+as they offer a standard way to provide client-specific data securely to the Sync Server.
 
 Let's say you want to group users into teams.
 Check with your JWT provider how to add custom claims to your JWTs.
 Also, at the JWT provider side, assign users to teams.
 Then, you can use a filter expression like `team == $auth.team` to enable group-based sync.
+
+#### Nested custom claims
+
+Your JWT provider may only support custom claims that are nested JSON objects.
+You can access these values via the dot notation.
+
+For example, let's assume your decoded JWT looks like this:
+
+```JSON
+{
+  "email": "yolo@example.com",
+  "user_properties": {
+    "team": {
+      "v": "blue"
+    }
+  },
+  "other_properties": "..."
+}
+```
+
+Then, you can access the team value via `$auth.user_properties.team.v`,
+e.g. a complete sync filter expression could look like this: `team == $auth.user_properties.team.v`.
+
+#### Future versions
 
 Note: future versions of ObjectBox Sync will have additional variables.
 If the JWT-based variables are not sufficient for your use case, please contact ObjectBox support.
