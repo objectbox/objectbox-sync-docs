@@ -8,6 +8,16 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-08: MongoDB Connector improvements
+------------------------------------------
+ObjectBox version: 5.0.0-2025-11-08
+
+* The import phase of "MongoDB full sync" is now faster.
+  By using larger batches, processing got more efficient and also results in fewer Sync history entries.
+* Many-to-many relations synced from MongoDB are now considered by sync filters more reliably.
+  With MongoDB, we saw some scenarios where many-to-many relations where synced before the actual target objects.        
+  Since sync filters did not have sufficient information, these relations were filtered out before.
+
 2025-10-10: JWT and MongoDB improvements
 ----------------------------------------
 Update advise: update asap if you are using MongoDB Sync Connector.
