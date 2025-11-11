@@ -101,7 +101,7 @@ Some options have a default value, so if you are OK with the default, there is n
 
 Example file:
 
-```javascript
+```json
 {
     "dbDirectory": "objectbox",
     "dbMaxSize": "100G",

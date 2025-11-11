@@ -4,15 +4,15 @@ description: >-
   synchronization.
 ---
 
-# ObjectBox Sync Connector Setup
+# ObjectBox Sync Connector setup
 
 Once you have a [MongoDB instance running](mongodb-configuration.md), you can connect the ObjectBox Sync Server to it.
 
-## ObjectBox Preparations
+## ObjectBox preparations
 
 Before using the MongoDB Sync Connector, let us ensure that the ObjectBox Sync Server is up and running. This involves basically two steps: having a data model and running the ObjectBox Sync Server. Read on for details.
 
-### Create and Provide a Data Model
+### Create and provide a data model
 
 {% hint style="info" %}
 The ObjectBox data model defines which collections are synced with MongoDB (and much more).
@@ -33,7 +33,7 @@ To avoid any later issues, run and test Sync Server without connecting to MongoD
 
 See the [sync-server](../sync-server/ "mention") page on how to run Sync Server.
 
-By then you should be able to reach the ObjectBox Sync Server [Admin web app](../sync-server/#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look similar to this:
+By then you should be able to reach the ObjectBox Sync Server [Admin web app](../sync-server/README.md#admin-web-ui). Navigate to the "Schema" page to see your data model, which should look similar to this:
 
 <figure><img src="../.gitbook/assets/sync-server-schema.webp" alt="Admin web app schema page showing a Tape with its properties"><figcaption><p>Figure 1: Data model (schema), which will be synced with MongoDB</p></figcaption></figure>
 
@@ -83,10 +83,9 @@ Alternatively, configure the MongoDB connection in the Sync Server configuration
 
 ```json
 {
-    ...
     "mongoDb": {
         "url": "mongodb://1.2.3.4:27017",
-        "database": "db123"
+        "database": "MyDatabase"
     }
 }
 ```
@@ -110,7 +109,45 @@ Instead, one usually copies a database to a new name and deletes the old one ("d
 This is another case of "switching" the database,
 so you also must delete the ObjectBox database and do a complete full sync with MongoDB from scratch.
 
-## Initial Import from MongoDB
+## All configuration options
+
+While `url` and `database` are the mandatory options (explained in the section above),
+the JSON configuration for MongoDB covers additional options.
+
+```json
+{
+    "mongoDb": {
+        "url": "mongodb://1.2.3.4:27017",
+        "database": "MyDatabase",
+        "automaticInitialImport": true,
+        "strictConversionsFromMongoDb": true,
+        "strictConversionsToMongoDb": true,
+        "emptyListForAbsentValuesFromMongoDb": true      
+    }
+}
+```
+
+Each option explained:
+
+* `automaticInitialImport`: ObjectBox sync with MongoDB usually starts with an initial full sync/import from MongoDB.
+  This is usually triggered manually through the Admin UI,
+  but setting this flag will trigger the import automatically on startup.
+* `emptyListForAbsentValuesFromMongoDb`: For list (vector/array) property types with no value present in MongoDB,
+  use empty lists when converting to ObjectBox property values.
+  By default, absent values are also absent in ObjectBox typically resulting in null values.
+  @note if the value is an explicit null in MongoDB, it will remain null in ObjectBox.
+* `strictConversionsFromMongoDb`: Enables strict conversions of data values from ObjectBox objects to MongoDB documents.
+  By default, strict mode is off to ensure that convertable data is synced.
+  On conversion errors, the sync to MongoDB will fail without syncing the object.
+  This may completely stop the sync from ObjectBox to MongoDB.
+  Thus, you should carefully consider the trade-off before enabling this option for production use.
+* `strictConversionsToMongoDb`: Enables strict conversions of data values from MongoDB documents to ObjectBox objects.
+  By default, strict mode is off to ensure that convertable data is synced.
+  On conversion errors, the sync to ObjectBox will fail without syncing the document.
+  This may completely stop the sync from MongoDB to ObjectBox.
+  Thus, you should carefully consider the trade-off before enabling this option for production use.
+
+## Initial import from MongoDB
 
 To fully enable data synchronization, an initial import from MongoDB is necessary. This syncs all collections from MongoDB, which are part of the ObjectBox data model, into ObjectBox. It performs this with snapshot isolation level to offer a maximum level of consistency, e.g. concurrent updates from other systems do not interfere with this process (when done in accordance with MongoDB transaction semantics). From this snapshot onwards, all changes are synchronized continuously between MongoDB and ObjectBox. If one system goes offline, the synchronization will pick up where it left off, so no change will be lost.
 
@@ -137,7 +174,7 @@ As you can see in the image above, you have the possibility to abort an ongoing 
 
 A finished import will show up as "Completed" in the "State" column on a green background. At that point, it is a good time to check the logs to ensure the sync went smoothly. Also, having a look at the "Data" page will give you a good overview of the data imported.
 
-## Viewing Imports
+## Viewing imports
 
 As seen in a previous screenshot above, the "Full Sync" MongoDB page shows a table of all current and past import processes. This history gives you a good overview of what was imported and when. These are the columns:
 
@@ -156,7 +193,7 @@ You can also see the timeline of an import/sync process by clicking on the state
 
 <figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt="MongoDB Example Timeline of a completed sync process in Admin UI" width="563"><figcaption><p>Figure 5: MongoDB Example Timeline of a completed sync</p></figcaption></figure>
 
-## Current Caveats of full Imports
+## Current caveats of full imports
 
 Now that you can import an entire MongoDB database into ObjectBox, you may get huge datasets in ObjectBox that span several GB and more. It is a good idea to validate full datasets on the ObjectBox Sync Server, but there are a few caveats to consider on the client side as of now:
 

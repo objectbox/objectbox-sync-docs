@@ -8,6 +8,15 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-11: New MongoDB Connector option flags
+----------------------------------------------
+ObjectBox version: 5.0.0-2025-11-11
+
+* When syncing from MongoDB, there is a new global flag that creates empty lists for absent list values.
+* For data conversion from/to MongoDB, there is a new strict option for each direction,
+  which will stop sync on conversion errors.
+  This may be useful e.g. during development to ensure no data glitch is forgotten.
+
 2025-11-08: MongoDB Connector improvements
 ------------------------------------------
 ObjectBox version: 5.0.0-2025-11-08
