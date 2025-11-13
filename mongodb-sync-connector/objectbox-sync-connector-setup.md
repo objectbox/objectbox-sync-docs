@@ -193,15 +193,6 @@ You can also see the timeline of an import/sync process by clicking on the state
 
 <figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt="MongoDB Example Timeline of a completed sync process in Admin UI" width="563"><figcaption><p>Figure 5: MongoDB Example Timeline of a completed sync</p></figcaption></figure>
 
-## Current caveats of full imports
-
-Now that you can import an entire MongoDB database into ObjectBox, you may get huge datasets in ObjectBox that span several GB and more. It is a good idea to validate full datasets on the ObjectBox Sync Server, but there are a few caveats to consider on the client side as of now:
-
-* You need to update the ObjectBox sync clients to the new version 4.3 (or later, check release notes).
-* User-specific (rule-based) sync will be available in a future beta release (see roadmap). Until then all data will be synced to the clients.
-
-We are working on these aspects with high priority and will keep you updated on progress.
-
 ### MongoDB Snapshot Isolation and Timeouts
 
 {% hint style="info" %}

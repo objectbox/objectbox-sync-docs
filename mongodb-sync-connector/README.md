@@ -7,7 +7,7 @@ description: Bi-directional Data Sync with MongoDB - on-premise and to the cloud
 ObjectBox Data Sync syncs data with MongoDB using the integrated [MongoDB Sync Connector](https://objectbox.io/mongodb/). Changes made on ObjectBox clients are synchronized in real-time to MongoDB and vice versa.
 
 {% hint style="info" %}
-[Get your MongoDB Sync Connector Alpha](https://objectbox.io/mongodb/)
+Use MongoDB as your backend and ObjectBox as your superfast local database.
 {% endhint %}
 
 ## Bi-directional Synchronization with MongoDB
@@ -16,22 +16,14 @@ ObjectBox Data Sync syncs data with MongoDB using the integrated [MongoDB Sync C
 
 ObjectBox Sync brings your data in MongoDB to the edge (e.g. mobile and IoT devices, big and small servers) and synchronizes changes back to MongoDB. By using ObjectBox Sync, you can make your MongoDB data always available: continue to work offline and sync in real-time when online.
 
-## Roadmap
+## Migrating from Realm
 
-If you are coming from Atlas Device Sync, you already know that it [reaches its end-of-life](https://www.mongodb.com/docs/atlas/app-services/deprecation/) on **September 30, 2025**. Thus, it's a good idea to [contact ObjectBox asap](https://objectbox.io/mongodb/) to get started with your migration.
+If you are coming from Atlas Device Sync, you already know that it [reached its official end-of-life](https://www.mongodb.com/docs/atlas/app-services/deprecation/) on **September 30, 2025**, and maybe you got an extension to a later date. In any case, it's a good idea to get started with [migrating from Realm to ObjectBox](https://objectbox.io/dev-how-to/migrate/realm-to-objectbox/guide) asap. Like Realm, ObjectBox has a deep integration with the programming language allowing you to work on (persistent) objects directly; no SQL required.
 
-While ObjectBox Sync is an established product, the MongoDB Connector is in its early stages. You can still get started with POCs or integrations right away. The timeline below enables you to align your development with ours and pick up speed. Once new features are out, you profit immediately.
+## Production ready
 
-<table><thead><tr><th width="134.93328857421875">Planned Date</th><th width="94.73333740234375" align="center">Released</th><th width="148.5333251953125">Connector Version</th><th>Main features</th></tr></thead><tbody><tr><td>October 2024</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 1</td><td>Two-way sync between MongoDB and ObjectBox for changes that are happening live.</td></tr><tr><td>January 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 2</td><td>JWT authentication, Mapping for all MongoDB data types</td></tr><tr><td>February 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 3</td><td>Relation mapping (to-one and many-to-many)</td></tr><tr><td>March 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 4</td><td>Support for additional MongoDB ID types</td></tr><tr><td>April 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Alpha 5 (2025-04-01)</td><td>Use MongoDB transactions, better change tracking, improved error handling, improved MongoDB Admin page</td></tr><tr><td>May 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 1<br>(2025-05-05)</td><td>Import initial data from MongoDB, pick-up sync at any point. New admin page for full-syncs.</td></tr>
-<tr><td>End of May 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 2</td><td>Sync trials via public Docker images, map nested documents to JSON string</td></tr>
-<tr><td>July 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 3</td><td>Improved MongoDB grant checks and error reporting</td></tr>
-<tr><td>August, 1st, 2025</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td>Beta 4</td><td>Server-side rules to select data for sync per user</td></tr>
-<tr><td>September, 16th, 2025</td><td align="center">✅</td><td>RC</td><td>Release candidate: client-provided sync filter variables, sync filter change detection</td></tr>
-<tr><td>October, 2nd, 2025</td><td align="center">✅</td><td>RC2</td><td>Release candidate 2: minor fixes and improvements</td></tr>
-<tr><td>October 2025</td><td align="center"></td><td>GA</td><td>Generally available / Production ready</td></tr>
-</tbody></table>
-
-We'll update the plan regularly. See also the general [Sync Server changelog](../sync-server/changelog.md) for details on releases.
+The ObjectBox MongoDB Sync Connector reached GA status in October 2025.
+It is already being successfully used with large datasets and complex data models.
 
 ## Understanding ObjectBox and MongoDB
 

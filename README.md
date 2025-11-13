@@ -34,7 +34,7 @@ What follows is an overview of how the Sync feature works.
 ## Sync Concepts
 
 Typically you **interact with your local ObjectBox database**. It does not matter if the device is online or offline. You get and put objects using the regular ObjectBox APIs. If you are interested in details on how this is done, please refer to the language binding of your choice:\
-[Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [Go](https://golang.objectbox.io/), [C++](https://cpp.objectbox.io/), [Dart/Flutter](https://github.com/objectbox/objectbox-dart) (beta), [Python](https://github.com/objectbox/objectbox-python) (alpha).
+[Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [Go](https://golang.objectbox.io/), [C++](https://cpp.objectbox.io/), [Dart/Flutter](https://github.com/objectbox/objectbox-dart), [Python](https://github.com/objectbox/objectbox-python) (alpha).
 
 The same APIs apply to synced objects, e.g. you use the same `put` call on a synced object as you would do for any (non-synced) object. Under the hood however, ObjectBox will synchronize those objects to their destination device, e.g. some server. Thus, those objects will become available outside of originating device.
 
