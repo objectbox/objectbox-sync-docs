@@ -8,6 +8,15 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-13: Faster Sync to MongoDB
+----------------------------------
+ObjectBox version: 5.0.0-2025-11-11
+
+* Data synchronization to MongoDB is now faster for transactions with multiple objects of the same type.
+  Note: if you update multiple objects, use a single transaction to improve performance (in general).
+  Hint: try to avoid switching object types for put and remove operations often;
+  MongoDB is faster for consecutive operations of the same object type.
+
 2025-11-11: New MongoDB Connector option flags
 ----------------------------------------------
 ObjectBox version: 5.0.0-2025-11-11
