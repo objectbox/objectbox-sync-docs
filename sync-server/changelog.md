@@ -8,6 +8,14 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-15: Fix Sync filter performance
+---------------------------------------
+ObjectBox version: 5.0.0-2025-11-15
+
+* Fixed an issue with Sync filters that led to poor client synchronization performance.
+* Admin: fix "Clients TXs behind" Sync statistic to consider sync filters
+* Minor tweak for bulk put operations to MongoDB
+
 2025-11-13: Faster Sync to MongoDB
 ----------------------------------
 ObjectBox version: 5.0.0-2025-11-11
