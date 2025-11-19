@@ -8,6 +8,14 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-19: Debug log flags via JSON config
+-------------------------------------------
+ObjectBox version: 5.0.0-2025-11-19
+
+* JSON config: added debug log flags for internal components
+* JSON config: detect unknown JSON elements, e.g. fail on typos
+* MongoDB export: removed (excessive) debug logs for compression
+
 2025-11-15: Fix Sync filter performance
 ---------------------------------------
 ObjectBox version: 5.0.0-2025-11-15
