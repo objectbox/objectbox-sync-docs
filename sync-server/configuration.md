@@ -8,10 +8,10 @@ description: >-
 
 There are two approaches to configure ObjectBox Sync Server:
 
-* command line parameters (CLI): simple/quick approach for most settings (limitations apply)
+* command line parameters (CLI): simple/quick approach for basic settings (limitations apply)
 * configuration file (JSON): recommended for complex settings and required for sync filters and clusters
 
-Note that both approaches can be [combined](configuration.md#combining-cli-and-file-configuration).
+Note that both approaches can be [combined](configuration.md#combining-cli-and-file-configuration) (CLI parameters take precedence over file configuration).
 
 ## Configuration via command line (CLI)
 
@@ -93,29 +93,30 @@ More details about the options can be found in the section on the configuration 
 
 ## Configuration file
 
-In the long run, you should store the configuration in a JSON file. This is the preferred choice if the options are getting more complex (e.g. you can check in the configuration file into version control). Also, it's the only way to configure a [cluster](sync-cluster.md).
+In the long run, you should store the configuration in a JSON file. This is the preferred choice if our options are getting more complex.
+Also, you can check in the configuration file into version control.
+
+Note that some options are only available in the config file (not the CLI):
+
+* [Cluster](sync-cluster.md)
+* [Sync Filters](sync-filters.md)
+* [Individual debug log flags](#developer-and-debug-options)
 
 By default, the configuration file is read from `sync-server-config.json` in the current working directory. To use a different location, supply it via the `--conf <path-to-config>` option.
 
 Some options have a default value, so if you are OK with the default, there is no need to specify it.
 
-Example file:
+Example file for a local development setup (not intended for production use as auth is disabled):
 
 ```json
 {
     "dbDirectory": "objectbox",
     "dbMaxSize": "100G",
-    "modelFile": "",
+    "modelFile": "objectbox-model.json",
     "bind": "ws://0.0.0.0:9999",
     "adminBind": "http://127.0.0.1:9980",
-    "adminThreads": 4,
-    "certificatePath": "",
-    "auth": {
-        "sharedSecret": "",
-        "google": {
-            "clientIds": []
-        }
-    }
+    "unsecuredNoAuthentication": true,
+    "debugLog": true
 }
 ```
 
@@ -136,6 +137,36 @@ Example file:
 * `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and should only be used to simplify test setups.
 * `debugLog` enable debug logs with `true`
 
+When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
+This is done using boolean flags in the `log` JSON object (all default to `false` when omitted).
+
+- **transactionRead**: Log the lifecycle of read transactions (begin/commit/abort).
+- **transactionWrite**: Log the lifecycle of write transactions and commits to help diagnose write-related issues.
+- **queries**: Log executed queries to aid in understanding which lookups are performed at runtime.
+- **queryParameters**: Log parameter values bound to queries. May include sensitive data.
+- **asyncQueue**: Log asynchronous operations.
+- **cacheHits**: Log cache hits and misses to evaluate cache effectiveness (note: only a few metadata items are cached).
+- **cacheAll**: Log all cache operations (puts/gets/evictions); very verbose and intended for deep diagnostics.
+- **tree**: Log special tree data models.
+- **exceptionStackTrace**: Attempt to include stack traces for certain internal error logs (Linux-only, experimental).
+- **threadingSelfTest**: Run a quick threading self-test at startup and log its progress and results.
+- **wal**: Enable detailed write-ahead logging (WAL, not used by default) debug output.
+- **idMapping**: Log how IDs are mapped between local and global spaces during synchronization.
+- **syncFilterVariables**: Log values of sync filter variables per client (e.g. derived from JWT or the login message).
+  May include sensitive data.
+
+Example to enable sync-related debug logs (this quickly gets excessive; don't do this by default):
+
+```json
+{
+  "debugLog": true,
+  "log": {
+    "idMapping": true,
+    "syncFilterVariables": true
+  }
+}
+```
+
 ### Authentication options
 
 * `auth.jwt` JWT is the primary method for authentication. See the [JWT authentication page](jwt-authentication.md) for details.
@@ -144,7 +175,7 @@ Example file:
 
 * `syncFilters` this JSON object contains all filter expressions.
   Each filter has the type as key and a string value as the expression.
-  Details are in the [sync filters](sync-filters.md) page.
+  Details are available in the [sync filters](sync-filters.md) page.
 
 ### Advanced options
 
