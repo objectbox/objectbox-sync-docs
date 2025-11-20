@@ -11,24 +11,26 @@ This enables "user-specific sync".
 
 {% hint style="info" %}
 Sync filters are generally available since **ObjectBox 5**, i.e. Sync Server version 2025-09-16 or later.
-Older ObjectBox clients must be updated to ObjectBox 5 when using sync filters.
+Older ObjectBox clients must be updated to ObjectBox 5.0 or later when using sync filters.
 {% endhint %}
 
 ## Configuration
 
-The typical sync filters are configured on the server side.
-For each type of your data model, you can configure a filter expression (or "rule").
-This is done in the Sync Server JSON configuration file (there are no CLI parameters for this for good reasons).
+Sync filters are defined as part of the Sync Server configuration (via the JSON file only).
+For each type of your data model, you can configure a sync filter expression (aka "rule").
+
+{% hint style="info" %}
 It's generally a good idea to keep this configuration file in a version control system (git)
 and with sync filters even more so.
+{% endhint %}
 
 ### Add filter expressions to the JSON configuration
 
 The JSON configuration file is typically named `sync-server-config.json`.
 For general details and other configuration options, please check the [configuration](configuration.md) page.
 
-All sync filters are defined in the `syncFilters` JSON object.
-Filters are defined per data type (from your ObjectBox data model) and the keys are the type names.
+All sync filters are defined inside a `syncFilters` JSON object.
+Filters are defined per data type (from your ObjectBox data model) with the type names as JSON keys.
 The value is a string and contains the filter expression.
 
 The JSON configuration is best illustrated by an example:
@@ -52,6 +54,12 @@ The `Customer` filter filters on the `email` property and uses a variable called
 Typically, sync filters use variables as these allow for user-specific sync.
 Variables start with a `$` character.
 In this case, it refers to an authentication variable, which represents the Sync user's email address.
+
+{% hint style="info" %}
+Typically, sync filters use the equals condition (`==`).
+In this case, index the underlying property as this is the most efficient approach.
+See the [performance](#performance) section for details.
+{% endhint %}
 
 ## Filter expressions
 
@@ -308,7 +316,7 @@ Numeric ranges and string patterns:
 
 ## Performance
 
-Since sync filters are used to create queries, especially when clients sync for the first time.
+Sync filters are used to create queries, e.g. when clients connect for the first time for a "full sync".
 Thus, what makes a query performant also applies to sync filters.
 
 Especially for equality conditions (`==`), it is highly recommended to use indexes for the properties used in the filter expressions (unless you only have a few objects of a type, e.g. less than a hundred).
@@ -326,6 +334,4 @@ Sync filters have some caveats to be aware of (future versions may or may not ad
   However, it is not yet deleted from "team blue" clients that have synced before.
   Thus, use the delete and insert approach instead:
   the server will correctly remove the object from "team blue" clients.
-* JWT claims are only the first variables available to sync filter expressions.
-  We are collecting customer requirements to add more variables and user information.
-  Check with the ObjectBox team to ensure that your needs are covered.
+
