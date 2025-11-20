@@ -19,6 +19,7 @@
   * [MongoDB Configuration](mongodb-sync-connector/mongodb-configuration.md)
   * [ObjectBox Sync Connector Setup](mongodb-sync-connector/objectbox-sync-connector-setup.md)
   * [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md)
+  * [Performance & Best Practices](mongodb-sync-connector/performance-and-best-practices.md)
 * [Troubleshooting Sync](troubleshooting-sync.md)
 * [FAQ](faq.md)
 
