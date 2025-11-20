@@ -193,17 +193,26 @@ You can also see the timeline of an import/sync process by clicking on the state
 
 <figure><img src="../.gitbook/assets/mongodb-full-sync-timeline.webp" alt="MongoDB Example Timeline of a completed sync process in Admin UI" width="563"><figcaption><p>Figure 5: MongoDB Example Timeline of a completed sync</p></figcaption></figure>
 
+## Troubleshooting
+
 ### MongoDB Snapshot Isolation and Timeouts
 
 {% hint style="info" %}
 This section gives some technical details about MongoDB snapshot isolation. You can skip it if your import was completed successfully.
 {% endhint %}
 
-If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. To read the data from MongoDB, the ObjectBox Sync Connector uses the [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from a database perspective). MongoDB keeps snapshots for a limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
+If you run into snapshot errors like "SnapshotTooOld" during an import, this is likely due to a MongoDB setting. In the ObjectBox log, you may see an error message like this:
 
-This issue typically only starts with MongoDB databases containing at least 10 GB, and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window by setting [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
+```
+Prefetch failed: Read timestamp Timestamp(1234567890, 1) is older than the oldest available timestamp.: generic server error`
+```
 
-## Troubleshooting
+What is happening? To read the data from MongoDB, the ObjectBox Sync Connector uses the [snapshot read concern](https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/) to ensure consistent reads at a single point in time (from a strict database perspective). MongoDB keeps snapshots for a limited time, e.g. 5 minutes by default. Thus, if reading the data from MongoDB does not complete within that time, it will fail with a snapshot history error.
+
+This issue typically only starts with MongoDB databases containing at least 10 GB, and depending on the network and MongoDB instance speed, the limit may be much higher. If you run into this error, you may want to increase the snapshot history window.
+A MongoDB admin (special elevated permissions are typically needed) can increase the setting [minSnapshotHistoryWindowInSeconds](https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.minSnapshotHistoryWindowInSeconds) to a higher value. The default value is 300 (5 minutes), so adjust it according to your database size and network speed.
+
+_Note:_ with MongoDB Atlas or other cloud providers, setting the `minSnapshotHistoryWindowInSeconds` value may require filing a support ticket. 
 
 ### Verify that the MongoDB Atlas cluster is reachable
 
