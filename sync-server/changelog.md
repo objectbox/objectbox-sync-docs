@@ -8,6 +8,14 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-11-20: Sync filter relation fix
+------------------------------------
+ObjectBox version: 5.0.0-2025-11-20
+
+* Sync filters: fix filters for many-to-many relations, which did not consider user-specific variables
+* JSON config: allow keys starting with an underscore to allow comments and temporarily disable setting elements
+* Prometheus: fix missing content header so `fallback_scrape_protocol` is not required anymore
+
 2025-11-19: Debug log flags via JSON config
 -------------------------------------------
 ObjectBox version: 5.0.0-2025-11-19
