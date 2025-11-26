@@ -110,15 +110,23 @@ Example file for a local development setup (not intended for production use as a
 
 ```json
 {
-    "dbDirectory": "objectbox",
-    "dbMaxSize": "100G",
-    "modelFile": "objectbox-model.json",
-    "bind": "ws://0.0.0.0:9999",
-    "adminBind": "http://127.0.0.1:9980",
-    "unsecuredNoAuthentication": true,
-    "debugLog": true
+  "dbDirectory": "objectbox",
+  "dbMaxSize": "100G",
+  "modelFile": "objectbox-model.json",
+  "bind": "ws://0.0.0.0:9999",
+  "adminBind": "http://127.0.0.1:9980",
+  "_note": "unsecuredNoAuthentication should not be used in production",
+  "unsecuredNoAuthentication": true,
+  "debugLog": true
 }
 ```
+
+{% hint style="info" %}
+Start JSON keys with underscore (`_`) to add comments or to temporarily disable a setting.
+These keys are exempt from validation and will be ignored by the Sync Server.
+
+Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
+{% endhint %}
 
 ### Primary options
 
