@@ -1032,10 +1032,14 @@ final subscription = client.changeEvents
           print('${change.entity}(${change.entityId}) '
               'puts=${change.puts} removals=${change.removals}');
         }));
+        
+// For connects and disconnects subscribe to client.connectionEvents
 
-...
+// For login status, subscribe to client.loginEvents
 
-// don't forget unsubscribe if you don't care about the events anymore
+// For sync completion, subscribe to client.completionEvents
+
+// ...don't forget unsubscribe if you don't care about the events anymore
 subscription.cancel();
 ```
 {% endtab %}
