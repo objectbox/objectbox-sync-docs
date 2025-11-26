@@ -14,6 +14,7 @@ ObjectBox version: 5.0.0-2025-11-26
 
 * MongoDB changes were reported as an error if an updated document was deleted since the update.
   This is now handled gracefully.
+  The debug logs will show this as "Skipping MongoDB change for a doc that does not exist anymore" along with its ID.
 
 2025-11-24: Sync optimizations
 ------------------------------
