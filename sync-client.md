@@ -1132,6 +1132,59 @@ syncClient.SetChangeListener(func(changes []*objectbox.SyncChange) {
 {% endtab %}
 {% endtabs %}
 
+### Checking for outgoing changes
+
+Sometimes you want to know if there are any ("outgoing") changes on the local device that are not yet synchronized to the server.
+This is helpful to when you want to show the sync status in the user interface, or trigger some logic.
+Technically, ObjectBox uses a message queue here and there's an API that gives you number of outgoing messages.
+If this number reaches zero, it means that all changes done on this device have been synced (sent) to the server.
+It's fine to call this API periodically, e.g. every second, if you want to know the current status.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+// Not yet available (coming soon)
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+// Not yet available (coming soon)
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// Not yet available (coming soon)
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+var count = syncClient.outgoingMessageCount();
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+uint64_t count = syncClient.outgoingMessageCount();
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+uint64_t count;
+obx_err err = obx_sync_outgoing_message_count(sync, 0, &count)
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// Not yet available
+```
+{% endtab %}
+{% endtabs %}
+
 ### Listeners concurrency
 
 Some events may be issued in parallel, from multiple background threads. To help you understand when and how you need to take care of concurrency (e.g. use mutex/atomic variables), we've grouped the sync listeners to these two groups:
