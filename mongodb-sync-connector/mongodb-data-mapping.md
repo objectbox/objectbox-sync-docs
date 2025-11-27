@@ -55,12 +55,22 @@ Available external types for IDs: `mongoId` (default), `uuid` (UUIDv7), `uuidStr
 
 {% tab title="Dart/Flutter" %}
 ```dart
-  @Id()
-  @ExternalType(type: ExternalPropertyType.uuid)
-  int id = 0;
+@Id()
+@ExternalType(type: ExternalPropertyType.uuid)
+int id = 0;
 ```
 
 Available external types for IDs: `mongoId` (default), `uuid` (UUIDv7), `uuidString` (UUIDv7 stored as string), `uuidV4`, `uuidV4String`.
+{% endtab %}
+{% tab title=".fbs (C, C++, JS)" %}
+FlatBuffers schema file (in combination with ObjectBox Generator):
+
+```
+/// objectbox:external-type=Uuid
+id: ulong;
+```
+
+Available external types for IDs: `MongoId` (default), `Uuid` (UUIDv7), `UuidString` (UUIDv7 stored as string), `UuidV4`, `UuidV4String`.
 {% endtab %}
 {% endtabs %}
 
@@ -160,6 +170,16 @@ var decimalString: String?
 String decimalString;
 ```
 {% endtab %}
+{% tab title=".fbs (C, C++, JS)" %}
+FlatBuffers schema file (in combination with ObjectBox Generator):
+
+```
+/// objectbox:external-type=Decimal128
+decimalString: string;
+```
+
+Available external types for IDs: `MongoId` (default), `Uuid` (UUIDv7), `UuidString` (UUIDv7 stored as string), `UuidV4`, `UuidV4String`.
+{% endtab %}
 {% endtabs %}
 
 ## To-One Relations
@@ -203,9 +223,7 @@ The following table shows the current support for the two variants per programmi
 | Kotlin               |  ✅   |      ✅      |
 | Swift                |      |      ✅      |
 | Dart/Flutter         |      |      ✅      |
-| C and C++            |      |    (✅)*     |
-
-*) C and C++ via API (Generator support is pending)
+| C and C++            |      |      ✅      |
 
 ### Flex Properties Mapping
 
@@ -261,6 +279,14 @@ String? myNestedDocumentJson;
 ```swift
 // objectbox: externalType="jsonToNative"
 var myNestedDocumentJson: String?
+```
+{% endtab %}
+{% tab title=".fbs (C, C++, JS)" %}
+FlatBuffers schema file (in combination with ObjectBox Generator):
+
+```
+/// objectbox:external-type=JsonToNative
+myNestedDocumentJson: string;
 ```
 {% endtab %}
 {% endtabs %}
