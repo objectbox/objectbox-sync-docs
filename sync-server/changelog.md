@@ -8,6 +8,13 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-12-04: Sync Filters IN condition
+-------------------------------------
+ObjectBox version: 5.0.0-2025-12-04
+
+* Sync filters: added support for IN conditions allowing to filter objects based on multiple values.
+  _Note:_ there are some minor optimizations outstanding, which are expected for the next update.
+
 2025-11-26: MongoDB change stream fix
 -------------------------------------
 ObjectBox version: 5.0.0-2025-11-26
