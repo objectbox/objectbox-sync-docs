@@ -82,7 +82,8 @@ age > 25
 
 ### Property names
 
-The first part of a filter condition is the "property name", which refers to a property (aka member/field) in your data objects (aka type defined in your ObjectBox data model).
+The first part of a filter condition is the "property name", which refers to a property (aka member/field) in your data
+objects (aka type defined in your ObjectBox data model).
 For example, consider a `Person` type defined in your ObjectBox data model that has a `name` and `age` property.
 Now, when defining a filter expression for the `Person` type, you can refer to `name` and `age` as property names.
 
@@ -90,23 +91,80 @@ Now, when defining a filter expression for the `Person` type, you can refer to `
 
 Filter expressions can use the following operators for all value types:
 
-| Operator | Description           | Example                |
-|----------|-----------------------|------------------------|
-| `==`     | Equals                | `name == "Alice"`      |
-| `!=`     | Not equals            | `status != "inactive"` |
-| `>`      | Greater than          | `age > 18`             |
-| `<`      | Less than             | `price < 100.0`        |
-| `>=`     | Greater than or equal | `score >= 80`          |
-| `<=`     | Less than or equal    | `quantity <= 50`       |
+| Operator | Description                | Example                      |
+|----------|----------------------------|------------------------------|
+| `==`     | Equals                     | `name == "Alice"`            |
+| `!=`     | Not equals                 | `status != "inactive"`       |
+| `>`      | Greater than               | `age > 18`                   |
+| `<`      | Less than                  | `price < 100.0`              |
+| `>=`     | Greater than or equal      | `score >= 80`                |
+| `<=`     | Less than or equal         | `quantity <= 50`             |
+| `IN`     | Matches any value in a set | `status IN $client.statuses` |
 
 For string values, the following operators are additionally available:
 
-| Operator | Description             | Example                   |
-|----------|-------------------------|---------------------------|
-| `==~`    | Case-insensitive equals | `name ==~ "JOHN"`         |
-| `^=`     | Starts with             | `email ^= "admin"`        |
-| `*=`     | Contains                | `description *= "urgent"` |
-| `$=`     | Ends with               | `filename $= ".pdf"`      |
+| Operator | Description             | Example                           |
+|----------|-------------------------|-----------------------------------|
+| `==~`    | Case-insensitive equals | `name ==~ "JOHN"`                 |
+| `^=`     | Starts with             | `email ^= "admin"`                |
+| `*=`     | Contains                | `description *= "urgent"`         |
+| `$=`     | Ends with               | `filename $= ".pdf"`              |
+| `IN~`    | Case-insensitive IN     | `category IN~ $client.categories` |
+
+#### The IN operator
+
+The `IN` operator allows matching a property against multiple values provided by a [variable](#variables).
+It supports string and integer (32 and 64 bit) properties.
+The actual values for the variable are provided (by the client or JWT) as a comma-separated string.
+
+For example, assume a client wants to sync objects where the `category` property matches "books", "music", or "games".
+The filter expression would be:
+
+```
+category IN $client.categories
+```
+
+Like this, clients have to provide the variable `categories` as the comma-separated string `"books,music,games"` without
+whitespace.
+
+For integer properties, the same approach applies:
+
+```
+priorityLevel IN $client.levels
+```
+
+Here, the client provides the variable `levels` with values like `"1,3,5"` (matching levels 1, 3, and 5).
+
+##### Escaping commas and backslashes
+
+If your string values contain commas or backslashes, you need to escape them:
+
+- Use `\,` for a literal comma within a value
+- Use `\\` for a literal backslash within a value
+
+For example, to match values "a,b" and "c\d", the client would provide:
+
+```
+"a\,b,c\\d"
+```
+
+This is parsed as two values: "a,b" and "c\d".
+
+##### Case-insensitive IN with IN~
+
+For string properties, you can use `IN~` for case-insensitive matching.
+This works the same as `IN`, but the comparison ignores case differences.
+
+```
+category IN~ $client.categories
+```
+
+With this filter, if the client provides `"books,music"` (case does not matter),
+it will match objects where `category` is "Books", "BOOKS", "books", "Music", etc.
+
+Note: `IN~` is only available for string properties. For integer types, use the regular `IN` operator.
+
+Performance: prefer the case-sensitive `IN` operator over `IN~` as the case-sensitive variant can use indexes.
 
 ### Values (operands)
 
@@ -136,6 +194,7 @@ path == 'C:\\Users\\John'
 ```
 
 Literal numbers can be integers and floating-point values:
+
 ```
 age == 25
 price >= 19.99
@@ -186,7 +245,7 @@ In sync filters, you can refer to this as `$auth.email`.
 JWTs are basically encoded and signed JSON objects.
 While some JWT properties are (more or less) standardized like the "aud" and "iss" claims,
 JWT allows you to add additional properties to the JSON.
-These "custom claims" can be very useful for sync filters 
+These "custom claims" can be very useful for sync filters
 as they offer a standard way to provide client-specific data securely to the Sync Server.
 
 Let's say you want to group users into teams.
@@ -242,7 +301,7 @@ The following (property) typesare supported:
 * Strings (no conversion needed)
 * Integers, e.g. "42" (all integer property types from 8 to 64 bits are supported)
 * Dates (timestamp in milliseconds/nanoseconds since the epoch)
-* Floating point numbers, e.g. "3.14159" 
+* Floating point numbers, e.g. "3.14159"
 * Boolean ("true" vs. all other strings)
 
 #### When (not) to use client variables
@@ -278,7 +337,7 @@ category == "urgent" OR priority > 5
 
 ### Precedence and Grouping
 
-Without parentheses, `AND` has higher precedence than `OR`. 
+Without parentheses, `AND` has higher precedence than `OR`.
 
 Thus, the following two expressions are equivalent, e.g. requires the "premium" status or a combination of minimum age and score:
 ```
@@ -326,7 +385,7 @@ This is done in the standard ObjectBox way, i.e. using the index annotation (`@I
 
 Sync filters have some caveats to be aware of (future versions may or may not address them):
 
-* **Do not change values of properties used in Sync filters.** 
+* **Do not change values of properties used in Sync filters.**
   If you rely on this, delete the object with the old value instead and insert a new object with the new value.
   For example, consider a property `team` that is used in a sync filter expression.
   One client changes the team from "blue" to "green".
