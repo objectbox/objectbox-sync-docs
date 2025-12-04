@@ -166,6 +166,16 @@ Note: `IN~` is only available for string properties. For integer types, use the 
 
 Performance: prefer the case-sensitive `IN` operator over `IN~` as the case-sensitive variant can use indexes.
 
+#### IN-like filters for literals
+
+The `IN` operator only works with variables, so you cannot use it with fixed literals.
+However, you can use the `OR` operator (see [Logical operators](#logical-operators)) to create a similar effect with
+a set of fixed literals:
+
+```
+category == 'books' OR category == 'music' OR category == 'games'
+```
+
 ### Values (operands)
 
 The third and last part of a filter condition is the value or operand.
