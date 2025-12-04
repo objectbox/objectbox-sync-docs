@@ -394,7 +394,7 @@ try client.start()
 
 {% tab title="Dart/Flutter" %}
 ```dart
-final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none()
+final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none(),
                                filterVariables: {"name": "value"});
 syncClient.start();
 ```
@@ -422,6 +422,83 @@ obx_sync_start(sync_client);  // connect and start syncing
 ```
 {% endtab %}
 {% endtabs %}
+
+#### Supplying multiple values for IN conditions
+
+When you use the `IN` operator in a sync filter, you want to provide a multiple values to a variable.
+This can be done by providing a string that contains a comma-separated list of values.
+
+Let's suppose we have a sync filter `"fruit IN $client.fruits"`; then we can provide the values like this:
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+List<String> values = List.of("apple", "banana", "cherry");
+SyncClient syncClient = Sync.client(...)
+                            .filterVariable("fruits", String.join(",", values))
+                            .buildAndStart(); 
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+val values = listOf("apple", "banana", "cherry")
+val syncClient = Sync.client(...)
+                     .filterVariable("fruits", values.joinToString(","))
+                     .buildAndStart()
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+let values = ["apple", "banana", "cherry"]
+let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
+                                 credentials: SyncCredentials.makeNone(),
+                                 filterVariables: ["fruits": values.joined(separator: ",")])
+try client.start()
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+List<String> values = ['apple', 'banana', 'cherry'];
+final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none(),
+                               filterVariables: {"fruits": values.join(',')});
+syncClient.start();
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+// Init as before: std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(...);
+std::vector<std::string> values = {"apple", "banana", "cherry"};
+std::string joined;
+for (size_t i = 0; i < values.size(); ++i) {
+    if (i > 0) joined += ",";
+    joined += values[i];
+}
+syncClient->putFilterVariable("fruits", joined);
+syncClient->start();  // connect and start syncing
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+// Init as before: OBX_sync* sync_client = obx_sync(...); // plus credentials
+const char* values = "apple,banana,cherry";
+obx_sync_filter_variables_put(sync_client, "fruits", values);
+obx_sync_start(sync_client);  // connect and start syncing
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// coming soon
+```
+
+Note: future versions of the client APIs will also take a list of values.
+This will also take care of escaping special characters for string values, as mentioned in the [sync filter documentation](sync-server/sync-filters.md#escaping-commas-and-backslashes).
+
 
 ### Drop-off, send-only clients
 
