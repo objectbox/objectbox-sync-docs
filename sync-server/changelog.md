@@ -8,6 +8,13 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-12-05: Sync Filter default variable values
+-----------------------------------------------
+ObjectBox version: 5.0.0-2025-12-05
+
+* Sync filters: added support for default variable values, e.g. `${client.team ?? "green"}`
+* Sync filters optimizations
+
 2025-12-04: Sync Filters IN condition
 -------------------------------------
 ObjectBox version: 5.0.0-2025-12-04
