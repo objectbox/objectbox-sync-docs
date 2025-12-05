@@ -241,6 +241,46 @@ One exce
 While the Sync Server may not enforce rules yet, this may become required in the future.
 {% endhint %}
 
+### Default Values
+
+Variables can have default values that are used when the variable is not provided by the client or JWT.
+The syntax uses `??` followed by the default value inside the braces syntax:
+
+```
+${variable ?? defaultValue}
+```
+
+Examples:
+
+```
+team == ${client.team ?? "green"}
+priority >= ${client.minPriority ?? 0}
+```
+
+In the first example, if the client does not provide a `team` variable, objects with `team == "green"` are synced.
+In the second example, if `minPriority` is not provided, all objects with `priority >= 0` are synced.
+
+Default values follow the same syntax as literal values:
+- Strings must be quoted: `${client.name ?? "anonymous"}` or `${client.name ?? 'anonymous'}`
+- Numbers are unquoted: `${client.level ?? 42}` or `${client.price ?? 19.99}`
+
+{% hint style="info" %}
+An empty string (`""` or `''`) is a valid default value.
+For example, `${client.tag ?? ""}` uses an empty string if `tag` is not provided.
+{% endhint %}
+
+When a variable is used multiple times in an expression, each usage can have its own default value:
+
+```
+minAge <= ${client.age ?? 0} AND maxAge >= ${client.age ?? 999}
+```
+
+{% hint style="warning" %}
+If a variable has no default value and is not provided by the client or JWT, the login will fail with an error.
+Use default values for optional variables to avoid this.
+{% endhint %}
+
+
 ### Auth variables
 
 "Auth" variables are defined by ObjectBox Sync Server authenticators when a client logs in.
@@ -284,11 +324,6 @@ For example, let's assume your decoded JWT looks like this:
 
 Then, you can access the team value via `$auth.user_properties.team.v`,
 e.g. a complete sync filter expression could look like this: `team == $auth.user_properties.team.v`.
-
-#### Future versions
-
-Note: future versions of ObjectBox Sync will have additional variables.
-If the JWT-based variables are not sufficient for your use case, please contact ObjectBox support.
 
 ### Client variables
 
@@ -358,7 +393,7 @@ status == "premium" OR age >= 21 AND score >= 100
 status == "premium" OR (age >= 21 AND score >= 100) 
 ```
 
-Use parentheses to control the order of evaluation; e.g. to (always) require a minimum score and either premium status or a minimum age:  
+Use parentheses to control the order of evaluation; e.g. to (always) require a minimum score and either premium status or a minimum age:
 ```
 (status == "premium" OR age >= 21) AND score >= 100 
 ```
