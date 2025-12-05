@@ -241,6 +241,15 @@ One exce
 While the Sync Server may not enforce rules yet, this may become required in the future.
 {% endhint %}
 
+### Variable types
+
+While variables are provided as strings, they are parsed internally into a specific type,
+e.g. string, integer, floating-point or s set of a values of a specific type.
+Thus, if you use one variable multiple times, ensure that the variable type is consistent.
+For example, a variable used to match against a string property,
+cannot also be used to match against an integer property.
+This rarely makes sense, but if you need to do this, use multiple variables; one for each type. 
+
 ### Default Values
 
 Variables can have default values that are used when the variable is not provided by the client or JWT.
