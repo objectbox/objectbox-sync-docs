@@ -6,7 +6,8 @@ description: >-
 
 # MongoDB Data Mapping
 
-The ObjectBox data model defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to fields (keys) inside a MongoDB document. Thus, you should **ensure that the ObjectBox data model matches the MongoDB schema**. For example, if you have an existing MongoDB database, ensure to match the names when you create the ObjectBox model.
+The ObjectBox data model defines types, which are mapped to MongoDB collections. Similarly, the properties of a type are mapped to fields (keys) inside a MongoDB document. The mapping is done via the names of the types and properties.
+If the names do not match, you can [define "external names"](#name-mapping) to specify different names on the MongoDB side.
 
 Some MongoDB field types like strings match ObjectBox types and thus do not need additional mapping information. More specialized types need "external types" to be defined in the ObjectBox data model to match the MongoDB field types. This page explains how to do this.
 
@@ -17,6 +18,130 @@ When you compare the data structure of simple data elements, the difference is n
 <figure><img src="../.gitbook/assets/ObjectVsDocument (1).png" alt="Comparison of ObjectBox Object and MongoDB Document structure" width="563"><figcaption><p>Figure 1: ObjectBox Object vs. MongoDB Document (Simplified)</p></figcaption></figure>
 
 Note: nested documents are supported via the ObjectBox "flex properties" type or JSON strings. See the section below for details. 
+
+## Name mapping
+
+{% hint style="info" %}
+If you are fine with using the same names in ObjectBox and MongoDB, there is no further configuration needed.
+{% endhint %}
+
+By default, the names defined in the ObjectBox data model are used in MongoDB collections and fields.
+For example, if you have a type called "Person" with a property called "name", the collection will be named "Person" and the field will be named "name".
+
+If you want to use different names on the MongoDB side, you can define "external names" next to the ObjectBox name.
+Maybe you have an existing MongoDB database with a different naming convention.
+For example, you want to use `camelCase` for property names in ObjectBox and `snake_case` for property names in MongoDB.
+
+External names are defined in the ObjectBox data model (the entities) in your application code.
+They can be applied to types, properties and many-to-many relations.
+Then, as usual, you take the generated JSON model file to the Sync Server to let it know about the external names. 
+
+### Example
+
+In the ObjectBox model, which is defined in your programming language, you define a "external name" annotation.
+The following example shows a simple model with a "Person" type and two properties: "name" and "lastName".
+The "Person" type and the "lastName" property use different names on the MongoDB side.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+@ExternalName("person_collection")
+@Entity
+@Sync
+public class Person {
+    // No external name annotation needed if "name" is used in MongoDB as well
+    public String name;
+    
+    @ExternalName("last_name")
+    public String lastName;
+}
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+@ExternalName("person_collection")
+@Entity
+@Sync
+data class Person(
+    // No external name annotation needed if "name" is used in MongoDB as well
+    var name: String,
+    
+    @ExternalName("last_name")
+    var lastName: String
+)
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// objectbox: sync
+// objectbox: externalName="person_collection"
+class Person: Entity {
+    // No external name annotation needed if "name" is used in MongoDB as well
+    var name: String
+    
+    // objectbox: externalName="last_name"
+    var lastName: String
+}
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+@Entity
+@Sync
+@ExternalName("person_collection")
+class Person {
+    // No external name annotation needed if "name" is used in MongoDB as well
+    String name;
+    
+    @ExternalName("last_name")
+    String lastName;
+}
+```
+{% endtab %}
+
+{% tab title="C/C++ (using Generator)" %}
+```cpp
+/// objectbox: sync
+/// objectbox: external-name=person_collection
+table Person {
+    // No external name annotation needed if "name" is used in MongoDB as well
+    name: string;
+    
+    /// objectbox: external-name=last_name
+    lastName: string;
+}
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// This is not yet released in Go; will likely look like this:
+// `objectbox:"sync,externalName=person_collection"`
+type Person struct {
+    // No external name annotation needed if "name" is used in MongoDB as well
+    Name string
+    
+    // `objectbox:"externalName=last_name"`
+    LastName string
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Once the code generation kicked in, the JSON model file will also be updated (you do not edit it manually).
+Then the JSON model file should contain values looking like this:
+
+```json
+{
+  "...": "...",
+  "name": "myProperty",
+  "externalName": "my_property",
+  "....": "..."  
+}
+```
 
 ## ID mapping
 
