@@ -8,6 +8,18 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-12-10: Name mappings for MongoDB
+-------------------------------------
+ObjectBox version: 5.0.0-2025-12-10
+
+* Define external names for types, properties and relations to "map" to a different collection/field name in MongoDB.  
+  Note: Sync clients already allow you to define external names via annotations.
+* MongoDB: allow conversion integer type conversion (32 vs 64 bits) from MongoDB to ObjectBox
+  (types do not have to match exactly)
+* Admin: the Schema view now shows if external name of types and properties if configured
+* Admin: the Schema view now shows the type as text (e.g. "String") instead of the internal type ID
+* Fix external type change detection when changed in the model
+
 2025-12-05: Sync Filter default variable values
 -----------------------------------------------
 ObjectBox version: 5.0.0-2025-12-05
