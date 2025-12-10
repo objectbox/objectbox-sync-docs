@@ -137,8 +137,8 @@ Then the JSON model file should contain values looking like this:
 ```json
 {
   "...": "...",
-  "name": "myProperty",
-  "externalName": "my_property",
+  "name": "lastName",
+  "externalName": "last_name",
   "....": "..."  
 }
 ```
