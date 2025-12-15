@@ -8,6 +8,12 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2025-12-15: MongoDB Remove fix
+------------------------------
+ObjectBox version: 5.0.0-2025-12-15
+
+* Fix for a rare condition in which applying a remove operation to MongoDB failed.
+
 2025-12-10: Name mappings for MongoDB
 -------------------------------------
 ObjectBox version: 5.0.0-2025-12-10
