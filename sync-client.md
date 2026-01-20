@@ -514,6 +514,76 @@ syncClient->start();
 
 When using `wss` as the protocol in the server URL a TLS encrypted connection is established. Use `ws` instead to turn off transport encryption (insecure, not recommended; e.g. only use for testing).
 
+## Sync Flags
+
+Sync flags allow you to adjust the behavior of the sync client. These flags can be combined using bitwise OR to enable multiple options at once.
+
+### Available Flags for Clients
+
+* **DebugLogIdMapping**: Enable extensive logging on how IDs are mapped between local and global.
+  Useful for debugging sync issues.
+* **KeepDataOnSyncError**: If the client gets in a state that does not allow any further synchronization, this flag instructs Sync to keep local data nevertheless.
+  While this preserves data, you need to resolve the situation manually (e.g., backup the data and start with a fresh database).
+  The default behavior (flag not set) is to wipe existing data from all sync-enabled types and sync from scratch from the server.
+* **RemoveWithObjectData**: When set, remove operations will include the full object data in the TX log.
+  This allows sync filters on the Sync Server to filter out remove operations based on the object content.
+  Without this flag, remove operations only contain the object ID and cannot be filtered.
+  Note: this increases the size of TX logs for remove operations.
+* **DebugLogTxLogs**: Enables debug logging of TX log processing.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+OBX_sync_options* opt = obx_sync_opt(store);
+obx_sync_opt_add_url(opt, "wss://sync.example.com");
+
+// Enable multiple flags using bitwise OR
+uint32_t flags = OBXSyncFlags_RemoveWithObjectData | OBXSyncFlags_DebugLogTxLogs;
+obx_sync_opt_flags(opt, flags);
+
+OBX_sync* sync_client = obx_sync_create(opt);
+obx_sync_credentials(sync_client, OBXSyncCredentialsType_NONE, NULL, 0);
+obx_sync_start(sync_client);
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// Coming soon
+```
+{% endtab %}
+{% endtabs %}
+
 ## Authentication options
 
 There are currently multiple supported options for authenticating clients with a Sync server.
