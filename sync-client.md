@@ -530,6 +530,8 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
   Without this flag, remove operations only contain the object ID and cannot be filtered.
   Note: this increases the size of TX logs for remove operations.
 * **DebugLogTxLogs**: Enables debug logging of TX log processing.
+* **SkipInvalidTxOps**: Skips invalid (put object) operations in the TX log instead of failing.
+  Errors will be logged.
 
 {% tabs %}
 {% tab title="Java" %}
