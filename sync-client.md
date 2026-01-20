@@ -56,7 +56,7 @@ We may distribute ObjectBox Sync for Swift in our **CocoaPods** staging reposito
 ```
 target 'MyCoolSyncProject' do
     use_frameworks!
-    pod 'ObjectBox', '4.4.0-sync'
+    pod 'ObjectBox', '5.1.1-sync'
 end
 
 ```
@@ -79,7 +79,7 @@ include(FetchContent)
 FetchContent_Declare(
     objectbox
     GIT_REPOSITORY https://github.com/objectbox/objectbox-c.git
-    GIT_TAG        v4.3.1 # Or a newer sync-enabled version
+    GIT_TAG        v5.1.0 # Or a newer sync-enabled version
 )
 
 FetchContent_MakeAvailable(objectbox)
