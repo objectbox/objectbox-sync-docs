@@ -48,10 +48,10 @@ implementation("io.objectbox:objectbox-sync-linux-armv7:$objectboxVersion")
 
 {% tab title="Swift" %}
 {% hint style="info" %}
-This gives you specific information about how to get the Sync-enabled version of ObjectBox. Please also check our [general installation and update ](https://swift.objectbox.io/install)docs for in-depth information.
+This gives you specific information about how to get the Sync-enabled version of ObjectBox. Please also check our [general installation and update](https://swift.objectbox.io/install) docs for in-depth information.
 {% endhint %}
 
-We may distribute ObjectBox Sync for Swift in our **Cocoapods** staging repository (details will be provided by the ObjectBox team). In that case, these are some typical lines to put in your Podfile (please check the version, there might be a newer one available):
+We may distribute ObjectBox Sync for Swift in our **CocoaPods** staging repository (details will be provided by the ObjectBox team). In that case, these are some typical lines to put in your Podfile (please check the version, there might be a newer one available):
 
 ```
 target 'MyCoolSyncProject' do
@@ -346,7 +346,7 @@ The example uses ws://127.0.0.1 for the server endpoint. This is the IP address 
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). [Details](https://developer.android.com/studio/run/emulator-networking)
 {% endhint %}
 
-Sync client is started by calling `start()` or `buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
+The Sync client is started by calling `start()` or `buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
 
 Once the client is logged in, the server will push any changes it has missed. The server will also push any future changes while the client remains connected. This [sync updates behavior](sync-client.md#controlling-sync-updates-behavior) can be configured.
 
@@ -362,7 +362,7 @@ Always close the client **before** closing the store. Closing the store with a s
 
 ### Sync filter client variables
 
-Sync clients may provide variables for sync filters, see [sync filters](sync-server/sync-filters.md) and specifically the [the section on client variables](sync-server/sync-filters.md#client-variables) for general information.
+Sync clients may provide variables for sync filters, see [sync filters](sync-server/sync-filters.md) and specifically the [section on client variables](sync-server/sync-filters.md#client-variables) for general information.
 
 The client APIs to add sync filter variables take name/value pairs (both strings) and look like this:
 
@@ -425,7 +425,7 @@ obx_sync_start(sync_client);  // connect and start syncing
 
 #### Supplying multiple values for IN conditions
 
-When you use the `IN` operator in a sync filter, you want to provide a multiple values to a variable.
+When you use the `IN` operator in a sync filter, you want to provide multiple values to a variable.
 This can be done by providing a string that contains a comma-separated list of values.
 
 Let's suppose we have a sync filter `"fruit IN $client.fruits"`; then we can provide the values like this:
@@ -747,8 +747,8 @@ _Coming soon!_
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
-```java
-SyncCredentials credential = SyncCredentials.none();
+```dart
+final credential = SyncCredentials.none();
 ```
 {% endtab %}
 
@@ -820,7 +820,7 @@ Note that listeners can also be set or removed at any later point using `SyncCli
 SyncLoginListener loginListener = new SyncLoginListener() {
     @Override
     public void onLoggedIn() {
-        // Login succesful.
+        // Login successful.
     }
 
     @Override
@@ -874,7 +874,7 @@ Note that listeners can also be set or removed at any later point using `SyncCli
 ```kotlin
 val loginListener: SyncLoginListener = object : SyncLoginListener {
     override fun onLoggedIn() {
-        // Login succesful.
+        // Login successful.
     }
 
     override fun onLoginFailed(syncLoginCode: Long) {
@@ -970,7 +970,7 @@ Note that these streams don't buffer events so unless you're subscribed, no even
 
 ```dart
 final client = Sync.client(...);
-final subscription = client.loginEvents.listen((SycnLoginEvent event) { 
+final subscription = client.loginEvents.listen((SyncLoginEvent event) {
   if (event == SyncLoginEvent.loggedIn) print('Logged in successfully');
 });
 
@@ -978,7 +978,7 @@ client.start();
 
 ...
 
-// don't forget unsubscribe if you don't care about the events anymore
+// don't forget to unsubscribe if you don't care about the events anymore
 subscription.cancel();
 ```
 {% endtab %}
@@ -1116,7 +1116,7 @@ final subscription = client.changeEvents
 
 // For sync completion, subscribe to client.completionEvents
 
-// ...don't forget unsubscribe if you don't care about the events anymore
+// ...don't forget to unsubscribe if you don't care about the events anymore
 subscription.cancel();
 ```
 {% endtab %}
@@ -1137,7 +1137,7 @@ class StatsCollector {
             const OBX_sync_change& change = changes->list[i];
             EntityChanges& stats = statsPerEntity[change.entity_id];
             if (change.puts) collect(change.puts, stats.puts);
-            if (change.removals) collect(change.puts, stats.removals);
+            if (change.removals) collect(change.removals, stats.removals);
         }
     }
 
@@ -1189,7 +1189,8 @@ void change_listener(void* arg, const OBX_sync_change_array* changes) {
 
 void main() {
     ...
-    obx_sync_listener_login(sync_client, change_listener, &change_listener_arg);
+    int change_listener_arg = 0;
+    obx_sync_listener_change(sync_client, change_listener, &change_listener_arg);
 }
 ```
 {% endtab %}
@@ -1271,7 +1272,7 @@ obx_err err = obx_sync_outgoing_message_count(sync, 0, &count)
 Some events may be issued in parallel, from multiple background threads. To help you understand when and how you need to take care of concurrency (e.g. use mutex/atomic variables), we've grouped the sync listeners to these two groups:
 
 * [State listeners](sync-client.md#listening-to-events) - listening to login success/failure, connection status, sync complete.
-* [Data change listener](sync-client.md#listening-to-sync-updates) - listening to incoming data changes.
+* [Data change listener](sync-client.md#listening-to-incoming-data-changes) - listening to incoming data changes.
 
 There can be only one event executed at any single moment from a listener in a single group. You can imagine this as if there were two parallel threads, one could only issue "state" events, the other only "data change" events.
 
@@ -1411,7 +1412,7 @@ syncClient.CancelUpdates()
 
 // Alternatively, catch up with the server but don't subscribe for future.
 // You can call this instead of subscribing to do one-time updates as needed.
-syncClient->requestUpdates(false)
+syncClient.RequestUpdates(false)
 ```
 {% endtab %}
 {% endtabs %}
