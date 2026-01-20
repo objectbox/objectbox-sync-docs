@@ -8,6 +8,16 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2026-01-20: Filterable Removes
+------------------------------
+ObjectBox version: 5.1.0-2026-01-19
+
+* Synced "remove" operations can now be filtered (via Sync Filters):
+  for this to work, clients must enable the new RemoveWithObjectData sync flag
+* Introduced Sync protocol V8
+* Raised minimum sync protocol to V5 (2024-09; client versions 4.0.x or higher)
+* Minor internal improvements and fixes
+
 2025-12-15: MongoDB Remove fix
 ------------------------------
 ObjectBox version: 5.0.0-2025-12-15
