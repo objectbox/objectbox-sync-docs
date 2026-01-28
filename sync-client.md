@@ -288,7 +288,7 @@ val syncClient = Sync.client(
 {% tab title="Swift" %}
 ```swift
 let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
-configuration.credentials = [.none()]
+configuration.credentials = [SyncCredentials.makeNone()]
 let client = try Sync.makeClient(configuration: configuration)
 try client.start()
 ```
@@ -387,7 +387,7 @@ val syncClient = Sync.client(...)
 {% tab title="Swift" %}
 ```swift
 let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
-configuration.credentials = [.none()]
+configuration.credentials = [SyncCredentials.makeNone()]
 configuration.filterVariables = ["name": "value"]
 let client = try Sync.makeClient(configuration: configuration)
 try client.start()
@@ -455,7 +455,7 @@ val syncClient = Sync.client(...)
 ```swift
 let values = ["apple", "banana", "cherry"]
 let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
-configuration.credentials = [.none()]
+configuration.credentials = [SyncCredentials.makeNone()]
 configuration.filterVariables = ["fruits": values.joined(separator: ",")]
 let client = try Sync.makeClient(configuration: configuration)
 try client.start()
@@ -552,7 +552,7 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
 {% tab title="Swift" %}
 ```swift
 let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
-configuration.credentials = [.none()]
+configuration.credentials = [SyncCredentials.makeNone()]
 // Enable multiple flags using array literal syntax
 configuration.flags = [.removeWithObjectData, .debugLogTxLogs]
 let client = try Sync.makeClient(configuration: configuration)
@@ -832,7 +832,7 @@ val credential = SyncCredentials.none()
 
 {% tab title="Swift" %}
 ```swift
-let credential = SyncCredentials.none()
+let credential = SyncCredentials.makeNone()
 ```
 {% endtab %}
 
@@ -1527,7 +1527,7 @@ For use cases like self-signed certificates in a local development environment o
 {% tab title="Swift" %}
 ```swift
 let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
-configuration.credentials = [.none()]
+configuration.credentials = [SyncCredentials.makeNone()]
 configuration.certificatePaths = ["/path/to/custom-ca.crt"]
 let client = try Sync.makeClient(configuration: configuration)
 try client.start()
