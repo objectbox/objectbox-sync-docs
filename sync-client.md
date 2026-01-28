@@ -295,10 +295,10 @@ try client.start()
 
 {% tab title="Dart/Flutter" %}
 ```dart
-final syncClient = Sync.client(
+final syncClient = SyncClient(
         store,
-        'ws://127.0.0.1:9999', // wss for SSL, ws for unencrypted traffic
-        SyncCredentials.none());
+        ['ws://127.0.0.1:9999'], // wss for SSL, ws for unencrypted traffic
+        [SyncCredentials.none()]);
 syncClient.start(); // connect and start syncing
 ```
 {% endtab %}
@@ -394,8 +394,8 @@ try client.start()
 
 {% tab title="Dart/Flutter" %}
 ```dart
-final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none(),
-                               filterVariables: {"name": "value"});
+final syncClient = SyncClient(store, ['ws://127.0.0.1:9999'], [SyncCredentials.none()],
+                              filterVariables: {"name": "value"});
 syncClient.start();
 ```
 {% endtab %}
@@ -462,8 +462,8 @@ try client.start()
 {% tab title="Dart/Flutter" %}
 ```dart
 List<String> values = ['apple', 'banana', 'cherry'];
-final syncClient = Sync.client(store, 'ws://127.0.0.1:9999', SyncCredentials.none(),
-                               filterVariables: {"fruits": values.join(',')});
+final syncClient = SyncClient(store, ['ws://127.0.0.1:9999'], [SyncCredentials.none()],
+                              filterVariables: {"fruits": values.join(',')});
 syncClient.start();
 ```
 {% endtab %}
@@ -554,7 +554,15 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
 
 {% tab title="Dart/Flutter" %}
 ```dart
-// Coming soon
+import 'package:objectbox/src/native/bindings/objectbox_c.dart' show OBXSyncFlags;
+
+final syncClient = SyncClient(
+    store,
+    ['wss://sync.example.com'],
+    [SyncCredentials.none()],
+    // Enable multiple flags using bitwise OR
+    flags: OBXSyncFlags.RemoveWithObjectData | OBXSyncFlags.DebugLogTxLogs);
+syncClient.start();
 ```
 {% endtab %}
 
@@ -1041,7 +1049,7 @@ It's possible to listen to sync-related events on the client. Use the following 
 Note that these streams don't buffer events so unless you're subscribed, no events are collected. Additionally, don't forget to cancel the subscription when you don't care about the information anymore, to free up resources.
 
 ```dart
-final client = Sync.client(...);
+final client = SyncClient(store, ['ws://127.0.0.1:9999'], [SyncCredentials.none()]);
 final subscription = client.loginEvents.listen((SyncLoginEvent event) {
   if (event == SyncLoginEvent.loggedIn) print('Logged in successfully');
 });
@@ -1413,7 +1421,7 @@ _Coming soon!_
 
 {% tab title="Dart/Flutter" %}
 ```dart
-final client = Sync.client(...);
+final client = SyncClient(store, ['ws://127.0.0.1:9999'], [SyncCredentials.none()]);
 
 client.setRequestUpdatesMode(SyncRequestUpdatesMode.manual);
 client.start(); // Connect but don't synchronize yet.
@@ -1485,6 +1493,65 @@ syncClient.CancelUpdates()
 // Alternatively, catch up with the server but don't subscribe for future.
 // You can call this instead of subscribing to do one-time updates as needed.
 syncClient.RequestUpdates(false)
+```
+{% endtab %}
+{% endtabs %}
+
+### Custom Certificates
+
+For use cases like self-signed certificates in a local development environment or custom CAs, you can provide certificate paths referring to the local file system.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+final syncClient = SyncClient(
+    store,
+    ['wss://sync.example.com'],
+    [SyncCredentials.none()],
+    certificatePaths: ['/path/to/custom-ca.crt']);
+syncClient.start();
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+// Coming soon
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+OBX_sync_options* opt = obx_sync_opt(store);
+obx_sync_opt_add_url(opt, "wss://sync.example.com");
+obx_sync_opt_add_cert_path(opt, "/path/to/custom-ca.crt");
+
+OBX_sync* sync_client = obx_sync_create(opt);
+obx_sync_credentials(sync_client, OBXSyncCredentialsType_NONE, NULL, 0);
+obx_sync_start(sync_client);
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// Coming soon
 ```
 {% endtab %}
 {% endtabs %}
