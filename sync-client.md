@@ -56,7 +56,7 @@ We may distribute ObjectBox Sync for Swift in our **CocoaPods** staging reposito
 ```
 target 'MyCoolSyncProject' do
     use_frameworks!
-    pod 'ObjectBox', '5.1.1-sync'
+    pod 'ObjectBox', '5.2.0-sync'
 end
 
 ```
@@ -287,8 +287,9 @@ val syncClient = Sync.client(
 
 {% tab title="Swift" %}
 ```swift
-let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
-                                 credentials: SyncCredentials.makeNone())
+let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
+configuration.credentials = [.none()]
+let client = try Sync.makeClient(configuration: configuration)
 try client.start()
 ```
 {% endtab %}
@@ -385,9 +386,10 @@ val syncClient = Sync.client(...)
 
 {% tab title="Swift" %}
 ```swift
-let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
-                                 credentials: SyncCredentials.makeNone(),
-                                 filterVariables: ["name": "value"])
+let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
+configuration.credentials = [.none()]
+configuration.filterVariables = ["name": "value"]
+let client = try Sync.makeClient(configuration: configuration)
 try client.start()
 ```
 {% endtab %}
@@ -452,9 +454,10 @@ val syncClient = Sync.client(...)
 {% tab title="Swift" %}
 ```swift
 let values = ["apple", "banana", "cherry"]
-let client = try Sync.makeClient(store: store, urlString: "ws://127.0.0.1:9999",
-                                 credentials: SyncCredentials.makeNone(),
-                                 filterVariables: ["fruits": values.joined(separator: ",")])
+let configuration = Sync.Configuration(store: store, url: "ws://127.0.0.1:9999")
+configuration.credentials = [.none()]
+configuration.filterVariables = ["fruits": values.joined(separator: ",")]
+let client = try Sync.makeClient(configuration: configuration)
 try client.start()
 ```
 {% endtab %}
@@ -548,7 +551,12 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
 
 {% tab title="Swift" %}
 ```swift
-// Coming soon
+let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
+configuration.credentials = [.none()]
+// Enable multiple flags using array literal syntax
+configuration.flags = [.removeWithObjectData, .debugLogTxLogs]
+let client = try Sync.makeClient(configuration: configuration)
+try client.start()
 ```
 {% endtab %}
 
@@ -823,7 +831,9 @@ val credential = SyncCredentials.none()
 {% endtab %}
 
 {% tab title="Swift" %}
-_Coming soon!_
+```swift
+let credential = SyncCredentials.none()
+```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
@@ -1516,7 +1526,11 @@ For use cases like self-signed certificates in a local development environment o
 
 {% tab title="Swift" %}
 ```swift
-// Coming soon
+let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
+configuration.credentials = [.none()]
+configuration.certificatePaths = ["/path/to/custom-ca.crt"]
+let client = try Sync.makeClient(configuration: configuration)
+try client.start()
 ```
 {% endtab %}
 
