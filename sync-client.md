@@ -347,6 +347,14 @@ The example uses ws://127.0.0.1 for the server endpoint. This is the IP address 
 Using Android emulator? You can use 10.0.2.2 to reach the host (the machine running the emulator). [Details](https://developer.android.com/studio/run/emulator-networking)
 {% endhint %}
 
+{% hint style="info" %}
+It's highly recommended to provide the `RemoveWithObjectData` sync flag when using sync filters.
+This will help to keep the sync performance high.
+See [sync flags](#sync-flags) for more details.
+
+Note: This flag is opt-in for a transitional period. It will become the default in a future release.
+{% endhint %}
+
 The Sync client is started by calling `start()` or `buildAndStart()`. It will then try to connect to the server, authenticate and start syncing. Read below for more configuration options you can use before starting the connection.
 
 Once the client is logged in, the server will push any changes it has missed. The server will also push any future changes while the client remains connected. This [sync updates behavior](sync-client.md#controlling-sync-updates-behavior) can be configured.
@@ -531,7 +539,10 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
 * **RemoveWithObjectData**: When set, remove operations will include the full object data in the TX log.
   This allows sync filters on the Sync Server to filter out remove operations based on the object content.
   Without this flag, remove operations only contain the object ID and cannot be filtered.
-  Note: this increases the size of TX logs for remove operations.
+  * **Setting this flag is highly recommended** when using sync filters.
+  * This flag is opt-in for a transitional period (until clients and servers are updated).
+    It will become the default in a future release.
+  * Note that once remove operations are filtered, the server updates other clients with only the ID to optimize bandwidth.
 * **DebugLogTxLogs**: Enables debug logging of TX log processing.
 * **SkipInvalidTxOps**: Skips invalid (put object) operations in the TX log instead of failing.
   Errors will be logged.

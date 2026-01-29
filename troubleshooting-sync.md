@@ -119,6 +119,35 @@ You may notice that IDs of objects stored on one device may not always match the
 
 Please check the page [MongoDB Sync Connector](mongodb-sync-connector/README.md) and its subpage for MongoDB-specific issues and troubleshooting. Typical issues include the MongoDB user configuration, and not triggering the initial "Full Sync".
 
+## Sync slows down
+
+If you notice that sync performance degrades over time, check for both conditions apply to you:
+
+* Remove operations are used regularly in your app
+* Sync filters are enabled
+
+### Symptoms
+
+* Sync takes longer than expected, particularly when catching up after being offline.
+* Server debug logs show that an unusual amount of messages are sent to clients. 
+* You may see log entries like: `Did not remove object because no local ID mapping found for <ID>`.
+  These are expected but should decrease over time with the setting below.
+
+### Cause
+
+"Legacy" remove operations do not contain sufficient data for sync filters.
+This results in clients processing many unnecessary remove transactions.
+
+### Solution
+
+Ensure you have the latest Sync client version and enable the `RemoveWithObjectData` [sync flag](sync-client.md#sync-flags).
+This flag includes the full object data with remove operations, allowing the server to filter them out based on sync filter conditions.
+Also, ensure to have an up-to-date Sync server version.
+
+{% hint style="info" %}
+**Performance improvements are gradual.** The benefits depend on the overall client population running the updated version. Old clients without the flag will still indirectly slow down new ones, as the server cannot filter remove operations for them. Once a significant portion of clients are updated, sync performance should improve noticeably.
+{% endhint %}
+
 ## Other hiccups
 
 A checklist of other likely issues:
