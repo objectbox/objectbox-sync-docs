@@ -1,0 +1,4 @@
+.idea/
+
+# Temporary patch files
+*.patch
