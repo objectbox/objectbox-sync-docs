@@ -197,6 +197,11 @@ By default, this history grows without limit, which can cause the database to gr
 To prevent this, you can configure a maximum history size.
 Once the limit is reached, old history logs are automatically deleted.
 
+{% hint style="info" %}
+Sync clients that were offline for a longer time may no longer be able to synchronize via delta sync. which is powered by the sync history.
+In that case, these Sync clients will sync from scratch (full sync); any outgoing data will still be sent to the server.
+{% endhint %}
+
 * `historySizeMaxKb` maximum size (in kibibytes) of the sync TX log history.
   Once this size is reached, old sync logs are deleted to stay below the limit.
   Default: `0` (no limit).
@@ -221,8 +226,10 @@ Example configuration to limit history to 5 GB, cleaning up to 4.5 GB (thus trig
 ```
 
 {% hint style="info" %}
-Sync clients that were offline for a longer time may no longer be able to synchronize via sync logs (delta sync).
-In that case, the Sync client will sync from scratch (full sync); any outgoing data will still be sent to the server.
+When initially setting a limit to an existing database well above the limit, the database size will not decrease.
+The newly available space inside the database is reserved for future data.
+Nevertheless, the database file should not grow any further once a limit has been set and reached.
+This is unless the "active data" grows, for example, by inserting more and/or larger objects. 
 {% endhint %}
 
 ### Backup and restore (CLI only)
