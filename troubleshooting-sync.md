@@ -148,6 +148,36 @@ Also, ensure to have an up-to-date Sync server version.
 **Performance improvements are gradual.** The benefits depend on the overall client population running the updated version. Old clients without the flag will still indirectly slow down new ones, as the server cannot filter remove operations for them. Once a significant portion of clients are updated, sync performance should improve noticeably.
 {% endhint %}
 
+## Sync server database keeps growing
+
+You may notice that the Sync Server database keeps growing over time.
+This typically happens if you have a lot of data changes ongoing, even if the data volume in the current "visible database" does not grow.
+The most likely cause is the accumulation of sync history logs.
+
+### Cause
+
+The Sync Server maintains a history of history logs to synchronize clients that reconnect after being offline.
+By default, **there is no size limit** on this history, so it grows indefinitely as new transactions are processed.
+Over time, this can consume significant disk space.
+
+### Solution
+
+Configure a maximum history size using the `historySizeMaxKb` and `historySizeTargetKb` options in your JSON configuration file.
+Once the limit is reached, the Sync Server automatically deletes old TX logs.
+
+For details on these options, see the [configuration page](sync-server/configuration.md#sync-history-size-limit).
+
+### Trade-off
+
+Limiting the history size means that clients that have been offline for a very long time may no longer find their last synced transaction in the history.
+In that case, the server triggers a full sync for the client, re-sending all current data.
+Choose a history size that balances disk usage with the expected offline duration of your clients.
+
+{% hint style="info" %}
+You can monitor the database size using standard file system tools (e.g. `du -sh` on the database directory) or the Admin UI.
+If the database is already very large, the size will decrease gradually as old TX logs are cleaned up after setting the limit.
+{% endhint %}
+
 ## Other hiccups
 
 A checklist of other likely issues:

@@ -8,6 +8,14 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2026-02-10: Limit Sync history via JSON
+---------------------------------------
+ObjectBox version: 5.1.1-pre-2026-02-09
+
+* The Sync history can now be limited via JSON config (historySizeMaxKb and historySizeTargetKb).
+  Setting a maximum size causes old sync history to be deleted automatically.
+* Admin: refresh button for the data view
+
 2026-01-20: Filterable Removes
 ------------------------------
 ObjectBox version: 5.1.0-2026-01-19

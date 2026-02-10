@@ -23,7 +23,7 @@ Running the Sync Server from the command line is a simple way to get started. It
 
 ```
 sync-server --help
-001-16:12:08.9830 [INFO ] [SvSyAp] Starting ObjectBox Sync Server version 5 (protocol version: 6, core: 4.0.3-2025-01-24 (SyncServer, http, graphql, admin, tree, dlog, cluster, backup, lmdb, VectorSearch, SyncMongoDb))
+001-16:12:08.9830 [INFO ] [SvSyAp] Starting ObjectBox Sync Server version 6 (protocol version: 8, core: 5.1.0-2026-01-19 (SyncServer, http, graphql, admin, tree, dlog, cluster, backup, lmdb, VectorSearch, SyncMongoDb))
 ObjectBox Sync Server
 Usage:
   sync-server [OPTION...]
@@ -189,6 +189,50 @@ Example to enable sync-related debug logs (this quickly gets excessive; don't do
 * `syncFilters` this JSON object contains all filter expressions.
   Each filter has the type as key and a string value as the expression.
   Details are available in the [sync filters](sync-filters.md) page.
+
+### Sync history size limit
+
+The Sync Server maintains a sync history (sync logs), which is used to synchronize clients that reconnect after being offline.
+By default, this history grows without limit, which can cause the database to grow indefinitely.
+To prevent this, you can configure a maximum history size.
+Once the limit is reached, old history logs are automatically deleted.
+
+* `historySizeMaxKb` maximum size (in kibibytes) of the sync TX log history.
+  Once this size is reached, old sync logs are deleted to stay below the limit.
+  Default: `0` (no limit).
+* `historySizeTargetKb` target size (in kibibytes) when cleaning up old TX logs.
+  When the maximum size is reached, old sync logs are deleted until this target size is reached.
+  This allows the Sync Server to reserve some space for future sync logs and thus "delays" the next cleanup. 
+  The value must be lower than `historySizeMaxKb`.
+  Default: `0` (same as `historySizeMaxKb`, i.e. delete just enough to stay below the limit).
+
+{% hint style="info" %}
+It's highly recommended to set both values with `historySizeTargetKb` significantly lower than `historySizeMaxKb`.
+This ensures that the Sync Server does the cleanup only occasionally, which is more efficient.
+{% endhint %}
+
+Example configuration to limit history to 5 GB, cleaning up to 4.5 GB (thus triggering cleanup every ~500 MB of sync logs):
+
+```json
+{
+  "historySizeMaxKb": 5242880,
+  "historySizeTargetKb": 4718592
+}
+```
+
+{% hint style="info" %}
+Sync clients that were offline for a longer time may no longer be able to synchronize via sync logs (delta sync).
+In that case, the Sync client will sync from scratch (full sync); any outgoing data will still be sent to the server.
+{% endhint %}
+
+### Backup and restore (CLI only)
+
+These options are available only via command line arguments (not via JSON config).
+
+* `--restore-backup <file>` restores the database from the given backup file.
+  By default, restoration only takes place if no database exists yet.
+* `--backup-overwrites-db` forces the restoration of the backup even if a database already exists.
+  **Danger:** this permanently overwrites the existing database.
 
 ### Advanced options
 
