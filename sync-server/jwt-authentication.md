@@ -41,8 +41,34 @@ The JWT configuration is part of the standard JSON configuration file used for t
 It uses the following configuration fields:
 
 * **publicKeyUrl:** The URL where the Sync Server can retrieve the public key(s) from your authentication provider. Public key rotation is automatically handled by pointing to this URL, ensuring that the Sync Server always uses the correct key for signature verification. For more details, see [configuring the public key URL](#configuring-the-public-key-url).
+* **publicKey:** As an alternative to `publicKeyUrl`, you can provide a PEM-encoded public key directly as a string. This is useful for development and testing setups where you don't want to host a key URL. The key must be in PKCS#8 PEM format, starting with `-----BEGIN PUBLIC KEY-----` and ending with `-----END PUBLIC KEY-----`. Supply either `publicKey` or `publicKeyUrl`, but not both.
 * **claimAud:** Must match the `aud` (audience) value that your authentication provider includes in its issued JWTs. This is used to ensure the token is intended for the correct recipient.
 * **claimIss:** Must match the `iss` (issuer) value used by your authentication provider. This ensures the token is issued by a trusted source.
+* **publicKeyCacheExpirationSeconds:** When using `publicKeyUrl`, this controls how long (in seconds) fetched public keys are cached before being re-downloaded. The default is 300 (5 minutes). Only valid when `publicKeyUrl` is used.
+
+#### Requiring JWT authentication
+
+By default, JWT is offered as an authentication option alongside other configured methods. You can enforce that clients must present specific JWT token types by setting `required` flags:
+
+* **required:** If `true`, clients must present a JWT ID token to connect.
+* **requiredAccess:** If `true`, clients must present a JWT access token to connect.
+* **requiredRefresh:** If `true`, clients must present a JWT refresh token to connect.
+* **requiredCustom:** If `true`, clients must present a custom JWT token to connect.
+
+Example requiring JWT ID tokens:
+
+```json
+{
+  "auth": {
+    "jwt": {
+      "publicKeyUrl": "https://example.com/public-key",
+      "claimAud": "myAUD",
+      "claimIss": "myISS",
+      "required": true
+    }
+  }
+}
+```
 
 ### CLI based JWT configuration
 

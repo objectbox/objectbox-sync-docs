@@ -71,6 +71,8 @@ Usage:
                                 instance (default: "")
       --mongo-db arg            MongoDB Sync Connector: name of the primary 
                                 MongoDB database to sync (default: "")
+      --mongo-initial-import    MongoDB Sync Connector: automatically 
+                                triggers the full sync/import from MongoDB
       --no-stacks               disable stack traces when logging errors
       --unsecured-no-authentication
                                 [UNSECURE] allow connections without 
@@ -84,6 +86,8 @@ Usage:
       --backup-overwrites-db    forces the restoration of the backup even 
                                 if the DB already exists (danger: 
                                 overwrites the db permanently!)
+  -v, --version                 just prints the version and then exits 
+                                immediately
 
 ```
 
@@ -144,6 +148,7 @@ Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
 
 * `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and should only be used to simplify test setups.
 * `debugLog` enable debug logs with `true`
+* `noStacks` disable stack traces when logging errors (default: `false`)
 
 When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
 This is done using boolean flags in the `log` JSON object (all default to `false` when omitted).
@@ -188,9 +193,17 @@ Example to enable sync-related debug logs (this quickly gets excessive; don't do
 ### Advanced options
 
 * `adminThreads` number of threads the HTTP server uses (default: 4). A low number is typically enough as it's for admins only. You may need to increase if running in some cloud setups that keep the connections active (e.g. Kubernetes).
-* `auth.sharedSecret` if not empty, enables the shared secret authentication with the given key
-* `auth.google.clientIds` a list of GoogleAuth client IDs (strings)
-* `auth.obxAdmin` set it to `true` to enable ObjectBox Admin users for sync authentication (e.g. for small deployments and tests)
+* `auth.sharedSecret` enables the shared secret authentication.
+  Can be a plain string (the secret) or an object with `value` (the secret) and `required` (boolean; if `true`, clients must provide a shared secret to connect). Example as object:
+  ```json
+  "sharedSecret": { "value": "my-secret", "required": true }
+  ```
+* `auth.google.clientIds` a list of GoogleAuth client IDs (strings). The enclosing `auth.google` object also accepts a `required` boolean (if `true`, clients must provide Google credentials).
+* `auth.obxAdmin` enables ObjectBox Admin users for sync authentication (e.g. for small deployments and tests). Can be `true` or an object with a `required` boolean (if `true`, clients must provide Admin user credentials). Example as object:
+  ```json
+  "obxAdmin": { "required": true }
+  ```
+* `asyncTxSlot` if asynchronous DB transactions are "too fast", this adds a delay (in microseconds) to fill up the transaction slot. This can reduce the maximum amount of transactions and thus disk usage (default: 3000).
 * `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
 

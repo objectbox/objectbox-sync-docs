@@ -56,6 +56,7 @@ To configure the ObjectBox MongoDB Sync Connector via CLI arguments when startin
 
 * `--mongo-url`: The MongoDB connection string (URL or URI).
 * `--mongo-db`: The primary MongoDB database name.
+* `--mongo-initial-import`: Automatically triggers the full sync/import from MongoDB on startup (equivalent to `mongoDb.automaticInitialImport` in the JSON config).
 
 {% hint style="info" %}
 If you are using Docker on Windows/macOS to run an instance of the ObjectBox Sync server, use `host.docker.internal` as the host in the MongoDB connection string for the `--mongo-url` parameter, for example,
@@ -136,15 +137,15 @@ Each option explained:
   use empty lists when converting to ObjectBox property values.
   By default, absent values are also absent in ObjectBox typically resulting in null values.
   @note if the value is an explicit null in MongoDB, it will remain null in ObjectBox.
-* `strictConversionsFromMongoDb`: Enables strict conversions of data values from ObjectBox objects to MongoDB documents.
-  By default, strict mode is off to ensure that convertable data is synced.
-  On conversion errors, the sync to MongoDB will fail without syncing the object.
-  This may completely stop the sync from ObjectBox to MongoDB.
-  Thus, you should carefully consider the trade-off before enabling this option for production use.
-* `strictConversionsToMongoDb`: Enables strict conversions of data values from MongoDB documents to ObjectBox objects.
+* `strictConversionsFromMongoDb`: Enables strict conversions of data values from MongoDB documents to ObjectBox objects.
   By default, strict mode is off to ensure that convertable data is synced.
   On conversion errors, the sync to ObjectBox will fail without syncing the document.
   This may completely stop the sync from MongoDB to ObjectBox.
+  Thus, you should carefully consider the trade-off before enabling this option for production use.
+* `strictConversionsToMongoDb`: Enables strict conversions of data values from ObjectBox objects to MongoDB documents.
+  By default, strict mode is off to ensure that convertable data is synced.
+  On conversion errors, the sync to MongoDB will fail without syncing the object.
+  This may completely stop the sync from ObjectBox to MongoDB.
   Thus, you should carefully consider the trade-off before enabling this option for production use.
 
 ## Initial import from MongoDB

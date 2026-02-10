@@ -40,13 +40,13 @@ The base configuration of the Sync Server is described [here](configuration.md#c
     "clusterId": "myCluster",
     "serversToConnect": [
         {
-            "uri": "ws://1.2.3.4:5678",
-            "credentialsType": "SHARED_SECRET",
+            "url": "ws://1.2.3.4:5678",
+            "credentialsType": "SHARED_SECRET_SIPPED",
             "credentials": "securePassword"
         },
         {
-            "uri": "ws://1.2.3.5:6789",
-            "credentialsType": "SHARED_SECRET",
+            "url": "ws://1.2.3.5:6789",
+            "credentialsType": "SHARED_SECRET_SIPPED",
             "credentials": "securePassword"
         }
     ]
@@ -54,10 +54,13 @@ The base configuration of the Sync Server is described [here](configuration.md#c
 ```
 
 * `clusterId`: an identifier for the cluster. It's an arbitrary string and has to be the same on all servers involved in a cluster.
+* `fixedFollower`: if `true`, this server never becomes the leader of the cluster; it always stays a follower. Default: `false`.
+* `fixedLeader`: if `true`, this server is the (only!) leader of the cluster. Danger: using this option incorrectly can lead to data inconsistencies — read the Raft consensus section below carefully before enabling it. Default: `false`.
+* `preferredLeader`: if `true`, this server may vote for itself faster during leader election, making it more likely to become the leader. Default: `false`.
 * `serversToConnect`: for each server, the other servers of the cluster must be specified here. Each entry can specify the following fields:
-  * `uri` (required): the URI of the Sync Server; which has to be a WebSocket URI
+  * `url` (required): the URL of the Sync Server; which has to be a WebSocket URL.
   * `credentialsType` is required (unless you are using unsecuredNoAuthentication) and should be `SHARED_SECRET_SIPPED`.
-  * `credentials` (required): given `credentialsType`, this is actual secret.
+  * `credentials` (required): given `credentialsType`, this is the actual secret.
 
 {% hint style="info" %}
 **Note:** while most of the options can be specified either in the Sync Server command line and in the JSON file, the `serversToConnect` options is JSON file only. Thus, if you want to configure clustering for your Sync Server, please use a JSON configuration file as [described here](./#configuration-file).
