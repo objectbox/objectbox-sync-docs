@@ -6,7 +6,11 @@ This repository is documentation-first and organized by topic. Root pages includ
 
 ## Coding Style & Naming Conventions
 
-Use Markdown with clear ATX headings (`#`, `##`, `###`) and short sections. Keep language direct and technical. Prefer fenced code blocks with an explicit language (for example `bash`, `json`, `graphql`). Keep file names lowercase and hyphenated (for example `sync-filters.md`). Use relative links for internal docs and keep image references under `.gitbook/assets/`.
+Use Markdown with clear ATX headings (`#`, `##`, `###`) and short sections. Keep language direct and technical.
+Prefer fenced code blocks with an explicit language (for example `bash`, `json`, `graphql`).
+Keep file names lowercase and hyphenated (for example `sync-filters.md`).
+Use relative links for internal docs and keep image references under `.gitbook/assets/`.
+New edits shall follow the rule "one sentence per line"; also when editing existing sentences.
 
 ## Testing Guidelines
 
