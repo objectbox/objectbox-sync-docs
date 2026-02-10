@@ -2,15 +2,22 @@
 
 ## Project Structure & Module Organization
 
-This repository is documentation-first and organized by topic. Root pages include `README.md`, `sync-client.md`, `faq.md`, and `troubleshooting-sync.md`. Feature areas live in folders such as `sync-server/`, `mongodb-sync-connector/`, `data-model/`. Navigation is defined in `SUMMARY.md`; update it when adding or moving pages. Static images are stored in `.gitbook/assets/`. Files ending in `.patch` are patch artifacts and should only be edited when intentionally updating patch content.
+- This repository is documentation-first and organized by topic.
+- Root pages include `README.md`, `sync-client.md`, `faq.md`, and `troubleshooting-sync.md`.
+- Feature areas live in folders such as `sync-server/`, `mongodb-sync-connector/`, `data-model/`, and `blog-posts/`.
+- Navigation is defined in `SUMMARY.md`; update it when adding or moving pages that should appear in the GitBook sidebar.
+- Static images are stored in `.gitbook/assets/`.
 
-## Coding Style & Naming Conventions
+## Writing Style & Conventions
 
-Use Markdown with clear ATX headings (`#`, `##`, `###`) and short sections. Keep language direct and technical.
-Prefer fenced code blocks with an explicit language (for example `bash`, `json`, `graphql`).
-Keep file names lowercase and hyphenated (for example `sync-filters.md`).
-Use relative links for internal docs and keep image references under `.gitbook/assets/`.
-New edits shall follow the rule "one sentence per line"; also when editing existing sentences.
+- Use Markdown with clear ATX headings (`#`, `##`, `###`) and short sections.
+- Keep language direct and technical.
+- Avoid internal developer terms like "transaction logs" or even "TX logs"; use "sync history" or "sync logs" instead.
+- Prefer fenced code blocks with an explicit language (for example `bash`, `json`, `graphql`).
+- Keep file names lowercase and hyphenated (for example `sync-filters.md`).
+- Use relative links for internal docs and keep image references under `.gitbook/assets/`.
+- New prose edits shall follow the rule "one sentence per line", including when editing existing sentences.
+- Do not reflow code blocks, tables, or GitBook tags only to enforce this rule.
 
 ## Testing Guidelines
 
@@ -36,6 +43,10 @@ Quick reference of every page in this repo and what it covers.
 - **`sync-client.md`** — Sync Client docs (~1600 lines). Covers: obtaining sync-enabled libraries per language (Java/Kotlin, Swift, Dart, C/C++, Go), enabling sync on entity types (`@Sync` annotation), starting a client, sync filter client variables (including IN values), drop-off / send-only clients, sync flags (`RemoveWithObjectData`, debug flags, etc.), authentication options (JWT, shared secret, Google Sign-In, none), manual start, event listeners, and controlling sync update behavior. Multi-language code samples throughout.
 - **`faq.md`** — Frequently asked questions grouped by Data Model, Sync Server, Admin UI, and MongoDB Connector topics.
 - **`troubleshooting-sync.md`** — Troubleshooting guide: reaching the server, checking network, enabling debug logging (CLI, config file, Admin UI), log events, client logs, Docker container utilities, diagnosing "clients don't connect/sync", ID mismatch explanation, MongoDB-specific issues, sync performance degradation with filters, and contacting support.
+
+### `blog-posts/`
+
+Ignore `blog-posts/` for now.
 
 ### `data-model/`
 
@@ -71,4 +82,3 @@ Quick reference of every page in this repo and what it covers.
 - **`mongodb-sync-connector/objectbox-sync-connector-setup.md`** — Connector Setup: creating/providing a data model, running Sync Server first, configuring MongoDB connection (CLI `--mongo-url`/`--mongo-db` or JSON config), primary database notes, all JSON config options (`automaticInitialImport`, `strictConversions*`, `emptyListForAbsentValues`), initial import from MongoDB (Admin UI workflow, progress phases, viewing import history), troubleshooting (snapshot isolation timeouts `minSnapshotHistoryWindowInSeconds`, verifying Atlas cluster reachability from Docker).
 - **`mongodb-sync-connector/mongodb-data-mapping.md`** — Data Mapping (~456 lines): type/property name mapping (`@ExternalName`), ID mapping (automatic, special ID types: ObjectID, UUID variants, String, Binary, Int), property/field type mapping tables (standard types, special types like Decimal128, JavaScript, JsonToNative, MongoId, UUID, MongoBinary, MongoRegex, MongoTimestamp), to-one relations, many-to-many relations, nested documents (flex properties vs. JSON string with `@ExternalType(JsonToNative)`), heterogeneous arrays. Multi-language code samples (Java, Kotlin, Swift, Dart, C/C++, Go).
 - **`mongodb-sync-connector/performance-and-best-practices.md`** — Performance tips: use transactions, avoid switching object types in a transaction, keep puts separate from removes, background on embedded vs. network DB latency.
-
