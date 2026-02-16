@@ -257,6 +257,8 @@ These options are available only via command line arguments (not via JSON config
 * `asyncTxSlot` if asynchronous DB transactions are "too fast", this adds a delay (in microseconds) to fill up the transaction slot. This can reduce the maximum amount of transactions and thus disk usage (default: 3000).
 * `certificatePath` Supply a SSL certificate directory to enable SSL. This directory must contain the files `cert.pem` and `key.pem`.
 * `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
+* `removeWithoutObjectData` by default, the server includes full object data in sync logs for remove operations, which allows [sync filters](sync-filters.md) to filter removes based on object content.
+  Set to `true` to disable this and only include the object ID (reduces sync log size but prevents filtering of remove operations).
 
 ## Clusters
 To set up a cluster, please refer to the [cluster](sync-cluster.md) page for specific configuration options.

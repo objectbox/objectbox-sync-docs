@@ -8,6 +8,18 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2026-02-16: Batch updates for Sync clients
+------------------------------------------
+ObjectBox version: 5.1.1-pre-2026-02-16
+
+* Updates to clients are now sent batched (individual updates are merged into a single message):
+  this significantly improves performance for "catching up" after being offline.
+* Remove operations originating on the server (e.g., via MongoDB) are now filterable
+* Admin: new "Counts and Sizes" view (via Status page) to give an overview over all types their object counts and sizes
+* Old sync history logs are now evicted on server startup if the history limit is already exceeded.
+* Admin: fix reload via browser to stay on the page
+* Admin: schema view to display flags as text
+
 2026-02-10: Limit Sync history via JSON
 ---------------------------------------
 ObjectBox version: 5.1.1-pre-2026-02-09
