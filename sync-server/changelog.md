@@ -8,6 +8,32 @@ Docker images use versions in the format "YYYY-MM-DD".
 If not specified otherwise, you can pull the latest image using `docker pull objectboxio/sync-server-trial`
 (via the `latest` Docker tag).
 
+2026-03-08: Improved Diagnostics
+--------------------------------
+ObjectBox version: 5.2.0-next-2026-03-07
+
+* Improved Sync history performance
+* Introduced Sync protocol V10
+* Change log level at runtime; via Admin UI
+* More granular log levels that lead to less logs in "debug" mode
+* Log levels "verbose" and "trace" can now be enabled for additional debug logging (requires DebugLog feature)
+* Admin: added a new "Threads" status tab for expert analysis, e.g., download for ObjectBox support team
+* Admin: added Log Events for sync message handling failures
+* Admin: Log Event merging that collapses multiple occurrences of similar log events into a single one
+* Admin: Status tab "Count and Sizes" now only counts all objects on click to preserve resources
+* Admin: Status tab "Count and Sizes" now has a sum row at the bottom
+* Admin: Status tab "System and Info" now shows additional information
+  * Process memory / RSS
+  * Database size and free disk size
+  * CPU counts and loads
+* Tuned down the default number of workers match the number of hardware threads.
+  Before, it was set to three times that value, which could impact IO-bound systems.
+  Consider tuning this value for your specific system if you have high concurrency.
+* Client reported errors are now viewable from Log Events (requires Sync protocol V10 on the client side)
+* Fixed setting automatic `maxReaders` value for default workers with high hardware thread count.
+* New expert configuration option `maxReaders` to limit the number of concurrent readers;
+  typically, you should not touch this and should trust the default value.
+
 2026-02-16: Batch updates for Sync clients
 ------------------------------------------
 ObjectBox version: 5.1.1-pre-2026-02-16
