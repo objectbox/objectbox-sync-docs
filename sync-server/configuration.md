@@ -212,16 +212,18 @@ In that case, these Sync clients will sync from scratch (full sync); any outgoin
   Default: `0` (same as `historySizeMaxKb`, i.e. delete just enough to stay below the limit).
 
 {% hint style="info" %}
-It's highly recommended to set both values with `historySizeTargetKb` significantly lower than `historySizeMaxKb`.
+It's highly recommended to set both values with `historySizeTargetKb` a bit lower than `historySizeMaxKb`.
+As a rule of thumb set `historySizeTargetKb` to 50 to 200 MB below `historySizeMaxKb` for multi-GB sync histories.
 This ensures that the Sync Server does the cleanup only occasionally, which is more efficient.
+Larger gaps/cleanups may also work, but may affect IOPS and performance.
 {% endhint %}
 
-Example configuration to limit history to 5 GB, cleaning up to 4.5 GB (thus triggering cleanup every ~500 MB of sync logs):
+Example configuration to limit history to 5 GB, cleaning up to 4.9 GB (thus triggering cleanup every ~100 MB of sync logs):
 
 ```json
 {
   "historySizeMaxKb": 5242880,
-  "historySizeTargetKb": 4718592
+  "historySizeTargetKb": 5138022
 }
 ```
 
