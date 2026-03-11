@@ -48,7 +48,11 @@ Usage:
       --cert arg                certificate file path (default: "")
       --cluster-id arg          cluster ID to enable cluster mode for 
                                 servers (default: "")
-      --debug                   enable debug logs
+      --debug                   enable debug logs (deprecated; use 
+                                --log-level debug)
+      --log-level arg          set the log level: all, trace, verbose, 
+                                debug, info, warn, error, none (default: 
+                                "")
       --fixed-follower          the server never becomes the leader of the 
                                 cluster
       --fixed-leader            make the server the (only!) leader of the 
@@ -121,7 +125,7 @@ Example file for a local development setup (not intended for production use as a
   "adminBind": "http://127.0.0.1:9980",
   "_note": "unsecuredNoAuthentication should not be used in production",
   "unsecuredNoAuthentication": true,
-  "debugLog": true
+  "logLevel": "debug"
 }
 ```
 
@@ -147,7 +151,12 @@ Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
 ### Developer and debug options
 
 * `unsecuredNoAuthentication` allows connections without any authentication. Note: this is unsecure and should only be used to simplify test setups.
-* `debugLog` enable debug logs with `true`
+* `logLevel` set the runtime log level.
+  Accepted values: `all`, `trace`, `verbose`, `debug`, `info`, `warn`, `error`, `none`.
+  Example: `"logLevel": "debug"`.
+  Also available as CLI argument `--log-level`.
+* `debugLog` **(deprecated)** — use `"logLevel": "debug"` instead.
+  If still present, a warning is logged; `logLevel` takes precedence when both are set.
 * `noStacks` disable stack traces when logging errors (default: `false`)
 
 When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
@@ -172,7 +181,7 @@ Example to enable sync-related debug logs (this quickly gets excessive; don't do
 
 ```json
 {
-  "debugLog": true,
+  "logLevel": "debug",
   "log": {
     "idMapping": true,
     "syncFilterVariables": true
@@ -261,6 +270,10 @@ These options are available only via command line arguments (not via JSON config
 * `workers` sets the number of concurrent workers for the main task pool (default is hardware dependent, e.g. 3 times the number of CPU cores).
 * `removeWithoutObjectData` by default, the server includes full object data in sync logs for remove operations, which allows [sync filters](sync-filters.md) to filter removes based on object content.
   Set to `true` to disable this and only include the object ID (reduces sync log size but prevents filtering of remove operations).
+* `fullSyncMessageSplitMb` threshold (in MiB) at which large full-sync messages are split into smaller chunks.
+  Accepts integer or floating-point values (e.g. `8` or `5.5`).
+  Minimum: 1 MiB, default: 4 MiB.
+  Lower values reduce peak memory usage on clients receiving a full sync; higher values reduce per-message overhead.
 
 ## Clusters
 To set up a cluster, please refer to the [cluster](sync-cluster.md) page for specific configuration options.

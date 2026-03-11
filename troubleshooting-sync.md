@@ -44,8 +44,8 @@ The network connection seems fine? Then let's get additional information to the 
 There are three ways to enable debug logs (see also [Sync Server configuration](sync-server/configuration.md)):
 
 * Use the Admin UI on the "Status" page to find switch to enable debug logging. Note: since this requires the Sync Server to be already running, this will not log while the server starts. 
-* Use the `--debug` CLI argument when starting the server.
-* In the server configuration file, add `"debugLog": true`. If the server is running, you need to restart it to apply the change.
+* Use the `--log-level debug` CLI argument when starting the server (the older `--debug` flag still works but is deprecated).
+* In the server configuration file, add `"logLevel": "debug"`. If the server is running, you need to restart it to apply the change.
 
 ### Log events
 
