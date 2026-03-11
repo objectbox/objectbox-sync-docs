@@ -4,10 +4,11 @@ description: Recent Sync Server releases
 
 # Changelog
 
-Docker images use versions in the format "YYYY-MM-DD". Pull the latest image using `docker pull objectboxio/sync-server-trial`.
+Docker images use versions in the format "YYYY-MM-DD".
+Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
-## 2026-03-08: Improved Diagnostics
-
+2026-03-08: Improved Diagnostics
+--------------------------------
 ObjectBox version: 5.2.0-next-2026-03-07
 
 * Improved Sync history performance
@@ -24,129 +25,146 @@ ObjectBox version: 5.2.0-next-2026-03-07
   * Process memory / RSS
   * Database size and free disk size
   * CPU counts and loads
-* Tuned down the default number of workers match the number of hardware threads. Before, it was set to three times that value, which could impact IO-bound systems. Consider tuning this value for your specific system if you have high concurrency.
+* Tuned down the default number of workers match the number of hardware threads.
+  Before, it was set to three times that value, which could impact IO-bound systems.
+  Consider tuning this value for your specific system if you have high concurrency.
 * Client reported errors are now viewable from Log Events (requires Sync protocol V10 on the client side)
 * Fixed setting automatic `maxReaders` value for default workers with high hardware thread count.
-* New expert configuration option `maxReaders` to limit the number of concurrent readers; typically, you should not touch this and should trust the default value.
+* New expert configuration option `maxReaders` to limit the number of concurrent readers;
+  typically, you should not touch this and should trust the default value.
 
-## 2026-02-16: Batch updates for Sync clients
-
+2026-02-16: Batch updates for Sync clients
+------------------------------------------
 ObjectBox version: 5.1.1-pre-2026-02-16
 
-* Updates to clients are now sent batched (individual updates are merged into a single message): this significantly improves performance for "catching up" after being offline.
+* Updates to clients are now sent batched (individual updates are merged into a single message):
+  this significantly improves performance for "catching up" after being offline.
 * Remove operations originating on the server (e.g., via MongoDB) are now filterable
 * Admin: new "Counts and Sizes" view (via Status page) to give an overview over all types their object counts and sizes
 * Old sync history logs are now evicted on server startup if the history limit is already exceeded.
 * Admin: fix reload via browser to stay on the page
 * Admin: schema view to display flags as text
 
-## 2026-02-10: Limit Sync history via JSON
-
+2026-02-10: Limit Sync history via JSON
+---------------------------------------
 ObjectBox version: 5.1.1-pre-2026-02-09
 
-* The Sync history can now be limited via JSON config (historySizeMaxKb and historySizeTargetKb). Setting a maximum size causes old sync history to be deleted automatically.
+* The Sync history can now be limited via JSON config (historySizeMaxKb and historySizeTargetKb).
+  Setting a maximum size causes old sync history to be deleted automatically.
 * Admin: refresh button for the data view
 
-## 2026-01-20: Filterable Removes
-
+2026-01-20: Filterable Removes
+------------------------------
 ObjectBox version: 5.1.0-2026-01-19
 
-* Synced "remove" operations can now be filtered (via Sync Filters): for this to work, clients must enable the new RemoveWithObjectData sync flag
+* Synced "remove" operations can now be filtered (via Sync Filters):
+  for this to work, clients must enable the new RemoveWithObjectData sync flag
 * Introduced Sync protocol V8
 * Raised minimum sync protocol to V5 (2024-09; client versions 4.0.x or higher)
 * Minor internal improvements and fixes
 
-## 2025-12-15: MongoDB Remove fix
-
+2025-12-15: MongoDB Remove fix
+------------------------------
 ObjectBox version: 5.0.0-2025-12-15
 
 * Fix for a rare condition in which applying a remove operation to MongoDB failed.
 
-## 2025-12-10: Name mappings for MongoDB
-
+2025-12-10: Name mappings for MongoDB
+-------------------------------------
 ObjectBox version: 5.0.0-2025-12-10
 
-* Define external names for types, properties and relations to "map" to a different collection/field name in MongoDB.\
+* Define external names for types, properties and relations to "map" to a different collection/field name in MongoDB.  
   Note: Sync clients already allow you to define external names via annotations.
-* MongoDB: allow conversion integer type conversion (32 vs 64 bits) from MongoDB to ObjectBox (types do not have to match exactly)
+* MongoDB: allow conversion integer type conversion (32 vs 64 bits) from MongoDB to ObjectBox
+  (types do not have to match exactly)
 * Admin: the Schema view now shows if external name of types and properties if configured
 * Admin: the Schema view now shows the type as text (e.g. "String") instead of the internal type ID
 * Fix external type change detection when changed in the model
 
-## 2025-12-05: Sync Filter default variable values
-
+2025-12-05: Sync Filter default variable values
+-----------------------------------------------
 ObjectBox version: 5.0.0-2025-12-05
 
 * Sync filters: added support for default variable values, e.g. `${client.team ?? "green"}`
 * Sync filters optimizations
 
-## 2025-12-04: Sync Filters IN condition
-
+2025-12-04: Sync Filters IN condition
+-------------------------------------
 ObjectBox version: 5.0.0-2025-12-04
 
-* Sync filters: added support for IN conditions allowing to filter objects based on multiple values. _Note:_ there are some minor optimizations outstanding, which are expected for the next update.
+* Sync filters: added support for IN conditions allowing to filter objects based on multiple values.
+  _Note:_ there are some minor optimizations outstanding, which are expected for the next update.
 
-## 2025-11-26: MongoDB change stream fix
-
+2025-11-26: MongoDB change stream fix
+-------------------------------------
 ObjectBox version: 5.0.0-2025-11-26
 
-* MongoDB changes were reported as an error if an updated document was deleted since the update. This is now handled gracefully. The debug logs will show this as "Skipping MongoDB change for a doc that does not exist anymore" along with its ID.
+* MongoDB changes were reported as an error if an updated document was deleted since the update.
+  This is now handled gracefully.
+  The debug logs will show this as "Skipping MongoDB change for a doc that does not exist anymore" along with its ID.
 
-## 2025-11-24: Sync optimizations
-
+2025-11-24: Sync optimizations
+------------------------------
 ObjectBox version: 5.0.0-2025-11-24
 
 * Initial full client sync: optimized the order of types, e.g. sync types without dependencies first
 * Sync filters: optimizations, especially for connected clients
 * Improved warning event logs for MongoDB changes (e.g. include offending MongoDB document)
 
-## 2025-11-20: Sync filter relation fix
-
+2025-11-20: Sync filter relation fix
+------------------------------------
 ObjectBox version: 5.0.0-2025-11-20
 
 * Sync filters: fix filters for many-to-many relations, which did not consider user-specific variables
 * JSON config: allow keys starting with an underscore to allow comments and temporarily disable setting elements
 * Prometheus: fix missing content header so `fallback_scrape_protocol` is not required anymore
 
-## 2025-11-19: Debug log flags via JSON config
-
+2025-11-19: Debug log flags via JSON config
+-------------------------------------------
 ObjectBox version: 5.0.0-2025-11-19
 
 * JSON config: added debug log flags for internal components
 * JSON config: detect unknown JSON elements, e.g. fail on typos
 * MongoDB export: removed (excessive) debug logs for compression
 
-## 2025-11-15: Fix Sync filter performance
-
+2025-11-15: Fix Sync filter performance
+---------------------------------------
 ObjectBox version: 5.0.0-2025-11-15
 
 * Fixed an issue with Sync filters that led to poor client synchronization performance.
 * Admin: fix "Clients TXs behind" Sync statistic to consider sync filters
 * Minor tweak for bulk put operations to MongoDB
 
-## 2025-11-13: Faster Sync to MongoDB
-
+2025-11-13: Faster Sync to MongoDB
+----------------------------------
 ObjectBox version: 5.0.0-2025-11-11
 
-* Data synchronization to MongoDB is now faster for transactions with multiple objects of the same type. Note: if you update multiple objects, use a single transaction to improve performance (in general). Hint: try to avoid switching object types for put and remove operations often; MongoDB is faster for consecutive operations of the same object type.
+* Data synchronization to MongoDB is now faster for transactions with multiple objects of the same type.
+  Note: if you update multiple objects, use a single transaction to improve performance (in general).
+  Hint: try to avoid switching object types for put and remove operations often;
+  MongoDB is faster for consecutive operations of the same object type.
 
-## 2025-11-11: New MongoDB Connector option flags
-
+2025-11-11: New MongoDB Connector option flags
+----------------------------------------------
 ObjectBox version: 5.0.0-2025-11-11
 
 * When syncing from MongoDB, there is a new global flag that creates empty lists for absent list values.
-* For data conversion from/to MongoDB, there is a new strict option for each direction, which will stop sync on conversion errors. This may be useful e.g. during development to ensure no data glitch is forgotten.
+* For data conversion from/to MongoDB, there is a new strict option for each direction,
+  which will stop sync on conversion errors.
+  This may be useful e.g. during development to ensure no data glitch is forgotten.
 
-## 2025-11-08: MongoDB Connector improvements
-
+2025-11-08: MongoDB Connector improvements
+------------------------------------------
 ObjectBox version: 5.0.0-2025-11-08
 
-* The import phase of "MongoDB full sync" is now faster. By using larger batches, processing got more efficient and also results in fewer Sync history entries.
-* Many-to-many relations synced from MongoDB are now considered by sync filters more reliably. With MongoDB, we saw some scenarios where many-to-many relations where synced before the actual target objects.\
+* The import phase of "MongoDB full sync" is now faster.
+  By using larger batches, processing got more efficient and also results in fewer Sync history entries.
+* Many-to-many relations synced from MongoDB are now considered by sync filters more reliably.
+  With MongoDB, we saw some scenarios where many-to-many relations where synced before the actual target objects.        
   Since sync filters did not have sufficient information, these relations were filtered out before.
 
-## 2025-10-10: JWT and MongoDB improvements
-
+2025-10-10: JWT and MongoDB improvements
+----------------------------------------
 Update advise: update asap if you are using MongoDB Sync Connector.
 
 ObjectBox version: 5.0.0-rc-2025-10-10
@@ -155,8 +173,8 @@ ObjectBox version: 5.0.0-rc-2025-10-10
 * JWT: allow `aud` to be a array (single string only)
 * MongoDB connector: making Sync to MongoDB more robust, e.g. always using majority read concern
 
-## 2025-10-02: Minor fixes and improvements
-
+2025-10-02: Minor fixes and improvements
+----------------------------------------
 **Note: Sync filters require version 5.0 of ObjectBox sync clients.**
 
 ObjectBox version: 5.0.0-rc-2025-10-02
@@ -165,75 +183,91 @@ ObjectBox version: 5.0.0-rc-2025-10-02
 * Fix MongoDB CLI arguments when a configuration file is used.
 * Internal improvements and dependency updates
 
-## 2025-09-16: Sync filter updates, client filter variables
-
+2025-09-16: Sync filter updates, client filter variables
+--------------------------------------------------------
 **Note: Sync filters require version 5.0 of ObjectBox sync clients.**
 
 * Detect when sync filters are changed for a client and enforce a complete sync from scratch.
-* Client filter variables: clients can now send variables to the Sync Server, which are available in sync filter expressions.
+* Client filter variables: clients can now send variables to the Sync Server, which are available in sync filter
+  expressions.
 
-## 2025-08-28: JSON model fix for external types and names
-
+2025-08-28: JSON model fix for external types and names
+-------------------------------------------------------
 * Parsing the JSON model file with externalType or externalName field fixed
 * Sync filters: added `${...}` variable syntax for special characters
 
-## 2025-08-21: Sync filter fix for vector types
-
+2025-08-21: Sync filter fix for vector types
+--------------------------------------------
 * Fixes "Float vector indexes are not supported" when using vectors in sync filter expressions
 * MongoDB Sync Connector: add mapping for MongoDB's decimal128 type to string (via external property type)
 * Minor dependency updates
 
-## 2025-08-02: Filter expression string value improvements
+2025-08-02: Filter expression string value improvements
+-------------------------------------------------------
+* Sync filter expression improvements for string values:
+  allow single quotes in addition to double quotes, allow escapes using the `\` character.
 
-* Sync filter expression improvements for string values: allow single quotes in addition to double quotes, allow escapes using the `\` character.
-
-## 2025-08-01: Sync filters and user-specific sync (beta)
-
+2025-08-01: Sync filters and user-specific sync (beta)
+------------------------------------------------------
 * Sync filters: configure expressions for the Sync Server to filter objects that are to by synced.
-* User-specific sync: sync filter expression can use user-specific variables and thus enable user-specific sync. This is a major feature that allows clients to sync only partial (individual) data.
-* JWT claims available as user-specific sync filter variables. Data send by the clients via JWT is available to the sync filter expressions. Check your JWT provider how you can add the claims that you need to your JWT.
+* User-specific sync: sync filter expression can use user-specific variables and thus enable user-specific sync.
+  This is a major feature that allows clients to sync only partial (individual) data.
+* JWT claims available as user-specific sync filter variables.
+  Data send by the clients via JWT is available to the sync filter expressions.
+  Check your JWT provider how you can add the claims that you need to your JWT.
 
 This beta version has a few known limitations that will be addressed in one of the next versions:
 
-* When sync filter expressions changed, it's not yet handled. Clients may still keep old data previously synced by old filters. In a new version, we will likely enforce a complete sync from scratch when filters change so that clients have consistent data.
-* It's possible to change the value of a property, which is used in a sync filter expression. For example, consider a property `team` that is used in a sync filter expression. One client changes the team from "blue" to "green". The server now correctly syncs the change to "team green" clients. However, it is not yet deleted from "team blue" clients.
-* JWT claims are only the first variables available to sync filter expressions. We are currently collecting customer requirements to add more variables and user information. Check with the ObjectBox to ensure that your needs are covered.
+* When sync filter expressions changed, it's not yet handled.
+  Clients may still keep old data previously synced by old filters.
+  In a new version, we will likely enforce a complete sync from scratch when filters change
+  so that clients have consistent data.
+* It's possible to change the value of a property, which is used in a sync filter expression.
+  For example, consider a property `team` that is used in a sync filter expression.
+  One client changes the team from "blue" to "green".
+  The server now correctly syncs the change to "team green" clients.
+  However, it is not yet deleted from "team blue" clients.
+* JWT claims are only the first variables available to sync filter expressions.
+  We are currently collecting customer requirements to add more variables and user information.
+  Check with the ObjectBox to ensure that your needs are covered.
 
-## 2025-07-21: MongoDB grant check fix
-
+2025-07-21: MongoDB grant check fix
+-----------------------------------
 * MongoDB Connector: when using a MongoDB without authentication, do not display warnings in the status page.
 
-## 2025-07-17: MongoDB user grant checks and maintenance
-
+2025-07-17: MongoDB user grant checks and maintenance
+-----------------------------------------------------
 * MongoDB Connector: improved error handling; some errors only showed up in debug logs.
 * MongoDB Connector: fix to only sync entity types that are actually enabled for sync.
 * Admin: fixed GraphQL page (this time pinning GraphiQL to version 4.1)
 * Admin: MongoDB status page now shows the MongoDB user and warnings if it does not have enough privileges for Sync.
 * Admin: Special connection state if full sync was not yet performed
-* Docker image: adding various Linux utility packages that are useful to debug/troubleshoot: iputils, iproute, procps-ng, strace, lsof, nmap-ncat
+* Docker image: adding various Linux utility packages that are useful to debug/troubleshoot:
+  iputils, iproute, procps-ng, strace, lsof, nmap-ncat
 * Internal improvements, e.g. updated dependencies and compiler to new major versions
 
-## 2025-06-02: Admin Fixes
-
+2025-06-02: Admin Fixes
+-----------------------
 * Admin: fixed GraphQL page
 * Admin: minor UI improvements in the menu (icons, padding)
 
-## 2025-05-27: Public docker image and major improvements
-
+2025-05-27: Public docker image and major improvements
+------------------------------------------------------
 * The Sync trial is now distributed publicly as a Docker image via Docker Hub
 * New "JSON to native" property type to convert strings to nested documents in MongoDB; requires 4.3 client releases
 * Increase maximum Sync message size to 32 MB
 * JWT authentication: public keys URLs can now refer to directly to PEM public key or X509 certificate files
 * Admin fixes
 
-## 2025-05-05: MongoDB initial Sync, etc.
-
+2025-05-05: MongoDB initial Sync, etc.
+--------------------------------------
 * Import initial data from MongoDB, pick-up sync at any point.
 * Admin: new admin page for full-syncs with MongoDB
 * Admin: better display of large vectors in data view; display only the first element and the full vector in a dialog
 * Admin: detect images stored as bytes and show them as such (PNG, GIF, JPEG, SVG, WEBP)
 * Admin: new log events for important server events, which can be viewed on new Admin page
 
-## Earlier versions
-
-We started this changelog only in May 2025, when the Sync Server was first released as a public Docker image. Earlier versions, which were provided individually, are not listed here.
+Earlier versions
+----------------
+We started this changelog only in May 2025, when the Sync Server was first released as a public Docker image.
+Earlier versions, which were provided individually, are not listed here.
