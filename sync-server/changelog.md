@@ -7,6 +7,17 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-03-11: New config options, improved Sync History
+-----------------------------------------------------
+ObjectBox version: 5.2.0-next-2026-03-11
+
+* New config option `logLevel` (JSON; `--log-level` CLI) to set the log level at startup
+* New config option `fullSyncMessageSplitMb` to optimize full sync message splitting
+* Admin Sync History: show the oldest history entry
+* Admin Sync History: search by TX ID
+* Admin Sync History: paging now scales regardless of the current position
+* Admin Sync History: fix the number of items displayed
+
 2026-03-08: Improved Diagnostics
 --------------------------------
 ObjectBox version: 5.2.0-next-2026-03-07
