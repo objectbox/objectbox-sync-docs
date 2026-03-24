@@ -399,10 +399,12 @@ Only changes made after the checkpoint — which naturally carry a higher preced
 {% hint style="warning" %}
 Choose precedence values carefully.
 Once an object has a high precedence, only writes with an equal or higher precedence can update it.
-If you set precedence to `Long.MAX_VALUE`, no further updates will ever win — effectively making the object immutable.
+Also, avoid `Long.MAX_VALUE` completely.
 {% endhint %}
 
 ## Summary
+
+Using a Sync clock is a solid default choice for most apps.
 
 | Mechanism          | Conflict rule              | Controlled by         | Best for                              |
 |--------------------|----------------------------|-----------------------|---------------------------------------|
