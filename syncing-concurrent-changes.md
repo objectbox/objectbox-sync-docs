@@ -60,7 +60,7 @@ E.g., when a device was offline for a long time and then syncs again, its data i
 
 ## Sync Clock
 
-A **sync clock** property is a 64-bit integer that ObjectBox Sync updates automatically on every put operation.
+A **sync clock** property is an unsigned 64-bit integer that ObjectBox Sync updates automatically on every put operation.
 It implements a so-called "Hybrid Logical Clock (HLC)" that combines:
 
 * the **wall clock** (physical time) of the device, and
@@ -70,8 +70,8 @@ This means two devices with different system clocks can still produce a consiste
 On conflict, the write with the **higher clock value wins** — giving you true "last write wins" based on when the change was actually made, not when it was received.
 
 {% hint style="info" %}
-You do not read or set the clock value yourself.
 Initialize it to `0` in new objects; ObjectBox Sync takes care of the rest.
+The sync clock uses a custom internal format — do not read, interpret, or set clock values yourself.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -104,7 +104,7 @@ Without a sync clock, Device A's later-arriving write would have silently won.
 
 ### Defining a Sync Clock Property
 
-Add a `Long` (64-bit integer) property to your synced entity and annotate it as a sync clock.
+Add a 64-bit integer property (unsigned if the language allows) to your synced entity and annotate it as a sync clock.
 Initialize it to `0` for new objects.
 There can be only **one** sync clock property per entity type.
 
@@ -175,7 +175,7 @@ table Task {
     text: string;
 
     /// objectbox: sync-clock
-    sync_clock: long = 0;
+    sync_clock: ulong = 0;
 }
 ```
 {% endtab %}
@@ -186,7 +186,7 @@ table Task {
 type Task struct {
     Id        uint64
     Text      string
-    SyncClock int64 `objectbox:"sync-clock"`
+    SyncClock uint64 `objectbox:"sync-clock"`
 }
 ```
 {% endtab %}
@@ -213,7 +213,7 @@ This makes the ObjectBox Sync clock more robust in situations with concurrent of
 ## Sync Precedence
 
 While the sync clock answers "which write happened last?", **sync precedence** answers "which write is more important?"
-It is a 64-bit integer property whose value you control.
+It is an unsigned 64-bit integer property whose value you control.
 On conflict, the write with the **higher precedence value wins**.
 
 This is a powerful mechanism for encoding business logic directly into conflict resolution.
@@ -309,10 +309,10 @@ table Order {
     quantity: int;
 
     /// objectbox: sync-precedence
-    precedence: long = 0;
+    precedence: ulong = 0;
 
     /// objectbox: sync-clock
-    sync_clock: long = 0;
+    sync_clock: ulong = 0;
 }
 ```
 {% endtab %}
@@ -324,12 +324,17 @@ type Order struct {
     Id         uint64
     Item       string
     Quantity   int32
-    Precedence int64 `objectbox:"sync-precedence"`
-    SyncClock  int64 `objectbox:"sync-clock"`
+    Precedence uint64 `objectbox:"sync-precedence"`
+    SyncClock  uint64 `objectbox:"sync-clock"`
 }
 ```
 {% endtab %}
 {% endtabs %}
+
+{% hint style="warning" %}
+Precedence is treated as an **unsigned** value.
+Do not assign negative numbers — they will be interpreted as very large values and may permanently lock out further updates to the object.
+{% endhint %}
 
 ### Conflict Resolution Order
 
