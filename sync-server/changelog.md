@@ -14,7 +14,7 @@ ObjectBox version: 5.3.1-2026-03-26
 Note: version 2026-03-25 has been revoked in favor of this version.
 
 * Conflict resolution via sync clock and sync precedence
-* Requires ObjectBox Sync clients supporting Sync clock and precedence properties (core version 5.3.0-2026-03-23)
+* Requires ObjectBox Sync clients supporting Sync clock and precedence properties (core version 5.3.1-2026-03-26)
 
 2026-03-11: New config options, improved Sync History
 -----------------------------------------------------
