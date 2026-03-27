@@ -7,9 +7,11 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
-2026-03-25: Customizable Sync Conflict Resolution
+2026-03-26: Customizable Sync Conflict Resolution
 -------------------------------------------------
-ObjectBox version: 5.3.0-next-2026-03-25
+ObjectBox version: 5.3.1-2026-03-26
+
+Note: version 2026-03-25 has been revoked in favor of this version.
 
 * Conflict resolution via sync clock and sync precedence
 * Requires ObjectBox Sync clients supporting Sync clock and precedence properties (core version 5.3.0-2026-03-23)
