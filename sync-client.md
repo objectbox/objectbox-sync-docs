@@ -550,19 +550,31 @@ Sync flags allow you to adjust the behavior of the sync client. These flags can 
 {% tabs %}
 {% tab title="Java" %}
 ```java
-// Coming soon
+final SyncClient syncClient = Sync.client(store)
+        .url("wss://sync.server.example")
+        .credentials(SyncCredentials.none())
+        // Enable multiple flags using bitwise OR
+        .flags(SyncFlags.RemoveWithObjectData | SyncFlags.DebugLogTxLogs)
+        .build();
+syncClient.start();
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-// Coming soon
+val syncClient = Sync.client(store)
+    .url("wss://sync.server.example")
+    .credentials(SyncCredentials.none())
+    // Enable multiple flags using bitwise OR
+    .flags(SyncFlags.RemoveWithObjectData or SyncFlags.DebugLogTxLogs)
+    .build()
+syncClient.start()
 ```
 {% endtab %}
 
 {% tab title="Swift" %}
 ```swift
-let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
+let configuration = Sync.Configuration(store: store, url: "wss://sync.server.example")
 configuration.credentials = [SyncCredentials.makeNone()]
 // Enable multiple flags using array literal syntax
 configuration.flags = [.removeWithObjectData, .debugLogTxLogs]
@@ -577,7 +589,7 @@ import 'package:objectbox/src/native/bindings/objectbox_c.dart' show OBXSyncFlag
 
 final syncClient = SyncClient(
     store,
-    ['wss://sync.example.com'],
+    ['wss://sync.server.example'],
     [SyncCredentials.none()],
     // Enable multiple flags using bitwise OR
     flags: OBXSyncFlags.RemoveWithObjectData | OBXSyncFlags.DebugLogTxLogs);
@@ -594,7 +606,7 @@ syncClient.start();
 {% tab title="C" %}
 ```c
 OBX_sync_options* opt = obx_sync_opt(store);
-obx_sync_opt_add_url(opt, "wss://sync.example.com");
+obx_sync_opt_add_url(opt, "wss://sync.server.example");
 
 // Enable multiple flags using bitwise OR
 uint32_t flags = OBXSyncFlags_RemoveWithObjectData | OBXSyncFlags_DebugLogTxLogs;
@@ -1537,7 +1549,7 @@ For use cases like self-signed certificates in a local development environment o
 
 {% tab title="Swift" %}
 ```swift
-let configuration = Sync.Configuration(store: store, url: "wss://sync.example.com")
+let configuration = Sync.Configuration(store: store, url: "wss://sync.server.example")
 configuration.credentials = [SyncCredentials.makeNone()]
 configuration.certificatePaths = ["/path/to/custom-ca.crt"]
 let client = try Sync.makeClient(configuration: configuration)
@@ -1549,7 +1561,7 @@ try client.start()
 ```dart
 final syncClient = SyncClient(
     store,
-    ['wss://sync.example.com'],
+    ['wss://sync.server.example'],
     [SyncCredentials.none()],
     certificatePaths: ['/path/to/custom-ca.crt']);
 syncClient.start();
@@ -1565,7 +1577,7 @@ syncClient.start();
 {% tab title="C" %}
 ```c
 OBX_sync_options* opt = obx_sync_opt(store);
-obx_sync_opt_add_url(opt, "wss://sync.example.com");
+obx_sync_opt_add_url(opt, "wss://sync.server.example");
 obx_sync_opt_add_cert_path(opt, "/path/to/custom-ca.crt");
 
 OBX_sync* sync_client = obx_sync_create(opt);
