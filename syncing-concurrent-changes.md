@@ -156,8 +156,8 @@ class Task {
 
 {% tab title="Swift" %}
 ```swift
-// objectbox: sync
-class Task: Entity {
+// objectbox: entity, sync
+class Task {
     var id: Id = 0
     var text: String = ""
 
@@ -285,8 +285,8 @@ class Order {
 
 {% tab title="Swift" %}
 ```swift
-// objectbox: sync
-class Order: Entity {
+// objectbox: entity, sync
+class Order {
     var id: Id = 0
     var item: String = ""
     var quantity: Int = 0

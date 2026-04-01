@@ -75,9 +75,9 @@ data class Person(
 
 {% tab title="Swift" %}
 ```swift
-// objectbox: sync
+// objectbox: entity, sync
 // objectbox: externalName="person_collection"
-class Person: Entity {
+class Person {
     // No external name annotation needed if "name" is used in MongoDB as well
     var name: String
     

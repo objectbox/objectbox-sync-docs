@@ -210,8 +210,8 @@ data class User(
 
 {% tab title="Swift" %}
 ```swift
-// objectbox: sync
-class User: Entity {
+// objectbox: entity, sync
+class User {
     // ...
 }
 ```
