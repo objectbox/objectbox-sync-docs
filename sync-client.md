@@ -79,7 +79,7 @@ include(FetchContent)
 FetchContent_Declare(
     objectbox
     GIT_REPOSITORY https://github.com/objectbox/objectbox-c.git
-    GIT_TAG        v5.1.0 # Or a newer sync-enabled version
+    GIT_TAG        v5.3.1 # Or a newer sync-enabled version
 )
 
 FetchContent_MakeAvailable(objectbox)
