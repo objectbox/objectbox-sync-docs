@@ -101,6 +101,23 @@ If Sync clients do not connect to the server, please doublecheck the [Sync Clien
 * You are using a sync-enabled library of the ObjectBox SDK.
 * The URL to the Sync Server is correct (see above to ensure the URL is reachable).
 
+## Clients cannot log in
+
+Clients may reach the server at the network level but still be rejected during login.
+Enable [debug logging](#enable-debug-logging) to see the reason; the server logs the rejection cause for each failed login attempt.
+
+Common causes:
+
+* **Authentication credentials not accepted** — The client did not provide valid credentials or used an authentication method not configured on the server.
+  Verify that the auth method and credentials match on both sides.
+* **Data model (schema) not recognized** — Since server version 2026-04-07, the server rejects clients whose data model is unknown or not active.
+  The client receives an `UNSUPPORTED_DATA_MODEL` error code.
+  To resolve this:
+  * Upload the correct data model JSON via the Admin UI → Schema Versions.
+  * Make sure the schema version matching the client is set as active on the server.
+  * See the [Data Model page](data-model/README.md) for how to manage schema versions.
+  * For development or testing environments where clients intentionally use different schema versions, you can set `"disableClientSchemaValidation": true` in the server config to skip this check. See [configuration](sync-server/configuration.md#developer-and-debug-options).
+
 ## Clients connect but do not sync
 
 Can you see the clients connecting to the server in the (debug) logs, but no data is synchronized?
