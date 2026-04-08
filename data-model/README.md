@@ -27,3 +27,14 @@ The newly added model isn't active yet. You can switch the server to use it by c
 ![](<../.gitbook/assets/image (4).png>)
 
 This causes the server to restart with the newly selected model version. Additionally, this disables logins of clients with an incompatible model version.
+
+## Client data models
+
+When clients log in, they send their data model version to the server.
+If that data model version is unknown or inactive on the server, the login is rejected.
+Use this to ensure that only "compatible" clients can connect to the server; you define what compatible means.
+For example, older clients may lack new entity types that are now mandatory for your application to function.
+
+A client's data model is identified by the "base hash".
+This only captures "essential" information about the model that excludes metadata like indexes.
+E.g., when you index a property, the base hash does not change.

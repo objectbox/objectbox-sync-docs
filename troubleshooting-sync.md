@@ -111,7 +111,7 @@ Common causes:
 * **Authentication credentials not accepted** — The client did not provide valid credentials or used an authentication method not configured on the server.
   Verify that the auth method and credentials match on both sides.
 * **Data model (schema) not recognized** — Since server version 2026-04-07, the server rejects clients whose data model is unknown or not active.
-  The client receives an `UNSUPPORTED_DATA_MODEL` error code.
+  The client receives an `UNSUPPORTED_DATA_MODEL` error code (57).
   To resolve this:
   * Upload the correct data model JSON via the Admin UI → Schema Versions.
   * Make sure the schema version matching the client is set as active on the server.
