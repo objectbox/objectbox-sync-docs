@@ -7,9 +7,9 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
-2026-04-07: Client schema validation
+2026-04-09: Client schema validation
 ------------------------------------
-ObjectBox version: 5.3.1-next-2026-04-07
+ObjectBox version: 5.3.1-next-2026-04-08
 
 * **Breaking change:** By default, the server now only lets clients log in if their schema is known to the server and enabled.
   This prevents clients with outdated/unknown schemas from connecting.
@@ -17,11 +17,11 @@ ObjectBox version: 5.3.1-next-2026-04-07
 * Using probabilistic checks to validate allocation states (via GWP ASan)
 * Internal fixes and improvements
 
+Note: version 2026-04-07 has been revoked due to an issue with client schema validation
+
 2026-03-26: Customizable Sync Conflict Resolution
 -------------------------------------------------
 ObjectBox version: 5.3.1-2026-03-26
-
-Note: version 2026-03-25 has been revoked in favor of this version.
 
 * Conflict resolution via sync clock and sync precedence
 * Requires ObjectBox Sync clients supporting Sync clock and precedence properties (core version 5.3.1-2026-03-26)
