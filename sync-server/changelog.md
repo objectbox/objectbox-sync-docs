@@ -17,6 +17,16 @@ ObjectBox version: 5.3.1-next-2026-04-08
 * Using probabilistic checks to validate allocation states (via GWP ASan)
 * Internal fixes and improvements
 
+Upgrade notes:
+
+* Carefully review the client schema validation.
+  Do you have all schema versions of your clients available and enabled on the server?
+  It is recommended to test client versions against the schema validation before deploying to production.
+  If you cannot enforce client schema validation yet, disable it for now; however...
+  It's recommended to enable it as soon as possible to prepare for future features that will depend on knowing the client's schema.
+* The upgrade is still recommended even if client schema validation is disabled
+  (for the fixes and additional validation).
+
 Note: version 2026-04-07 has been revoked due to an issue with client schema validation
 
 2026-03-26: Customizable Sync Conflict Resolution
