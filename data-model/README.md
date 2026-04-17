@@ -12,7 +12,7 @@ This section refers mostly to the standard object model provided by ObjectBox. T
 
 ## Schema Versions
 
-![](<../.gitbook/assets/schema-versions-client.png>)
+![](<../.gitbook/assets/schema-versions.png>)
 
 The Admin lets you view and manage schema versions.
 All schema versions ever used are listed in the "Schema Versions" tab.
