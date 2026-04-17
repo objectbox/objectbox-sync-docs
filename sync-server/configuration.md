@@ -173,10 +173,10 @@ Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
   }
   ```
 
-  {% hint style="info" %}
-  Clients with older schema versions automatically receive only objects of types known to them;
-  new types added in later schema versions are filtered out.
-  {% endhint %}
+{% hint style="info" %}
+Clients with older and **known** schema versions automatically receive only objects of types known to them;
+new types added in later schema versions are filtered out.
+{% endhint %}
 
 When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
 This is done using boolean flags in the `log` JSON object (all default to `false` when omitted).

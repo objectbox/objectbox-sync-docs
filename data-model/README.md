@@ -4,7 +4,7 @@ description: How to manage a growing data model (schema).
 
 # Data model
 
-The structure of the data stored by ObjectBox is described by a data model, sometimes also called a schema. The separation of the model and the data allows ObjectBox to work more efficiently and robustly with data. It's similar to objects of strongly typed languages, so you know exactly with what data (types) you are dealing with.
+The structure of the data stored by ObjectBox is described by a data model, also called a schema. The separation of the model and the data allows ObjectBox to work more efficiently and robustly with data. It's similar to objects of strongly typed languages, so you know exactly with what data (types) you are dealing with.
 
 {% hint style="info" %}
 This section refers mostly to the standard object model provided by ObjectBox. There are alternative ways to model data in ObjectBox, e.g. generic trees and "flex buffers", that can be used to represent flexible data models ("schema-less").
@@ -26,23 +26,31 @@ The newly added model isn't active yet. You can switch the server to use it by c
 
 ![](<../.gitbook/assets/image (4).png>)
 
-This causes the server to restart with the newly selected model version. Additionally, this disables logins of clients with an incompatible model version.
+This causes the server to restart with the newly selected model version.
 
 ## Client data models
 
 When clients log in, they send their data model version to the server.
+More specifically, clients send two data model hashes to identify their schema version:
+the "base hash" and the "full hash".
+The "base hash" is a hash of the model's essential information, such as the entities and their properties.
+The "full hash" is a hash of the entire model, including metadata like indexes and constraints.
+
+{% hint style="info" %}
+If two schema versions have the same base hash, they are considered "data equal" even if their full hashes are different.
+E.g., when you index a property, the base hash does not change, but the full hash does.
+{% endhint %}
+
+### Client Schema validation
+
 By default, validation is non-strict: clients with unknown schemas can still connect.
 You can enable strict validation via the [`clientSchemaValidation`](../sync-server/configuration.md) JSON config object, which rejects clients whose schema is unknown or not enabled on the server.
 Use this to ensure that only "compatible" clients can connect to the server; you define what compatible means.
 For example, older clients may lack new entity types that are now mandatory for your application to function.
 
-Clients with older schema versions automatically receive only objects of types known to them.
+Clients with older (still enabled) schema versions automatically receive only objects of types known to them.
 New types added in later schema versions are filtered out during synchronization,
 so older clients never encounter unknown data.
-
-A client's data model is identified by the "base hash".
-This only captures "essential" information about the model that excludes metadata like indexes.
-E.g., when you index a property, the base hash does not change.
 
 ### Client Schema tab
 
@@ -50,4 +58,3 @@ The Admin UI includes a "Client Schema" tab on the Schema Versions page.
 This gives you an overview of all schema versions used by connected clients, along with usage counts.
 Use this to monitor whether all clients connect with known schemas (i.e., schemas that have an ID on the server).
 Once all clients use known schemas, you can safely enable strict client schema validation.
-
