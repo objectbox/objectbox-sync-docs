@@ -31,10 +31,23 @@ This causes the server to restart with the newly selected model version. Additio
 ## Client data models
 
 When clients log in, they send their data model version to the server.
-If that data model version is unknown or inactive on the server, the login is rejected.
+By default, validation is non-strict: clients with unknown schemas can still connect.
+You can enable strict validation via the [`clientSchemaValidation`](../sync-server/configuration.md) JSON config object, which rejects clients whose schema is unknown or not enabled on the server.
 Use this to ensure that only "compatible" clients can connect to the server; you define what compatible means.
 For example, older clients may lack new entity types that are now mandatory for your application to function.
+
+Clients with older schema versions automatically receive only objects of types known to them.
+New types added in later schema versions are filtered out during synchronization,
+so older clients never encounter unknown data.
 
 A client's data model is identified by the "base hash".
 This only captures "essential" information about the model that excludes metadata like indexes.
 E.g., when you index a property, the base hash does not change.
+
+### Client Schema tab
+
+The Admin UI includes a "Client Schema" tab on the Schema Versions page.
+This gives you an overview of all schema versions used by connected clients, along with usage counts.
+Use this to monitor whether all clients connect with known schemas (i.e., schemas that have an ID on the server).
+Once all clients use known schemas, you can safely enable strict client schema validation.
+

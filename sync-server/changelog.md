@@ -38,7 +38,7 @@ ObjectBox version: 5.3.1-next-2026-04-08
 
 * **Breaking change:** By default, the server now only lets clients log in if their schema is known to the server and enabled.
   This prevents clients with outdated/unknown schemas from connecting.
-  This can be disabled via `disableClientSchemaValidation: true` in the JSON config, e.g., for development servers.
+  _Note:_ this was reverted to non-strict by default in the 2026-04-17 release; see above.
 * Using probabilistic checks to validate allocation states (via GWP ASan)
 * Internal fixes and improvements
 

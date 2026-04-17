@@ -158,10 +158,25 @@ Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
 * `debugLog` **(deprecated)** — use `"logLevel": "debug"` instead.
   If still present, a warning is logged; `logLevel` takes precedence when both are set.
 * `noStacks` disable stack traces when logging errors (default: `false`)
-* `disableClientSchemaValidation` — if `true`, skips schema version validation during client login.
-  By default, the server rejects clients whose data model (schema) is unknown or not active on the server.
-  This is useful for development setups where clients may use future schema versions under development.
-  Default: `false`.
+* `clientSchemaValidation` — a JSON object to configure client schema validation behavior.
+  By default, validation is non-strict: clients with unknown schemas can still connect.
+  * `strict` (boolean): if `true`, the server rejects clients whose schema hash cannot be resolved to a known, enabled schema version.
+    Default: `false`.
+  * `defaultHash` (string): a hex-encoded base hash used as a fallback schema for clients with unknown hashes.
+    When set, unknown clients are treated as if they have this schema version, receiving only types known to that version.
+    Default: none.
+
+  Example:
+  ```json
+  "clientSchemaValidation": {
+    "strict": true
+  }
+  ```
+
+  {% hint style="info" %}
+  Clients with older schema versions automatically receive only objects of types known to them;
+  new types added in later schema versions are filtered out.
+  {% endhint %}
 
 When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
 This is done using boolean flags in the `log` JSON object (all default to `false` when omitted).
@@ -280,33 +295,3 @@ These options are available only via command line arguments (not via JSON config
   Lower values reduce peak memory usage on clients receiving a full sync; higher values reduce per-message overhead.
   Also, to reduce any "partially synced state," you can increase this value.
 * `crasherKey` is not a regular option and is described in a separate document.
-
-## Clusters
-To set up a cluster, please refer to the [cluster](sync-cluster.md) page for specific configuration options.
-
-## Authentication
-
-Authentication settings for clients are required; the Sync Server won't start without them. If you try, it should look something like this:
-
-```
-$ ./sync-server --model=objectbox-model.json
-...
-001-13:05:07.3526 [ERROR] [SySvAp] Runtime error: Authenticator must be set before starting
-001-13:05:07.4524 [INFO ] [SvSync] Stopped (port 0)
-Authenticator must be set before starting
-```
-
-{% hint style="info" %}
-During development on your private network, you can disable authentication altogether using the option `--unsecured-no-authentication`. This allows all clients, which know the server's URL, to connect without additional checks.
-
-_Warning:_ it should be obvious that this setting is not intended for production usage.
-{% endhint %}
-
-For production usage, please refer to the [JWT authentication](./jwt-authentication.md) page on how to authenticate your clients.
-
-Other authentication methods are mentioned above in the configuration overview, i.e. Google Authentication with client IDs, shared secret, Admin users.
-Typically, we recommend using JWT, but there may be occasions where you need to use other authentication methods. Let the ObjectBox team know about your use case and requirements. E.g. it is possible to define multiple authenticators.
-
-## Combining CLI and file configuration
-
-You can mix both approaches, i.e. have a configuration file and use command line (CLI) options. In this case, CLI options have precedence over the options in the JSON config file. Thus, you can store your base configuration in a file, and override or add settings by providing command line arguments.
