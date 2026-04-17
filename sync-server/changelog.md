@@ -7,6 +7,31 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-04-17: Client schema validation, part 2
+--------------------------------------------
+ObjectBox version: 5.3.1-next-2026-04-17
+
+* Clients with older schema versions now only get objects of types known to them (new types are filtered out).
+* The new `clientSchemaValidation` JSON config object replaces the `disableClientSchemaValidation` flag.
+  The default is back to non-strict and now allows configuring a default schema version for "unknown" clients.
+* Admin: added the "Client Schema" tab to the Schema Versions page.
+  This gives you an overview over all schema versions used by clients with usage counts.
+* Admin: Schema Version UI improvements
+  * View or download the data model JSON of schema versions
+  * Checkbox to enable the schema version for clients
+  * Added Model Size column
+  * Compact timestamps with relative time on hover
+  * Changed displayed hashes to match client hashes
+* Creating a new schema version now triggers a log event (of type "Important")
+
+Upgrade notes:
+
+* If you used `disableClientSchemaValidation` in the config JSON, remove the flag as it is no longer needed.
+* Watch the "Client Schema" tab on the Schema Versions page to see if all clients connect with known schemas (having an ID).
+  If this is the case, you can enable strict client schema validation.
+  This is recommended to ensure all schema versions are known to the server, i.e., to filter out unknown types.
+* No client updates are required.
+
 2026-04-09: Client schema validation
 ------------------------------------
 ObjectBox version: 5.3.1-next-2026-04-08
@@ -26,8 +51,6 @@ Upgrade notes:
   It's recommended to enable it as soon as possible to prepare for future features that will depend on knowing the client's schema.
 * The upgrade is still recommended even if client schema validation is disabled
   (for the fixes and additional validation).
-
-Note: version 2026-04-07 has been revoked due to an issue with client schema validation
 
 2026-03-26: Customizable Sync Conflict Resolution
 -------------------------------------------------
