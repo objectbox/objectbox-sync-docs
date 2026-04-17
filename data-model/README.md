@@ -10,7 +10,21 @@ The structure of the data stored by ObjectBox is described by a data model, also
 This section refers mostly to the standard object model provided by ObjectBox. There are alternative ways to model data in ObjectBox, e.g. generic trees and "flex buffers", that can be used to represent flexible data models ("schema-less").
 {% endhint %}
 
-## Managing data model versions
+## Schema Versions
+
+![](<../.gitbook/assets/schema-versions-client.png>)
+
+The Admin lets you view and manage schema versions.
+All schema versions ever used are listed in the "Schema Versions" tab.
+The current version is displayed in bold (typically the latest data model that you use). 
+
+Notable columns:
+
+* Clients allowed: if disabled, clients will be rejected at login if they use this schema version.
+  This is independent of the "strict" client schema validation setting, which controls whether clients with unknown schemas are allowed to connect.
+* Actions icons: view or download the model JSON file.
+
+## Add a new schema version
 
 In the [Sync Server docs](../sync-server/), you already saw data models in action. The server initially needs the JSON file containing the data model to start with. Over time this data model will evolve. New types and properties will be added, and sometimes old ones will be retired. The ObjectBox Sync Server tracks these versions and helps you manage clients using different model versions.
 
@@ -52,9 +66,16 @@ Clients with older (still enabled) schema versions automatically receive only ob
 New types added in later schema versions are filtered out during synchronization,
 so older clients never encounter unknown data.
 
+You can also set a default schema version for "unknown" clients via the [`clientSchemaValidation`](../sync-server/configuration.md) JSON config object.
+This is intended to still support older clients that have gone "off the radar".
+For future versions, you should ensure uploading all schema versions used by clients to the server.
+
 ### Client Schema tab
+
+![](<../.gitbook/assets/schema-versions-client.png>)
 
 The Admin UI includes a "Client Schema" tab on the Schema Versions page.
 This gives you an overview of all schema versions used by connected clients, along with usage counts.
 Use this to monitor whether all clients connect with known schemas (i.e., schemas that have an ID on the server).
 Once all clients use known schemas, you can safely enable strict client schema validation.
+This is recommended to ensure all schema versions are known to the server, i.e., to filter out unknown types.
