@@ -79,3 +79,86 @@ This gives you an overview of all schema versions used by connected clients, alo
 Use this to monitor whether all clients connect with known schemas (i.e., schemas that have an ID on the server).
 Once all clients use known schemas, you can safely enable strict client schema validation.
 This is recommended to ensure all schema versions are known to the server, i.e., to filter out unknown types.
+
+### Client Schema validation example
+
+Suppose your server has two schema versions uploaded:
+
+| ID          | Version | Base hash   | Full hash   | Clients allowed |
+|-------------|---------|-------------|-------------|-----------------|
+| 2 (current) | 2       | `ccc...ccc` | `ddd...ddd` | ✅ yes           |
+| 1           | 1       | `aaa...aaa` | `bbb...bbb` | ✅ yes           |
+
+Now three clients connect and try to login with their schema hashes:
+
+| Client | Base hash   | Full hash   | Description                                                  |
+|--------|-------------|-------------|--------------------------------------------------------------|
+| A      | `ccc...ccc` | `ddd...ddd` | Full hash matches ID 2 exactly                               |
+| B      | `aaa...aaa` | `eee...eee` | Base hash matches ID 1, full hash differs (e.g. index added) |
+| C      | `111...111` | `222...222` | No hash matches any known version                            |
+
+#### Non-strict (default behavior)
+
+No special configuration needed (or `"strict": false`).
+
+```json
+{
+  "clientSchemaValidation": {
+    "strict": false
+  }
+}
+```
+
+| Client | Outcome                                                                                                                                   |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| A      | ✅ Connects. Matched to ID 2 by full hash. Receives all V2 types.                                                                          |
+| B      | ✅ Connects. Matched to ID 1 by base hash (the schemas are data-equal). Receives only V1 types.                                            |
+| C      | ✅ Connects. No matching version found, but strict is off — client is assigned to the current schema ID 2 and thus receives **all** types. |
+
+This is the most permissive mode defaulting to the latest schema version.
+It is useful during development when the data models are still evolving.
+
+#### Strict
+
+```json
+{
+  "clientSchemaValidation": {
+    "strict": true
+  }
+}
+```
+
+| Client | Outcome                                                                       |
+|--------|-------------------------------------------------------------------------------|
+| A      | ✅ Connects. Matched to ID 2 by full hash. Receives all V2 types.              |
+| B      | ✅ Connects. Matched to ID 1 by base hash. Receives only V1 types.             |
+| C      | ❌ **Rejected.** No known version matches — the server refuses the connection. |
+
+Use strict mode once you have uploaded all schema versions used by your clients.
+The "Client Schema" tab in the Admin UI helps you verify this.
+
+#### Default hash
+
+```json
+{
+  "clientSchemaValidation": {
+    "defaultHash": "bbb...bbb"
+  }
+}
+```
+
+Here `defaultHash` is set to the full hash of V1.
+
+| Client | Outcome                                                                                   |
+|--------|-------------------------------------------------------------------------------------------|
+| A      | ✅ Connects. Matched to ID 2 by full hash. Receives all V2 types.                          |
+| B      | ✅ Connects. Matched to ID 1 by base hash. Receives only V1 types.                         |
+| C      | ✅ Connects. Unknown hash, but falls back to V1 via `defaultHash`. Receives only V1 types. |
+
+This is helpful when older clients are already deployed and you cannot upload their exact schema version.
+By setting `defaultHash` to a compatible version, those clients can still connect and sync;
+without the types that were added after that version.
+
+{% hint style="info" %}
+Strict mode and default hash are mutually exclusive. Enabling both will result in an error.
+{% endhint %}
