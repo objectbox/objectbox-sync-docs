@@ -1210,7 +1210,24 @@ syncClient.setSyncChangeListener(null)
 {% endtab %}
 
 {% tab title="Swift" %}
-_Coming soon!_
+```swift
+import ObjectBox
+
+class MyChangeListener: SyncChangeListener {
+    func changed(_ changes: [obx_schema_id : SyncChange]) {
+        for (schemaId, change) in changes {
+            // schemaId identifies the entity for which the changes were recorded
+            // change.puts is an [Id] containing the ids of objects
+            // that were created/updated
+            // change.removals is an [Id] containing the ids of objects
+            // that were removed/deleted
+        }
+    }
+}
+
+// set the listener when building the client
+client.changeListener = MyChangeListener()
+```
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
