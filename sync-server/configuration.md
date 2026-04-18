@@ -158,25 +158,6 @@ Example: `"_debug": true` and `"_note1": "my comment"` are ignored.
 * `debugLog` **(deprecated)** — use `"logLevel": "debug"` instead.
   If still present, a warning is logged; `logLevel` takes precedence when both are set.
 * `noStacks` disable stack traces when logging errors (default: `false`)
-* `clientSchemaValidation` — a JSON object to configure client schema validation behavior.
-  By default, validation is non-strict: clients with unknown schemas can still connect.
-  * `strict` (boolean): if `true`, the server rejects clients whose schema hash cannot be resolved to a known, enabled schema version.
-    Default: `false`.
-  * `defaultHash` (string): a hex-encoded base hash used as a fallback schema for clients with unknown hashes.
-    When set, unknown clients are treated as if they have this schema version, receiving only types known to that version.
-    Default: none.
-
-  Example:
-  ```json
-  "clientSchemaValidation": {
-    "strict": true
-  }
-  ```
-
-{% hint style="info" %}
-Clients with older and **known** schema versions automatically receive only objects of types known to them;
-new types added in later schema versions are filtered out.
-{% endhint %}
 
 When using debug logs, advanced users can enable additional logs for internal components (e.g. ObjectBox support may ask you to enable specific logs).
 This is done using boolean flags in the `log` JSON object (all default to `false` when omitted).
@@ -217,6 +198,35 @@ Example to enable sync-related debug logs (this quickly gets excessive; don't do
 * `syncFilters` this JSON object contains all filter expressions.
   Each filter has the type as key and a string value as the expression.
   Details are available in the [sync filters](sync-filters.md) page.
+
+### Client schema validation
+
+The `clientSchemaValidation` JSON object lets you configure client schema validation behavior.
+By default, validation is non-strict: clients with unknown schemas can still connect.
+
+  * `strict` (boolean; default: `false`): if `true`, the server rejects clients whose schema hash cannot be resolved to a known, enabled schema version.
+  * `defaultHash` (string):
+    a hex-encoded hash used that identifies the fallback schema for clients with unknown hashes.
+    When set, unknown clients are treated as if they have this schema version,
+    receiving only types known to that version.
+    To get a hash, go to the "Schema Version" Admin page and click on the short hashes of a schema version.
+    This will open a dialog with the full-length hashes (32 characters); copy one of the client hash values.
+    Do not add a `0x` prefix to the hash, just use the 32 hex characters.
+
+Example ("0123456789abcdef0123456789abcdef" is a placeholder hash; you need to lookup the hash of the schema version you want to use):
+
+```json
+"clientSchemaValidation": {
+  "strict": true,
+  "defaultHash": "0123456789abcdef0123456789abcdef"
+}
+```
+For further details about schema versions and client validation, see the [data model](../data-model/README.md) page.
+
+{% hint style="info" %}
+Clients with older and **known** schema versions automatically receive only objects of types known to them;
+new types added in later schema versions are filtered out.
+{% endhint %}
 
 ### Sync history size limit
 
