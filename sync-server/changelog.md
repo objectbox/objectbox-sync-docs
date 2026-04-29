@@ -14,7 +14,9 @@ ObjectBox version: 5.3.1-next-2026-04-28
 * Performance improvements for sync filtering when catching up history
 * Fixed a corner case with "unique replace on conflict" and absent sync clock value
 * Internal fixes and improvements
-  
+
+Upgrade notes: no special actions required
+
 2026-04-17: Client schema validation, part 2
 --------------------------------------------
 ObjectBox version: 5.3.1-next-2026-04-17
