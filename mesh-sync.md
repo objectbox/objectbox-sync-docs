@@ -19,6 +19,8 @@ For a list of current limitations, see [Current Limitations](#current-limitation
 
 ## Overview
 
+<figure><img src=".gitbook/assets/mesh-sync.png" alt="ObjectBox Mesh Sync Overview"><figcaption><p>Figure 1: ObjectBox Mesh Sync Overview</p></figcaption></figure>
+
 Mesh Sync forms a local mesh network of devices to synchronize data between them.
 It can use different technology stacks, such as Bluetooth (classic and BLE), Wi-Fi (LAN and Wi-Fi Aware) and others.
 This allows data to move across devices even if not every device is directly connected to every other device.
