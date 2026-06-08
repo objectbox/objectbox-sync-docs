@@ -81,7 +81,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart'
     show createMeshConfig;
 
-final mesh = createMeshConfig('io.objectbox.example.sync.tasks');
+final mesh = await createMeshConfig('io.objectbox.example.sync.tasks');
 
 final syncClient = SyncClient(
   store,
@@ -111,6 +111,9 @@ std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(store)
 
 syncClient->start();
 ```
+
+Note: The C and C++ APIs expose the underlying mesh options, but a platform transport must be registered before creating the Sync client.
+Do not use `obx_mesh_opt_network_internal()` directly unless your platform SDK or integration provides the required transport handle.
 {% endtab %}
 
 {% tab title="C" %}
@@ -132,13 +135,12 @@ OBX_sync* sync_client = obx_sync_create(sync_opt);
 obx_sync_credentials(sync_client, OBXSyncCredentialsType_NONE, NULL, 0);
 obx_sync_start(sync_client);
 ```
+
+Note: The C and C++ APIs expose the underlying mesh options, but a platform transport must be registered before creating the Sync client.
+Do not use `obx_mesh_opt_network_internal()` directly unless your platform SDK or integration provides the required transport handle.
+
 {% endtab %}
 {% endtabs %}
-
-{% hint style="info" %}
-The C and C++ APIs expose the underlying mesh options, but a platform transport must be registered before creating the Sync client.
-Do not use `obx_mesh_opt_network_internal()` directly unless your platform SDK or integration provides the required transport handle.
-{% endhint %}
 
 ## Setup
 
