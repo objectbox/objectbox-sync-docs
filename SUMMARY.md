@@ -17,6 +17,7 @@
   * [Changelog](sync-server/changelog.md)
 * [Data model](data-model/README.md)
   * [Object IDs and Sync](data-model/object-ids.md)
+* [Mesh Sync](mesh-sync.md)
 * [MongoDB Sync Connector](mongodb-sync-connector/README.md)
   * [MongoDB Configuration](mongodb-sync-connector/mongodb-configuration.md)
   * [ObjectBox Sync Connector Setup](mongodb-sync-connector/objectbox-sync-connector-setup.md)
