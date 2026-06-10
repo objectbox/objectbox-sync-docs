@@ -10,6 +10,7 @@
   * [Embedded Sync Server](sync-server/embedded-sync-server.md)
   * [Admin Web UI](sync-server/admin-web-ui/README.md)
     * [Log Events](sync-server/admin-web-ui/log-events.md)
+  * [Monitoring and Alerting](sync-server/monitoring.md)
   * [GraphQL](sync-server/graphql-database/README.md)
     * [GraphQL Queries](sync-server/graphql-database/graphql-queries.md)
     * [GraphQL Mutations](sync-server/graphql-database/graphql-mutations.md)

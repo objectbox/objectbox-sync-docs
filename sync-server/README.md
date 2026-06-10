@@ -149,6 +149,10 @@ The ObjectBox Sync Server Admin UI runs as part of the sync-server executable an
 
 The "Sync Statistics" item of the menu on the left contains numerous charts with server runtime information. This can be valuable in multiple ways, e.g. during development and in production, you can verify your applications connect to the server (show up in "Connects" and "Connected clients") and synchronize data (see "Client applied \*"). Also, there are multiple charts showing errors - watch for those when trying to figure out issues with your clients.
 
+For continuous monitoring in production,
+the same statistics (and more) are also available via a Prometheus metrics endpoint;
+see [Monitoring and Alerting](monitoring.md).
+
 ### Status
 
 In the main menu, you will find "Status" to open a page with some useful information. While the following layout is still not final, it will give you a first impression of what to expect:
