@@ -267,21 +267,19 @@ Create a Sync client for your Store and start it. It connects to a given sync se
 {% tabs %}
 {% tab title="Java" %}
 ```java
-SyncClient syncClient = Sync.client(
-        boxStore, 
-        "ws://127.0.0.1" /* Use wss for encrypted traffic. */, 
-        SyncCredentials.none()
-).buildAndStart(); // Connect and start syncing.
+SyncClient syncClient = Sync.client(boxStore) 
+        .url("ws://127.0.0.1") // Use wss for encrypted traffic.
+        .credentials(SyncCredentials.none())
+        .buildAndStart(); // Connect and start syncing.
 ```
 {% endtab %}
 
 {% tab title="Kotlin" %}
 ```kotlin
-val syncClient = Sync.client(
-        boxStore,
-        "ws://127.0.0.1" /* Use wss for encrypted traffic. */,
-        SyncCredentials.none()
-).buildAndStart() // Connect and start syncing.
+val syncClient = Sync.client(boxStore) 
+        .url("ws://127.0.0.1") // Use wss for encrypted traffic.
+        .credentials(SyncCredentials.none())
+        .buildAndStart() // Connect and start syncing.
 ```
 {% endtab %}
 

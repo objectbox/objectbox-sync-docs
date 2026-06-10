@@ -41,11 +41,10 @@ import io.objectbox.sync.Sync;
 import io.objectbox.sync.SyncClient;
 import io.objectbox.sync.SyncCredentials;
 
-SyncClient syncClient = Sync.client(
-        boxStore,
-        "ws://sync.example.com:9999",
-        SyncCredentials.none()
-).build();
+SyncClient syncClient = Sync.client(boxStore)
+        .url("ws://sync.example.com:9999")
+        .credentials(SyncCredentials.none())
+        .build();
 
 MeshConfig.builder(context)
         .serviceId("io.objectbox.example.sync.tasks")
@@ -62,11 +61,10 @@ import io.objectbox.android.sync.MeshConfig
 import io.objectbox.sync.Sync
 import io.objectbox.sync.SyncCredentials
 
-val syncClient = Sync.client(
-    boxStore,
-    "ws://sync.example.com:9999",
-    SyncCredentials.none()
-).build()
+val syncClient = Sync.client(boxStore)
+        .url("ws://sync.example.com:9999")
+        .credentials(SyncCredentials.none())
+        .build()
 
 MeshConfig.builder(context)
     .serviceId("io.objectbox.example.sync.tasks")
