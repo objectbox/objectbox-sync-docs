@@ -7,6 +7,15 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-06-10: Add MongoDB metrics to Prometheus
+---------------------------------------------
+ObjectBox version: 5.3.2-next-2026-06-10
+
+* The Prometheus metrics endpoint now lets you monitor MongoDB connector metrics
+* Update MongoDB driver
+
+Upgrade notes: no special actions required
+
 2026-04-28: Performance and Fixes
 ---------------------------------
 ObjectBox version: 5.3.1-next-2026-04-28
