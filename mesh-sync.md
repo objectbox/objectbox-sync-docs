@@ -25,10 +25,9 @@ Mesh Sync forms a local mesh network of devices to synchronize data between them
 It can use different technology stacks, such as Bluetooth (classic and BLE), Wi-Fi (LAN and Wi-Fi Aware) and others.
 This allows data to move across devices even if not every device is directly connected to every other device.
 
-Mesh Sync starts and stops together with the `SyncClient` it is attached to.
-It can also coexist with regular Sync Server synchronization.
+Mesh Sync starts and stops together with the `SyncClient` and can coexist with regular Sync Server synchronization.
 
-## Quick How-To
+## Code: Initializing Mesh Sync
 
 These minimal examples create the normal `SyncClient`, attach a mesh configuration and start syncing.
 Use the same mesh identifier on all apps/devices that should join the same mesh.
@@ -220,11 +219,17 @@ Request all runtime permissions before starting Mesh Sync.
 On modern Android versions this typically includes nearby devices, Bluetooth scan/connect/advertise and location permissions.
 Location services may also need to be enabled on the device for discovery to work reliably.
 
-{% hint style="info" %}
+{% tabs %}
+{% tab title="Android (Kotlin/Java)" %}
+Use the standard procedure to [request runtime permissions](https://developer.android.com/training/permissions/requesting) within the app.
+{% endtab %}
+{% tab title="Dart/Flutter" %}
 In Dart, `createMeshConfig()` requests the required runtime permissions from the user via the system UI (you still need to define them in `AndroidManifest.xml`).
 Alternatively, you can also implement your own permission request logic, and pass `false` to the `requestPermissions` parameter to prevent requesting runtime permissions.
 Note that `createMeshConfig()` will only request runtime permissions if they are not already granted.
-{% endhint %}
+{% endtab %}
+{% endtabs %}
+
 
 ## Configuration
 
@@ -275,7 +280,6 @@ The Kotlin preview API currently exposes Android Nearby options such as `service
 ```kotlin
 MeshConfig.builder(context)
     .serviceId("io.objectbox.example.sync.tasks")
-    .build()
     .build()
     .applyTo(syncClient)
 ```
@@ -361,14 +365,16 @@ Until the final release, we'll finalize the API and plan to address the followin
 * Transactions are limited to ~ 1000 KB (compressed); larger ones (e.g., containing larger phtotos/videos) are ignored.
 * Mesh Sync data is kept in memory only; it's not persisted to disk.
 * No expiration of data; there will be a setting to limit the time and/or size of the data that is synced to the mesh.
-* No interaction with the Sync Server; e.g.:
-  * Only the peer of the original edit can sync that data to the server.
+* No optimized interaction with the Sync Server yet; e.g.:
+  * Only the peer of the original edit syncs that data to the server.
+    In the future, any peer having the data can sync it to the server.
   * Changes from the server are not synced to the mesh.
 * Java/Kotlin API is very limited
 * Advertising is only initiated once on startup; if that fails, e.g. due to missing permissions, Mesh Sync will not retry.
 * TBD: Peer authentication; currently there's no auth between peers other than the mesh ID.
 * TBD: permission handling details
-* TBD: the mesh ID (required at construction time) is the only mechanism to form sync groups. 
+* TBD: the mesh ID (required at construction time) is the only mechanism to form sync groups.
+* TBD: clarify if Nearby dependency shall already be included by the lib or needs to be added by the user.
 
 ## Related Pages
 
