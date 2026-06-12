@@ -7,6 +7,27 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-06-12: MongoDB: null handling, change stream recovery
+----------------------------------------------------------
+ObjectBox version: 5.3.2-next-2026-06-11
+
+* Syncing objects to MongoDB now writes null (absent) ObjectBox property values as explicit null values.
+  This ensures that values which became null in ObjectBox also clear the corresponding values in MongoDB documents.
+* New MongoDB config option `omitNullValuesToMongoDb` to restore the former behavior of omitting null values
+  (documents keep previous values for properties that became null in ObjectBox).
+* MongoDB connector: improve recovery of the change stream after errors
+* New Prometheus metrics for monitoring the change stream:
+  `obx_mongodb_change_stream_open` (gauge; 1 if the change stream is currently open) and
+  `obx_mongodb_change_stream_opens` (counter; a value > 1 means the stream was reopened, e.g. after errors).
+* MongoDB connector: a failing user-requested full sync no longer stops the MongoDB connector
+  (the error is logged and the full sync can be requested again).
+
+Upgrade notes:
+
+* If you rely on null values being absent in MongoDB documents,
+  enable the new `omitNullValuesToMongoDb` option in the `mongoDb` section of the JSON config.
+* Consider alerting on the new `obx_mongodb_change_stream_open` gauge (e.g. closed for more than a few minutes).
+
 2026-06-10: Add MongoDB metrics to Prometheus
 ---------------------------------------------
 ObjectBox version: 5.3.2-next-2026-06-10
