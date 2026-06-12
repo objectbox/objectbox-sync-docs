@@ -159,10 +159,17 @@ The following values are available when using the [MongoDB Sync Connector](../mo
   * `objectbox_change_prepare` and `objectbox_change_apply`:
     errors while preparing/applying incoming changes to ObjectBox
 * `obx_mongodb_warnings` (counter): total number of warnings issued by the MongoDB connector.
+* `obx_mongodb_change_stream_opens` (counter): number of times the connector opened the MongoDB change stream
+  (since version 2026-06-12).
+  A value greater than 1 means the stream was reopened, e.g. after change stream errors or a full sync.
 * `obx_mongodb_connector_state` (gauge): current connector state:
   0 = created, 1 = running, 2 = connected, 3 = failure, 4 = stopped.
 * `obx_mongodb_connector_running` (gauge): 1 if the connector thread is running, 0 otherwise.
   A simple flag to alert on a stopped connector.
+* `obx_mongodb_change_stream_open` (gauge): 1 while the MongoDB change stream is open, 0 otherwise
+  (since version 2026-06-12).
+  The stream is expected to be closed before the initial import from MongoDB was done and during a full sync;
+  apart from that, a closed stream means changes from MongoDB are currently not received (see alerting below).
 * `obx_mongodb_full_sync_active` (gauge): 1 while a full sync with MongoDB is in progress, 0 otherwise.
 * `obx_mongodb_initial_import_required` (gauge): 1 if the initial import from MongoDB has not been done yet,
   0 otherwise.
@@ -210,7 +217,8 @@ You can then build a Sync Server dashboard. Useful starter panels:
   `histogram_quantile(0.95, rate(obx_task_time_bucket{place="in_queue"}[5m]))`.
 * **Uptime** (`obx_uptime`) - drops to zero indicate restarts.
 
-If you use the MongoDB Sync Connector, also add `obx_mongodb_connector_running` (should constantly be 1)
+If you use the MongoDB Sync Connector, also add `obx_mongodb_connector_running` and
+`obx_mongodb_change_stream_open` (both should constantly be 1 in normal operation)
 and `rate(obx_mongodb_changes[5m])` to see data flowing in from MongoDB.
 
 ## Alerting
@@ -232,6 +240,7 @@ a single hiccup (e.g. one failed login due to a typo) usually does not warrant a
 When the MongoDB Sync Connector repeatedly fails (e.g. MongoDB is down or misconfigured),
 you want to know about it quickly - data is not being synchronized in the meantime.
 The following Prometheus alert rules fire when the connector is not running,
+when the change stream (which receives changes from MongoDB) stays closed,
 or when errors keep occurring over a 15-minute window:
 
 ```yaml
@@ -247,6 +256,22 @@ groups:
           summary: "MongoDB connector is not running on {{ $labels.instance }}"
           description: "The MongoDB Sync Connector thread has stopped; data is not being synchronized with MongoDB."
 
+      - alert: MongoDbChangeStreamClosed
+        expr: >-
+          obx_mongodb_change_stream_open == 0
+          and obx_mongodb_initial_import_required == 0
+          and obx_mongodb_full_sync_active == 0
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MongoDB change stream is closed on {{ $labels.instance }}"
+          description: >-
+            The MongoDB change stream has been closed for 10 minutes
+            (not explained by a pending initial import or an active full sync);
+            changes from MongoDB are currently not received.
+            Check that MongoDB is reachable and see the Sync Server logs for errors.
+
       - alert: MongoDbConnectorErrors
         expr: increase(obx_mongodb_errors[15m]) > 3
         labels:
@@ -257,6 +282,10 @@ groups:
             {{ $value }} MongoDB connector errors of type {{ $labels.type }} in the last 15 minutes.
             Check the Sync Server logs for details.
 ```
+
+Note: the change stream rule needs Sync Server version 2026-06-12 or later
+(which also made the connector recover the change stream after errors automatically;
+the alert catches cases where that recovery does not succeed, e.g. MongoDB staying unreachable).
 
 ### Example 2: Spike in client login failures
 
@@ -291,6 +320,14 @@ Depending on your deployment, also consider alerting on:
   alert when `count(obx_cluster_peer_state == 1) < 1` for more than a minute.
 * **No connected clients:** `obx_connected_clients == 0` during hours when you expect activity
   may indicate a network or certificate issue in front of the server.
+* **MongoDB change stream flapping:** `increase(obx_mongodb_change_stream_opens[1h]) > 3` -
+  the connector reopens the change stream automatically after errors,
+  but frequent reopens point to an unstable connection to MongoDB.
+* **Missing metrics:** rules like `obx_mongodb_connector_running == 0` do not fire when the metric is *absent*
+  (e.g. the Sync Server is down or unreachable, so there is no data at all).
+  Cover this case with `up{job="objectbox-sync-server"} == 0` (Prometheus sets the `up` metric per scrape target)
+  or `absent(obx_mongodb_connector_running)`;
+  in Grafana, configure the alert rule's "no data" state to also fire the alert.
 
 To set up the same alerts in Grafana instead,
 create an alert rule (Alerting → Alert rules → New alert rule) with the same PromQL expression as the query,
