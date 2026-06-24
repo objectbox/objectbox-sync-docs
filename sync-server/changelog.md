@@ -13,7 +13,12 @@ ObjectBox version: 5.3.2-next-2026-06-24
 
 * Hotfix for [MongoDB driver issue CDRIVER-6354](https://jira.mongodb.org/browse/CDRIVER-6354):
   In case you are seeing "bson_steal(): assertion failed: dst" aborts, try this version.
-  Note that this is an unofficial hotfix until the MongoDB driver team releases a fix.
+
+Upgrade notes:
+
+* Only use this version if you are affected by the mentioned issue.                             
+  Note that this is contains an unofficial hotfix of the MongoDB driver,                        
+  which will be replaced with an official fix once the MongoDB driver team releases a fix.
 
 2026-06-12: MongoDB: null handling, change stream recovery
 ----------------------------------------------------------
