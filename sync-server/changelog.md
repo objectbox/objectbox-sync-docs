@@ -7,6 +7,14 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-06-24: Hotfix for MongoDB driver assert
+--------------------------------------------
+ObjectBox version: 5.3.2-next-2026-06-24
+
+* Hotfix for [MongoDB driver issue CDRIVER-6354](https://jira.mongodb.org/browse/CDRIVER-6354):
+  In case you are seeing "bson_steal(): assertion failed: dst" aborts, try this version.
+  Note that this is an unofficial hotfix until the MongoDB driver team releases a fix.
+
 2026-06-12: MongoDB: null handling, change stream recovery
 ----------------------------------------------------------
 ObjectBox version: 5.3.2-next-2026-06-11
