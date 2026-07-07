@@ -7,6 +7,18 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-07-07: MongoDB retry improvements
+--------------------------------------
+ObjectBox version: 5.3.2-next-2026-07-07
+
+* MongoDB: Improved retry logic for applying changes to MongoDB
+  * Detection of transient errors resulting in higher retry counts: 20 retries are done before tracking an error
+  * Added growing delays between retries
+* MongoDB: fixed empty string handling from MongoDB to ObjectBox flex properties
+* Updated MongoDB driver; still including the unofficial hotfix (see 2026-06-24)
+
+Upgrade notes: none
+
 2026-06-24: Hotfix for MongoDB driver assert
 --------------------------------------------
 ObjectBox version: 5.3.2-next-2026-06-24
