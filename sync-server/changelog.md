@@ -7,6 +7,24 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-07-10: MongoDB: 16 MB document size limit
+----------------------------------------------
+ObjectBox version: 5.3.2-next-2026-07-10
+
+* MongoDB: property values (strings and vectors) that are too large for MongoDB are now skipped,
+  so that syncing to MongoDB can continue with the remaining values of the object.
+  Before, an oversized property value stopped the sync to MongoDB permanently
+  ("Document ... is too large for the cluster"), as MongoDB rejects documents over its 16 MB size limit.
+  A skipped property value is reported as an error log event including the type, object ID, and property name.
+* New MongoDB config option `maxPropertySizeToMongoDb` to adjust the maximum property value size in bytes;
+  the default is 16 MB minus 1 KB (16776192); 0 disables the check (restoring the former behavior).
+  Note: on updates, a skipped property keeps its previously synced value in the MongoDB document (if any).
+* New MongoDB config option `skipOversizedDocumentsToMongoDb` (default: false):
+  if enabled, documents that are still over MongoDB's 16 MB limit (e.g. multiple large property values)
+  are skipped (and reported as an error log event) instead of stopping the sync to MongoDB.
+
+Upgrade notes: none
+
 2026-07-07: MongoDB retry improvements
 --------------------------------------
 ObjectBox version: 5.3.2-next-2026-07-07
