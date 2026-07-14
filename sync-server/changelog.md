@@ -7,6 +7,28 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-07-14: Mesh Sync server support (beta)
+-------------------------------------------
+ObjectBox version: 6.0.0-beta-2026-07-13
+
+* Mesh Sync (beta): ObjectBox Sync clients can now sync with each other in a P2P mesh network,
+  even while they have no connection to the Sync Server.
+* The server now bridges into P2P meshes, i.e.,
+  mesh peers (Sync clients) with a server connection relay data bi-directionally (from and to the mesh):
+  * Changes made on devices without a server connection still reach the server via a connected peer.
+  * Changes from the server (e.g. from other Sync clients or MongoDB) are also forwarded into the mesh.
+    A mesh peer connected to the server distributes them to peers without a server connection.
+* Introduced Sync protocol V11: mesh clients identify themselves at login,
+  and relayed transactions carry their source peer so the server can track the origin of the data.
+* Admin: modernized user interface based on Vue.js 3 and Material Design 3
+
+Upgrade notes:
+
+* Mesh Sync requires mesh-enabled clients of version 6.0.0-beta or later (Sync protocol V11).
+* This is a beta version to test and stabilize the mesh feature and the new Admin UI.
+  It's not intended for production use as the mesh-related protocol changes may still evolve.
+* Older clients are still fully supported (except the new mesh sync functionality).
+
 2026-07-10: MongoDB: 16 MB document size limit
 ----------------------------------------------
 ObjectBox version: 5.3.2-next-2026-07-10
