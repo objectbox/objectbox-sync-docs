@@ -121,6 +121,8 @@ the JSON configuration for MongoDB covers additional options.
         "url": "mongodb://1.2.3.4:27017",
         "database": "MyDatabase",
         "automaticInitialImport": true,
+        "maxPropertySizeToMongoDb": 16776192,
+        "skipOversizedDocumentsToMongoDb": true,
         "strictConversionsFromMongoDb": true,
         "strictConversionsToMongoDb": true,
         "emptyListForAbsentValuesFromMongoDb": true      
@@ -137,6 +139,20 @@ Each option explained:
   use empty lists when converting to ObjectBox property values.
   By default, absent values are also absent in ObjectBox typically resulting in null values.
   @note if the value is an explicit null in MongoDB, it will remain null in ObjectBox.
+* `maxPropertySizeToMongoDb`: The maximum size in bytes for a single property value (strings and vectors) synced to MongoDB;
+  the default is 16 MB minus 1 KB (16776192), and 0 disables the check.
+  MongoDB rejects documents over its 16 MB size limit,
+  so larger property values are skipped (omitted from the MongoDB document) and reported as error log events,
+  allowing sync to MongoDB to continue with the remaining values of the object.
+  Note: on updates, a skipped property keeps its previously synced value in the MongoDB document (if any).
+* `skipOversizedDocumentsToMongoDb`: If enabled, entire documents exceeding MongoDB's 16 MB document size limit
+  (e.g. due to multiple large property values) are skipped and reported as error log events,
+  so that sync to MongoDB continues with the next operation.
+  By default, this is off: an oversized document causes errors that stop the sync to MongoDB.
+  In that case, sync remains blocked until this option is enabled
+  or `maxPropertySizeToMongoDb` cuts off the oversized properties.
+  Note: just updating the oversized object does not unblock sync,
+  as the sync history still carries the oversized version of the object.
 * `strictConversionsFromMongoDb`: Enables strict conversions of data values from MongoDB documents to ObjectBox objects.
   By default, strict mode is off to ensure that convertable data is synced.
   On conversion errors, the sync to ObjectBox will fail without syncing the document.
