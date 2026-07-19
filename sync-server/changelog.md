@@ -7,6 +7,15 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-07-19: Sync push performance at peak load
+----------------------------------------------
+ObjectBox version: 6.0.0-beta-2026-07-19
+
+* Fixed a contention issue that slowed down sending updates to clients at peak times:
+  sync filtering throughput better scales with the worker count (~3x faster in a 40-worker benchmark).
+
+Upgrade notes: no special actions required
+
 2026-07-14: Mesh Sync server support (beta)
 -------------------------------------------
 ObjectBox version: 6.0.0-beta-2026-07-13
