@@ -7,6 +7,21 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-08-26: MongoDB Connector improvements
+------------------------------------------
+ObjectBox version: 6.0.0-beta-2026-08-26
+
+* Sync precedence and clock is now considered when syncing to MongoDB.
+  I.e., an existing higher priority document is not overwritten in MongoDB when it has higher precedence/clock values.
+* Changes from MongoDB are now applied to ObjectBox in batches:
+  much higher throughput for bursts of changes and fewer transactions for Sync clients to process.
+  New metrics: `obx_mongodb_change_batches` and `obx_mongodb_change_stream_reader_running`.
+* Admin: the MongoDB Connector page was significantly extended:
+  * New charts with connector statistics like the Sync Statistics page (second/minute/hour/day, auto-update)
+  * New stats to help monitor the connector's performance and health
+* Fix auto-update of sync stats graphs (regression in version 2026-07-14)
+* MongoDB driver updated; our patch introduced in 2026-06-24 is not required anymore
+
 2026-07-19: Sync push performance at peak load
 ----------------------------------------------
 ObjectBox version: 6.0.0-beta-2026-07-19
