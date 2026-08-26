@@ -7,6 +7,19 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-08-31: MongoDB Statistics page
+-----------------------------------
+ObjectBox version: 6.0.0-beta-2026-08-27
+
+* Admin: the new MongoDB Connector statistics charts from the previous version moved to its own "Statistics" page
+* Admin: byte charts scale to KB/MB/GB (1000-based)
+* Admin: MongoDB more precise ping time and ping fixes
+* Admin: Sync Statistics adds a new "Put Conflicts" chart to illustrate conflict resolutions (by precedence vs. clock)
+* Admin: Sync Statistics only shows the "Connected Peers" chart if the server runs in cluster mode
+* Admin: fix MongoDB statistics "TX logs behind" starting value
+
+Upgrade notes: no special actions required
+
 2026-08-26: MongoDB Connector improvements
 ------------------------------------------
 ObjectBox version: 6.0.0-beta-2026-08-26
