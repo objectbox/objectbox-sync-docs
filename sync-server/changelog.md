@@ -35,6 +35,8 @@ ObjectBox version: 6.0.0-beta-2026-08-26
 * Fix auto-update of sync stats graphs (regression in version 2026-07-14)
 * MongoDB driver updated; our patch introduced in 2026-06-24 is not required anymore
 
+Upgrade notes: no special actions required
+
 2026-07-19: Sync push performance at peak load
 ----------------------------------------------
 ObjectBox version: 6.0.0-beta-2026-07-19
