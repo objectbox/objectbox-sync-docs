@@ -15,8 +15,7 @@ ObjectBox version: 6.0.0-beta-2026-08-27
 * Admin: byte charts scale to KB/MB/GB (1000-based)
 * Admin: MongoDB more precise ping time and ping fixes
 * Admin: Sync Statistics adds a new "Put Conflicts" chart to illustrate conflict resolutions (by precedence vs. clock)
-* Admin: Sync Statistics only shows the "Connected Peers" chart if the server runs in cluster mode
-* Admin: fix MongoDB statistics "TX logs behind" starting value
+* Admin: minor statistics/graph fixes
 
 Upgrade notes: no special actions required
 
