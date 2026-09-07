@@ -135,6 +135,8 @@ You may notice that IDs of objects stored on one device may not always match the
 ## MongoDB-specific issues
 
 Please check the page [MongoDB Sync Connector](mongodb-sync-connector/README.md) and its subpage for MongoDB-specific issues and troubleshooting. Typical issues include the MongoDB user configuration, and not triggering the initial "Full Sync".
+To check whether data flows between MongoDB and ObjectBox, and to spot connector errors,
+use the [MongoDB Statistics](mongodb-sync-connector/mongodb-statistics.md) page of the Admin UI.
 
 ## Sync slows down
 

@@ -174,6 +174,9 @@ The following values are available when using the [MongoDB Sync Connector](../mo
 * `obx_mongodb_initial_import_required` (gauge): 1 if the initial import from MongoDB has not been done yet,
   0 otherwise.
 
+The Admin UI shows the connector's counters as charts on the
+[MongoDB Statistics](../mongodb-sync-connector/mongodb-statistics.md) page.
+
 ## Hooking up Prometheus
 
 To let Prometheus scrape the Sync Server, add a scrape job to your Prometheus configuration (`prometheus.yml`).

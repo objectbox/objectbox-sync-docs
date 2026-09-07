@@ -190,6 +190,7 @@ During the import you can see the progress on the page. There are two main phase
 As you can see in the image above, you have the possibility to abort an ongoing import process. This is to be used very cautiously, as it can yield inconsistent states of data if importing has already started (e.g. dangling relations). Then the best course of action is to start a new full sync again and let it complete. Aborting an ongoing import should be reserved for emergencies only.
 
 A finished import will show up as "Completed" in the "State" column on a green background. At that point, it is a good time to check the logs to ensure the sync went smoothly. Also, having a look at the "Data" page will give you a good overview of the data imported.
+From now on, the [MongoDB Statistics](mongodb-statistics.md) page shows the ongoing data flow between MongoDB and ObjectBox.
 
 ## Viewing imports
 

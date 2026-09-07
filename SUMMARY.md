@@ -22,6 +22,7 @@
 * [MongoDB Sync Connector](mongodb-sync-connector/README.md)
   * [MongoDB Configuration](mongodb-sync-connector/mongodb-configuration.md)
   * [ObjectBox Sync Connector Setup](mongodb-sync-connector/objectbox-sync-connector-setup.md)
+  * [MongoDB Statistics](mongodb-sync-connector/mongodb-statistics.md)
   * [MongoDB Data Mapping](mongodb-sync-connector/mongodb-data-mapping.md)
   * [Performance & Best Practices](mongodb-sync-connector/performance-and-best-practices.md)
 * [Syncing Concurrent Changes](syncing-concurrent-changes.md)

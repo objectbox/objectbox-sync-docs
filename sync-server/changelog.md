@@ -11,7 +11,8 @@ Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 -----------------------------------
 ObjectBox version: 6.0.0-beta-2026-08-27
 
-* Admin: the new MongoDB Connector statistics charts from the previous version moved to its own "Statistics" page
+* Admin: the new MongoDB Connector statistics charts from the previous version moved to its own
+  ["Statistics"](../mongodb-sync-connector/mongodb-statistics.md) page
 * Admin: byte charts scale to KB/MB/GB (1000-based)
 * Admin: MongoDB more precise ping time and ping fixes
 * Admin: Sync Statistics adds a new "Put Conflicts" chart to illustrate conflict resolutions (by precedence vs. clock)

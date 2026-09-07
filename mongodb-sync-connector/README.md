@@ -37,3 +37,4 @@ ObjectBox and MongoDB have many similarities. Nevertheless, it's important to un
 * Setup an ObjectBox Server instance and configure the MongoDB Sync Connector.
 * Import data from MongoDB to ObjectBox initially.
 * Now, two-way data synchronization between MongoDB and ObjectBox automatically happens.
+* Monitor the data flow using the [MongoDB Statistics](mongodb-statistics.md) page of the Admin UI.

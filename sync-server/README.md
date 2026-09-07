@@ -153,6 +153,9 @@ For continuous monitoring in production,
 the same statistics (and more) are also available via a Prometheus metrics endpoint;
 see [Monitoring and Alerting](monitoring.md).
 
+If you use the MongoDB Sync Connector, the data flow between ObjectBox and MongoDB has its own charts;
+see [MongoDB Statistics](../mongodb-sync-connector/mongodb-statistics.md).
+
 ### Status
 
 In the main menu, you will find "Status" to open a page with some useful information. While the following layout is still not final, it will give you a first impression of what to expect:
