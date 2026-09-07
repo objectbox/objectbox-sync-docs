@@ -122,12 +122,11 @@ check the [performance tips](performance-and-best-practices.md):
 consecutive writes of the same type inside a transaction, and puts separate from removes,
 allow for larger bulk operations.
 
-<figure><img src="../.gitbook/assets/mongodb-statistics-2.png" alt="MongoDB Statistics page in the Admin web UI: ID mapping, conflict, error, and warning charts"><figcaption><p>MongoDB Statistics: detail and error charts</p></figcaption></figure>
-
 ## Detail and error charts
 
 The remaining charts go into details and show errors and warnings.
-Most of them should stay at zero.
+
+<figure><img src="../.gitbook/assets/mongodb-statistics-2.png" alt="MongoDB Statistics page in the Admin web UI: ID mapping, conflict, error, and warning charts"><figcaption><p>MongoDB Statistics: detail and error charts</p></figcaption></figure>
 
 ### ID Mappings
 
