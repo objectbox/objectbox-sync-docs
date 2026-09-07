@@ -199,9 +199,19 @@ Available external types for IDs: `MongoId` (default), `Uuid` (UUIDv7), `UuidStr
 {% endtab %}
 {% endtabs %}
 
-The following table shows the supported ID types:
+The following table shows the supported ID types (note that IDs are always 64-bit integers on the ObjectBox side):
 
-<table><thead><tr><th width="198.5333251953125">MongoDB type</th><th width="216.6998291015625" align="center">Incoming from MongoDB</th><th align="center">IDs for new documents created in ObjectBox</th></tr></thead><tbody><tr><td>Object ID</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>This is the default type</td></tr><tr><td>UUID (Binary with UUID subtype)</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: Uuid (V7) or UuidV4</td></tr><tr><td>String</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span><br>External types: UuidString (V7) or UuidV4String</td></tr><tr><td>Binary</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int64</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr><tr><td>Int32</td><td align="center"><span data-gb-custom-inline data-tag="emoji" data-code="2705">✅</span></td><td align="center">Uses default MongoDB Object ID</td></tr></tbody></table>
+| MongoDB type                    | Incoming from MongoDB | IDs for new documents created in ObjectBox           |
+|:--------------------------------|:---------------------:|:-----------------------------------------------------|
+| Object ID                       |          ✅           | ✅ This is the default type (external type: MongoId) |
+| UUID (Binary with UUID subtype) |          ✅           | ✅ External types: Uuid (V7) or UuidV4               |
+| String                          |          ✅           | ✅ External types: UuidString (V7) or UuidV4String   |
+| Binary                          |          ✅           | Uses default MongoDB Object ID                       |
+| Int64                           |          ✅           | Uses default MongoDB Object ID                       |
+| Int32                           |          ✅           | Uses default MongoDB Object ID                       |
+
+Note that `UuidString` and `UuidV4String` are only supported for ID properties.
+For external types of regular (non-ID) properties, see [Special Types](#special-types) below.
 
 ## Property/Field type mapping
 
@@ -256,7 +266,10 @@ The external property types are defined as part of your data model on the "clien
   The first element is the regex pattern, the second element is the regex options (index 0: pattern, index 1: options).
 * MongoDB has the following deprecated types, which are currently not supported: Undefined, DBPointer, Symbol.
   If you rely on these types, please contact us. We may provide at least some support for these types.
-* IDs and relations are documented separately on this page.
+* **ID properties** are not listed in the table above.
+  External property types for ID properties, e.g. `Uuid` or `UuidString`, are documented in [Special ID types](#special-id-types).
+* **MongoIdVector** and **UuidVector** are external types for many-to-many relations, not for properties.
+  See [Many-to-Many Relations](#many-to-many-relations) below.
 
 **Example:** a string that is mapped to a Decimal128 on the MongoDB side
 
@@ -302,8 +315,6 @@ FlatBuffers schema file (in combination with ObjectBox Generator):
 /// objectbox:external-type=Decimal128
 decimalString: string;
 ```
-
-Available external types for IDs: `MongoId` (default), `Uuid` (UUIDv7), `UuidString` (UUIDv7 stored as string), `UuidV4`, `UuidV4String`.
 {% endtab %}
 {% endtabs %}
 
@@ -335,6 +346,11 @@ Many-to-many relations work a bit differently. As illustrated in the table above
   * They can be used in queries to link types (aka join).
 
 As to-many relations consist of ID values, all supported types can be used. In theory, different ID types can be used in the same to-many relation. However, it is usually good practice to stick to a single ID type per MongoDB collection if possible.
+
+Many-to-many relations can also declare an external type, which describes the array of ID references on the MongoDB side:
+`MongoIdVector` for an array of ObjectIds or `UuidVector` for an array of binary UUIDs.
+The IDs written to MongoDB always follow the ID mapping of the target type (see [Special ID types](#special-id-types)),
+so the declared type should match the ID type of the target collection.
 
 ## Nested Documents
 
