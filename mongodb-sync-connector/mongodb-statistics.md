@@ -12,7 +12,7 @@ Open it via "MongoDB Connector" → "Statistics" in the menu on the left.
 Use the charts to verify that changes are synchronized in both directions,
 to keep an eye on the connector's performance and health,
 and to spot errors and warnings when something does not work as expected.
-The charts complement the [Sync Statistics](../sync-server/README.md#sync-statistics) page,
+The charts complement the [Sync Statistics](../sync-server/admin-web-ui/sync-statistics.md) page,
 which covers the Sync clients connected to the server.
 
 <figure><img src="../.gitbook/assets/mongodb-statistics-1.png" alt="MongoDB Statistics page in the Admin web UI: data flow charts"><figcaption><p>MongoDB Statistics: data flow charts</p></figcaption></figure>

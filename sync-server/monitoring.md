@@ -15,7 +15,7 @@ and either of the two can actively alert you (e.g. via email or Slack) when some
 
 {% hint style="info" %}
 For a quick look at live server statistics without any external tooling,
-you can also use the "Sync Statistics" page of the [Admin web UI](./#admin-web-ui).
+you can also use the [Sync Statistics](admin-web-ui/sync-statistics.md) page of the Admin web UI.
 The Prometheus endpoint is the right choice for continuous monitoring in production:
 long-term storage, custom dashboards, and alerting.
 {% endhint %}

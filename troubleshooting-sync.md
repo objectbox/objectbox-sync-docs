@@ -128,6 +128,9 @@ Follow this checklist:
 * Ensure that the generated files data model are up-to-date. Hint: in the model JSON file you should see `"flags": 2` for the entity types you want to sync (`2` is actually a bit flag that enables sync). 
 * Ensure that the up-to-date model JSON is also used for the server config.
 
+The [Sync Statistics](sync-server/admin-web-ui/sync-statistics.md) page of the Admin UI shows
+whether clients connect and send transactions, and which failures and errors occur.
+
 ## IDs do not match across devices
 
 You may notice that IDs of objects stored on one device may not always match the IDs on another device. Well, that's not a bug, but a feature. :slight\_smile:  Check the [docs on Object ID mapping](data-model/object-ids.md) and the possibility to use global IDs instead.

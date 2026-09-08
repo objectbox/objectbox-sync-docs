@@ -9,6 +9,7 @@
   * [Sync Cluster](sync-server/sync-cluster.md)
   * [Admin Web UI](sync-server/admin-web-ui/README.md)
     * [Log Events](sync-server/admin-web-ui/log-events.md)
+    * [Sync Statistics](sync-server/admin-web-ui/sync-statistics.md)
   * [Monitoring and Alerting](sync-server/monitoring.md)
   * [GraphQL](sync-server/graphql-database/README.md)
     * [GraphQL Queries](sync-server/graphql-database/graphql-queries.md)

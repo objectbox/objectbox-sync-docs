@@ -76,6 +76,7 @@ Ignore `blog-posts/` for now.
 
 - **`sync-server/admin-web-ui/README.md`** — Admin Web UI stub page (minimal; most Admin UI docs are inline in `sync-server/README.md`).
 - **`sync-server/admin-web-ui/log-events.md`** — Log Events page in Admin UI: event types (Debug through Crash), event fields (timestamp, type, message, component, peer ID, thread, stacktrace, etc.), navigation/pagination, jump-to-date, downloading events as JSON.
+- **`sync-server/admin-web-ui/sync-statistics.md`** — Sync Statistics page in the Admin UI: chart controls (second/minute/hour/day, auto-update, retention, composite mode), chart-by-chart reference (messages and bytes, applied transactions remote/local, client TX bytes/ops, async DB commits, skipped TX dups, put conflicts, connected clients/peers, client TXs behind, sent transactions historic/new, failures, errors, full syncs), what to watch for, pointer to Prometheus monitoring.
 
 ### `sync-server/graphql-database/`
 
