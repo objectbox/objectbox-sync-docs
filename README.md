@@ -14,7 +14,7 @@ To learn more about the ObjectBox **database**, have a look at its [website](htt
 {% endhint %}
 
 {% hint style="info" %}
-[Directly get your free Sync trial](https://sync.objectbox.io/sync-server)
+To start now, [get your free Sync trial here](https://sync.objectbox.io/sync-server)
 {% endhint %}
 
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
