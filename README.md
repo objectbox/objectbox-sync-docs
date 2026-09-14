@@ -13,6 +13,10 @@ Welcome to the official documentation for **ObjectBox Sync**!
 To learn more about the ObjectBox **database**, have a look at its [website](https://objectbox.io/offline-first-mobile-database/).
 {% endhint %}
 
+{% hint style="info" %}
+[Directly get your free Sync trial](https://sync.objectbox.io/sync-server)
+{% endhint %}
+
 In a nutshell, here are the **three steps to start with ObjectBox Sync**:
 
 1. Set up your data model using one of the [ObjectBox Sync Client](sync-client.md) language bindings (Java, Dart, Swift, C, ...) to get a data model JSON file.
