@@ -158,9 +158,6 @@ Do not use `obx_mesh_opt_network_internal()` directly unless your platform SDK o
 
 Keep the regular ObjectBox Sync plugin and setup from [Sync Client](sync-client.md#objectbox-sync-enabled-library).
 
-Mesh Sync is available starting with version `6.0.0-beta` of the ObjectBox Java and Dart libraries,
-and with version `6.0.0-beta.2` of the ObjectBox Swift Package.
-
 {% tabs %}
 {% tab title="Android Kotlin DSL" %}
 Use the Sync variant of ObjectBox version `6.0.0-beta` (or later), and add the Mesh Sync library for Android:
@@ -237,13 +234,12 @@ On these versions, pin the package by the commit of the version tag instead:
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
-Use version `6.0.0-beta` (or later) of the ObjectBox Dart packages, which contain Mesh Sync support
-(`6.0.0-preview.3` or later for iOS and macOS):
+Use version `6.0.0-preview.3` (or later) of the ObjectBox Dart packages, which contain Mesh Sync support:
 
 ```yaml
 dependencies:
-  objectbox: ^6.0.0-beta
-  objectbox_sync_flutter_libs: ^6.0.0-beta
+  objectbox: ^6.0.0-preview.3
+  objectbox_sync_flutter_libs: ^6.0.0-preview.3
 ```
 
 On Android, the `objectbox_sync_flutter_libs` plugin already includes the Mesh Sync library for Android,
