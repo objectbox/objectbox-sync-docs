@@ -34,6 +34,12 @@ These minimal examples create the normal `SyncClient`, attach a mesh configurati
 Use the same mesh identifier on all apps/devices that should join the same mesh.
 The mesh ID should be unique to your application (for example, based on your application ID, like `com.example.myapp.mesh`).
 
+{% hint style="info" %}
+Mesh Sync can also be used completely without a Sync Server; the peers then only synchronize with each other.
+The `SyncClient` still requires a server URL, so pass a placeholder URL that does not connect anywhere, like `ws://127.0.0.1:1`.
+The client's connection attempts to it fail and are retried with a back-off in the background; this does not affect Mesh Sync.
+{% endhint %}
+
 {% tabs %}
 {% tab title="Java" %}
 ```java
