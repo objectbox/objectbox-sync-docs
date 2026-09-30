@@ -11,7 +11,8 @@ It is intended for offline-first apps where devices may meet locally and exchang
 Typically, Mesh Sync is complementing the regular Sync Server by providing local sync while no Internet is available.
 
 {% hint style="info" %}
-ObjectBox Mesh Sync is currently available as a **preview for Android** (Java/Kotlin and Flutter/Dart).
+ObjectBox Mesh Sync is currently available as a **preview** for Android (Java/Kotlin and Flutter/Dart)
+and for Apple platforms (iOS and macOS; Swift and Flutter/Dart).
 More platforms will follow; let us know if you are interested.
 Please also note that the APIs are still subject to change until the final release.
 For a list of current limitations, see [Current Limitations](#current-limitations).
@@ -70,7 +71,23 @@ val syncClient: SyncClient = Sync.client(boxStore)
 ```
 {% endtab %}
 
+{% tab title="Swift" %}
+```swift
+import ObjectBox
+import ObjectBoxMeshSync
+
+let configuration = Sync.Configuration(store: store, url: "ws://sync.example.com:9999")
+configuration.credentials = [SyncCredentials.makeNone()]
+configuration.mesh = try AppleMeshSync.createConfig(meshId: "com.example.myapp.mesh")
+
+let syncClient = try Sync.makeClient(configuration: configuration)
+try syncClient.start()
+```
+{% endtab %}
+
 {% tab title="Dart/Flutter" %}
+The same code works on Android, iOS and macOS:
+
 ```dart
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart'
@@ -141,7 +158,8 @@ Do not use `obx_mesh_opt_network_internal()` directly unless your platform SDK o
 
 Keep the regular ObjectBox Sync plugin and setup from [Sync Client](sync-client.md#objectbox-sync-enabled-library).
 
-Mesh Sync is available starting with version `6.0.0-beta` of the ObjectBox Java and Dart libraries.
+Mesh Sync is available starting with version `6.0.0-beta` of the ObjectBox Java and Dart libraries,
+and with version `6.0.0-beta.2` of the ObjectBox Swift Package.
 
 {% tabs %}
 {% tab title="Android Kotlin DSL" %}
@@ -153,8 +171,9 @@ dependencies {
 }
 ```
 
-This library provides the mesh network for Android using [Google Nearby Connections](https://developers.google.com/nearby/connections/overview).
-It also includes the required manifest permissions (see [Permissions](#permissions)) and the `play-services-nearby` dependency, so you do not need to add these yourself.
+This library provides the mesh network for Android.
+It also includes the required manifest permissions (see [Permissions](#permissions)) and its dependencies,
+so you do not need to add these yourself.
 {% endtab %}
 
 {% tab title="Android Groovy" %}
@@ -166,12 +185,60 @@ dependencies {
 }
 ```
 
-This library provides the network transport for specific to Android.
-It also includes the required manifest permissions (see [Permissions](#permissions)) and the `play-services-nearby` dependency, so you do not need to add these yourself.
+This library provides the mesh network for Android.
+It also includes the required manifest permissions (see [Permissions](#permissions)) and its dependencies,
+so you do not need to add these yourself.
+{% endtab %}
+
+{% tab title="Swift" %}
+On Apple platforms, Mesh Sync is the `ObjectBoxMeshSync` library of the [ObjectBox Swift Package](https://github.com/objectbox/objectbox-swift-spm),
+available as a preview starting with version `6.0.0-beta.2`.
+It is only available via Swift Package Manager (not via CocoaPods).
+To keep its dependencies out of apps that do not use Mesh Sync, the library is behind the package's `MeshSync` trait,
+which requires Xcode 16.3 or newer.
+
+In a `Package.swift`, enable the trait when adding the dependency and link the library next to the Sync library:
+
+```swift
+dependencies: [
+    .package(
+        url: "https://github.com/objectbox/objectbox-swift-spm.git",
+        exact: "6.0.0-beta.2",
+        traits: ["MeshSync"]
+    )
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [
+            .product(name: "ObjectBox-Sync.xcframework", package: "objectbox-swift-spm"),
+            .product(name: "ObjectBoxMeshSync", package: "objectbox-swift-spm")
+        ]
+    )
+]
+```
+
+In an Xcode project, Xcode 26.4 or newer offers a switch for the trait in the package dependency settings;
+with older Xcode versions, declare the dependency in a small local package as above and add that package to the project.
+
+{% hint style="warning" %}
+Swift 6.2 (Xcode 26.0 to 26.3) fails to resolve a version-based dependency that enables a trait
+with "exhausted attempts to resolve the dependencies graph".
+On these versions, pin the package by the commit of the version tag instead:
+
+```swift
+.package(
+    url: "https://github.com/objectbox/objectbox-swift-spm.git",
+    revision: "910840f73816ce78cbefef12d7869402675ae1bf", // 6.0.0-beta.2
+    traits: ["MeshSync"]
+)
+```
+{% endhint %}
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
-Use version `6.0.0-beta` (or later) of the ObjectBox Dart packages, which contain Mesh Sync support:
+Use version `6.0.0-beta` (or later) of the ObjectBox Dart packages, which contain Mesh Sync support
+(`6.0.0-preview.3` or later for iOS and macOS):
 
 ```yaml
 dependencies:
@@ -180,15 +247,27 @@ dependencies:
 ```
 
 On Android, the `objectbox_sync_flutter_libs` plugin already includes the Mesh Sync library for Android,
-with the required manifest permissions and the Google Nearby Connections dependency.
+with the required manifest permissions and dependencies.
+
+On iOS and macOS, the plugin uses the `ObjectBoxMeshSync` library of the ObjectBox Swift Package (see the Swift tab).
+This requires the [Swift Package Manager integration](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers) of Flutter
+(the default since Flutter 3.44) and Xcode 16.3 or newer.
+With the CocoaPods integration, Mesh Sync is not available and `createMeshConfig()` throws an `UnsupportedError`.
 {% endtab %}
 {% endtabs %}
 
 ## Permissions
 
+Mesh Sync uses Bluetooth and Wi-Fi to discover and connect to nearby devices.
+On Android, this requires permissions declared in the manifest and granted at runtime (see below).
+On Apple platforms, it requires usage descriptions in the app's `Info.plist` and, for macOS, sandbox entitlements;
+see [Apple platforms](#apple-platforms-ios-and-macos).
+
+### Android
+
 Mesh Sync may use Bluetooth, Wi-Fi and location-related Android permissions for discovery and connections.
 
-The Mesh Sync library for Android declares the permissions that may be required by Nearby Connections in its manifest.
+The Mesh Sync library for Android declares the permissions that may be required for its mesh network in its manifest.
 They are automatically merged into your app's manifest, so you do not need to declare them yourself.
 This applies to both Android (Java/Kotlin) apps and Flutter apps.
 
@@ -213,7 +292,7 @@ For reference, these are the permissions added by the library:
 
 Note that not all of these permissions may be required.
 Depending on a device's Android version and your app's needs, only some of them may actually be necessary.
-For example, location permissions are typically not required for Nearby Connections on recent Android releases.
+For example, location permissions are typically not required on recent Android releases.
 To remove permissions your app does not need, use [merge rule markers](https://developer.android.com/build/manage-manifests) in your app's manifest:
 
 ```xml
@@ -287,8 +366,36 @@ syncClient = SyncClient(
 
 Alternatively, you can also implement your own permission request logic, and pass `false` to the `requestPermissions` parameter to prevent requesting runtime permissions.
 Note that `createMeshConfig()` will only request runtime permissions if they are not already granted.
+
+On iOS and macOS, there are no runtime permissions to request,
+so `requestPermissions` and `onPermissionsGranted` have no effect there.
 {% endtab %}
 {% endtabs %}
+
+### Apple platforms (iOS and macOS)
+
+There are no runtime permissions to request upfront:
+the system asks the user for Local Network (and Bluetooth) access when Mesh Sync first uses them.
+Until the user accepts, discovery and advertising are silently suppressed;
+Mesh Sync keeps retrying to start its network radios (see `advertisingRetryMillis` in [Configuration](#configuration)).
+
+Add these entries to the app's `Info.plist` (this applies to Swift and Flutter apps alike):
+
+| Key                                 | Value                                                                                 |
+|-------------------------------------|---------------------------------------------------------------------------------------|
+| `NSLocalNetworkUsageDescription`    | Why the app uses the local network (Mesh Sync discovers and connects to peers over Wi-Fi). |
+| `NSBluetoothAlwaysUsageDescription` | Why the app uses Bluetooth (Mesh Sync also finds and connects to peers over Bluetooth).    |
+| `NSBonjourServices`                 | Required on iOS: the Bonjour service type derived from the mesh ID, see below.             |
+
+The Bonjour service type is `_<HASH>._tcp`,
+where `<HASH>` is the first 6 bytes of the SHA-256 hash of the mesh ID as upper-case hex.
+For example, the mesh ID `com.example.myapp.mesh` results in the service type `_C17B206CE9F6._tcp`.
+To compute it on a Mac: `printf %s com.example.myapp.mesh | shasum -a 256 | cut -c1-12`.
+
+macOS apps are usually sandboxed and then need these entitlements in addition:
+`com.apple.security.network.client` and `com.apple.security.network.server` for Wi-Fi,
+and `com.apple.security.device.bluetooth` to use Bluetooth.
+(Sandboxed macOS apps using ObjectBox also need an app group, as documented for the ObjectBox Swift and Dart libraries.)
 
 
 ## Configuration
@@ -327,6 +434,10 @@ Note that not every option is exposed by every language API yet;
 for example, the Java/Kotlin API currently does not expose `randomSeed` and `txLogMaxAgeSeconds`.
 The following examples show how to configure a mesh and set `maxConnectionCount` to `4`.
 
+The Swift API additionally offers `nearbyMediums` to restrict the mediums used for advertising and discovery,
+for example `[.wifiLAN]` to avoid Bluetooth (and its permission prompt) when all devices share a network.
+By default, all supported mediums are used.
+
 {% tabs %}
 {% tab title="Java" %}
 Configure optional settings using the chainable setters of `MeshConfig`:
@@ -343,6 +454,16 @@ Configure optional settings using the chainable setters of `MeshConfig`:
 ```kotlin
 val meshConfig = AndroidMeshSync.createConfig(context, "com.example.myapp.mesh")
     .maxConnectionCount(4)
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+Configure optional settings using the properties of `MeshConfig`:
+
+```swift
+let meshConfig = try AppleMeshSync.createConfig(meshId: "com.example.myapp.mesh")
+meshConfig.maxConnectionCount = 4
+meshConfig.nearbyMediums = [.wifiLAN] // Apple-only: optional, restricts the mediums used
 ```
 {% endtab %}
 
@@ -402,6 +523,16 @@ if (mesh != null) {
 ```
 {% endtab %}
 
+{% tab title="Swift" %}
+```swift
+if let mesh = syncClient.mesh {
+    print(mesh.stateString)
+    print(mesh.connectedPeerCount)
+    print(try mesh.statsValue(.txLogsApplied))
+}
+```
+{% endtab %}
+
 {% tab title="Dart/Flutter" %}
 ```dart
 final mesh = syncClient.mesh;
@@ -444,7 +575,9 @@ if (mesh) {
 Mesh Sync is currently in public preview.
 Until the final release, we'll finalize the API and plan to address the following limitations.
 
-* Only works on Android (Mesh Sync has a network abstraction layer that is currently only implemented for Android)
+* Only available on Android and Apple platforms (iOS, macOS);
+  Mesh Sync has a network abstraction layer that is currently only implemented for these.
+* On Apple platforms, Mesh Sync is only available via Swift Package Manager (not via CocoaPods), see [Setup](#setup).
 * Data expiration is time-based only: sync logs kept for the mesh expire after `txLogMaxAgeSeconds` (default: 8 hours);
   there is no size-based limit yet.
 * TBD: Peer authentication; currently there's no auth between peers other than the mesh ID.
