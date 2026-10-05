@@ -504,9 +504,75 @@ obx_sync_start(sync_client);  // connect and start syncing
 ```go
 // coming soon
 ```
+{% endtab %}
+{% endtabs %}
 
 Note: future versions of the client APIs will also take a list of values.
 This will also take care of escaping special characters for string values, as mentioned in the [sync filter documentation](sync-server/sync-filters.md#escaping-commas-and-backslashes).
+
+#### Changing variables while connected
+
+Filter variables can also be changed after the client was started, e.g. when a user switches to another team.
+Put or remove variables as before, and then apply all changes at once:
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+syncClient.putFilterVariable("team", "green");
+syncClient.applyFilterVariables();
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+syncClient.putFilterVariable("team", "green")
+syncClient.applyFilterVariables()
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// coming soon
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+syncClient.putFilterVariable("team", "green");
+syncClient.applyFilterVariables();
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+syncClient->putFilterVariable("team", "green");
+syncClient->applyFilterVariables();
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+obx_sync_filter_variables_put(sync_client, "team", "green");
+obx_sync_filter_variables_apply(sync_client);
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// coming soon
+```
+{% endtab %}
+{% endtabs %}
+
+If the variables changed, the client automatically reconnects to the server with the new variables,
+and the server brings the client's data in line with them:
+
+* With Sync Server version starting 2026-10-05 and a matching client version, a client resyncs:
+  it keeps its local data and only receives the differences,
+  i.e. objects that now match the filters are added, and objects that no longer match are removed.
+* With older Sync protocol versions, the client removes its synced data and receives all matching data again (full sync).
+
+If the client is not connected, the changed variables are used with the next login.
 
 
 ### Drop-off, send-only clients
@@ -1544,6 +1610,71 @@ syncClient.RequestUpdates(false)
 ```
 {% endtab %}
 {% endtabs %}
+
+### Resync and full sync
+
+Usually, the client and the server exchange only new changes via the sync history.
+If you suspect the client's data diverged from the server's,
+the client can request to reconcile its data with the server:
+
+* **Resync**: the client keeps its local data and the server sends only the differences.
+  To find these, the client sends its "inventory" (a condensed state) so unchanged objects are not transferred again.
+  Objects the client has, but the server does not have (or no longer sends to this client), are removed from the client.
+  This requires Sync Server version 2026-10-05 or newer; with older versions, the client does a full sync instead.
+* **Full sync** (experimental): the server sends all data (within the client's sync filters).
+  This is mostly useful for clients without data.
+
+The client sends its pending local changes to the server before requesting a resync.
+
+{% tabs %}
+{% tab title="Java" %}
+```java
+// Resync: coming soon
+syncClient.requestFullSync();
+```
+{% endtab %}
+
+{% tab title="Kotlin" %}
+```kotlin
+// Resync: coming soon
+syncClient.requestFullSync()
+```
+{% endtab %}
+
+{% tab title="Swift" %}
+```swift
+// coming soon
+```
+{% endtab %}
+
+{% tab title="Dart/Flutter" %}
+```dart
+// coming soon
+```
+{% endtab %}
+
+{% tab title="C++" %}
+```cpp
+syncClient->requestResync();
+syncClient->requestFullSync();
+```
+{% endtab %}
+
+{% tab title="C" %}
+```c
+obx_sync_resync(sync_client);
+obx_sync_full(sync_client);
+```
+{% endtab %}
+
+{% tab title="Go" %}
+```go
+// coming soon
+```
+{% endtab %}
+{% endtabs %}
+
+Both calls require the client to be logged in; otherwise, they return false (C: `OBX_NO_SUCCESS`).
 
 ### Custom Certificates
 

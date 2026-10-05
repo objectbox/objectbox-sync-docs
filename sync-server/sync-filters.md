@@ -337,7 +337,8 @@ e.g. a complete sync filter expression could look like this: `team == $auth.user
 ### Client variables
 
 ObjectBox Sync Clients can also define variables for sync filters.
-Before logging in, the client API allows to add variables using key/value pairs (strings).
+The client API allows to add variables using key/value pairs (strings),
+before logging in and also while connected.
 For API details, see [Sync Client](../sync-client.md#sync-filter-client-variables).
 These are sent to the Sync Server with the login request and can be used in sync filter expressions using the `client.` prefix.
 
@@ -427,12 +428,32 @@ Numeric ranges and string patterns:
 (price >= 10.0 AND price <= 100.0) AND description *= "sale"
 ```
 
+## Changing sync filters
+
+Sync filters may change for a client, e.g. if you change filter expressions in the server configuration,
+or if variable values used by the filters change (e.g. JWT claims or client variables).
+Then, the data the client has synced before may no longer match its sync filters.
+Clients detect this when they log in and bring their data in line with the new sync filters:
+
+* Clients and servers supporting resync (Sync Server version 2026-10-05 or newer) keep the client's local data.
+  The server only sends the differences, i.e. it adds objects that now match the filters,
+  and removes objects that no longer match.
+  Unchanged objects are not transferred again.
+* Older versions remove the client's synced data and send all matching data again (full sync).
+
 ## Performance
 
-Sync filters are used to create queries, e.g. when clients connect for the first time for a "full sync".
-Thus, what makes a query performant also applies to sync filters.
+{% hint style="info" %}
+TL;DR: Use indexes for properties used in sync filters.
+{% endhint %}
 
-Especially for equality conditions (`==`), it is highly recommended to use indexes for the properties used in the filter expressions (unless you only have a few objects of a type, e.g. less than a hundred).
+Sync filters are similar to queries; what makes a query performant also applies to sync filters.
+This is especially relevant for the first time sync ("full sync") and when sync filters change ("resync").
+
+Especially for equality conditions (`==`),
+it is highly recommended to **use indexes for the properties used in the filter expressions**
+(unless you only have a few objects of a type, e.g. less than a hundred).
+
 This is done in the standard ObjectBox way, i.e. using the index annotation (`@Index` for most languages) on the property in the data model.
 
 ## Caveats
@@ -447,4 +468,6 @@ Sync filters have some caveats to be aware of (future versions may or may not ad
   However, it is not yet deleted from "team blue" clients that have synced before.
   Thus, use the delete and insert approach instead:
   the server will correctly remove the object from "team blue" clients.
+  To clean up clients that already have such objects, these clients can request a [resync](../sync-client.md#resync-and-full-sync),
+  which removes objects that no longer match their sync filters.
 
