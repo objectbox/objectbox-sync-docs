@@ -9,7 +9,7 @@ Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
 2026-10-05: Resync
 ------------------
-ObjectBox version: 6.0.0-beta-2026-10-XX
+ObjectBox version: 6.0.0-beta-2026-10-05
 
 * New Sync protocol V12 introduces "resync" for special cases that required a "full sync" before:
   clients reconcile their data with the server without resetting it; the server sends only the differences.
