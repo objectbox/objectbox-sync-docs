@@ -94,6 +94,8 @@ or "X in the last N minutes".
   (measured at the application level; network-level numbers may differ).
 * `obx_full_syncs` (counter): number of full syncs performed
   (clients synchronizing from scratch rather than via delta sync).
+* `obx_resyncs` (counter): number of resyncs performed
+  (clients reconciling their existing data with the server, e.g. after their sync filters changed).
 
 ### Transactions (sync data flow)
 

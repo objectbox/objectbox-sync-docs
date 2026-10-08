@@ -164,13 +164,17 @@ Server-side errors:
 
 Check the [log events](log-events.md) for details on errors.
 
-### Full Syncs
+### Full Syncs and Resyncs
 
-Full sync messages sent to clients.
+Full sync and resync messages sent to clients.
 A full sync sends all data (within the client's sync filters) to a client instead of individual transactions.
 It is performed for clients that never synced before,
 and for clients whose sync state no longer allows delta synchronization.
 Large full syncs are split into several messages, each of which counts here.
+
+A [resync](../../sync-client.md#resync-and-full-sync) only sends the differences to the data a client already has,
+e.g. after the client's sync filters changed.
+Resyncs have their own line in this chart (Sync Server version 2026-10-05 or newer).
 
 ## What to watch for
 

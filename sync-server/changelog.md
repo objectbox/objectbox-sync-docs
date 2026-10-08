@@ -7,19 +7,18 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
-2026-10-05: Resync
+2026-10-07: Resync
 ------------------
-ObjectBox version: 6.0.0-beta-2026-10-05
+ObjectBox version: 6.0.0-beta-2026-10-07
 
 * New Sync protocol V12 introduces "resync" for special cases that required a "full sync" before:
   clients reconcile their data with the server without resetting it; the server sends only the differences.
 * Changed sync filters let V12 clients resync instead of resetting their data and doing a full sync
 * Client filter variable changes: V12 clients reconnect with the new variables (resync, see above);
   older clients (protocol V9-V11) get a "full sync required" response for any change
+* Admin and Prometheus: separate "resync" statistics count from "full sync"
 
-Upgrade notes:
-
-* Resync requires clients supporting Sync protocol V12 (older clients are still supported)
+Upgrade notes: Resync requires clients supporting Sync protocol V12 (older clients are still supported)
 
 2026-08-31: MongoDB Statistics page
 -----------------------------------
