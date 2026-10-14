@@ -11,7 +11,7 @@ It is intended for offline-first apps where devices may meet locally and exchang
 Typically, Mesh Sync is complementing the regular Sync Server by providing local sync while no Internet is available.
 
 {% hint style="info" %}
-ObjectBox Mesh Sync is currently available as a **preview** for Android (Java/Kotlin and Flutter/Dart)
+ObjectBox Mesh Sync is currently available for Android (Java/Kotlin and Flutter/Dart)
 and for Apple platforms (iOS and macOS; Swift and Flutter/Dart).
 More platforms will follow; let us know if you are interested.
 Please also note that the APIs are still subject to change until the final release.
