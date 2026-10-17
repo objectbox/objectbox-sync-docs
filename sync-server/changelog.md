@@ -7,6 +7,22 @@ description: Recent Sync Server releases
 Docker images use versions in the format "YYYY-MM-DD".
 Pull the latest image using `docker pull objectboxio/sync-server-trial`.
 
+2026-10-17: MongoDB field-based updates
+---------------------------------------
+ObjectBox version: 6.0.0-beta-2026-10-17
+
+* MongoDB Connector: updates from MongoDB now apply only the changed fields to existing ObjectBox objects.
+  This fixes a race that could revert recent ObjectBox changes, e.g., remove a to-many relation just added by a client,
+  if another writer (e.g., a trigger) updated the same document in MongoDB (much more likely since version 2026-08-26).
+  An update with a higher sync precedence than the existing object still applies the whole document,
+  except for its unchanged to-many relations.
+* MongoDB Connector: a change from MongoDB that loses against the existing object via sync precedence
+  does not update the object's to-many relations anymore
+* MongoDB Connector: tested with MongoDB 9.0
+* MongoDB driver updated
+
+Upgrade notes: no special actions required
+
 2026-10-07: Resync
 ------------------
 ObjectBox version: 6.0.0-beta-2026-10-07
