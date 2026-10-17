@@ -86,6 +86,16 @@ If a field/property is present on both sides, it will be synced. If a property i
 
 ***
 
+**What happens if a document is changed in MongoDB and in ObjectBox at the same time?**
+
+Updates from MongoDB only apply the changed fields to the ObjectBox object, so changes of other fields in ObjectBox are kept
+(Sync Server version 2026-10-17 or later).
+If the same field is changed on both sides at about the same time, the two systems may end up with different values until the next change.
+Use a sync precedence property to decide which change wins consistently;
+see [Changes from MongoDB](syncing-concurrent-changes.md#changes-from-mongodb) for details.
+
+***
+
 **Is it possible to connect multiple Sync Servers to one MongoDB instance?**
 
 Yes, that's what we call "tiered sync" or "edge sync". The MongoDB database becomes the central instance where all ObjectBox Sync Servers are connected to synchronize data. Each Sync Server can be deployed at its own location and can have its own set of clients. You can set this up with the Server trial on your own, or talk to us if you are interested in further details.
