@@ -11,7 +11,10 @@ In short, the ObjectBox Sync Connector only needs two things:
 
 ## Supported MongoDB
 
-You need at least MongoDB 5.0 or higher. If possible, use the latest 8.0 release as it provides the best performance and most of our testing happens here. Otherwise, versions 5.0 to 7.0 are also tested automatically and supported. However, we may drop support for 5.0 in the future. Contact us if you need to use an older version.
+You need at least MongoDB 5.0 or higher.
+If possible, use the latest 8.0 release as it provides the best performance and most of our testing happens here.
+Version 9.0 is also tested automatically and supported, as are versions 5.0 to 7.0.
+However, we may drop support for 5.0 in the future. Contact us if you need to use an older version.
 
 ObjectBox Sync Connector supports all MongoDB variants:
 
