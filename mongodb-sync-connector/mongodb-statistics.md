@@ -51,6 +51,10 @@ the connector receives changes made in MongoDB via a change stream and applies t
   This is typically identical to "Changes".
   The difference are changes without effect, e.g. deletes for documents unknown to ObjectBox
   (see "Delete" in the [Errors](#errors) chart) or changes that were already covered by a full import.
+  Note that changes are also counted as applied when ObjectBox kept the object as it was,
+  e.g. updates of fields that are not part of the ObjectBox data model,
+  or changes that lost against the ObjectBox object due to a lower sync precedence
+  (see [Changes from MongoDB](../syncing-concurrent-changes.md#changes-from-mongodb)).
 * **Batches** (right axis): changes from MongoDB are collected and applied to ObjectBox in batches,
   using one ObjectBox transaction per batch.
   A batch contains all changes that arrived since the previous batch was taken (certain limits apply).
@@ -149,6 +153,9 @@ See [ID mapping](mongodb-data-mapping.md#id-mapping) for details.
 Puts to MongoDB that were not applied because the existing document in MongoDB won the conflict resolution:
 it has a higher sync precedence, or, at equal precedence, a newer sync clock.
 See [Syncing Concurrent Changes](../syncing-concurrent-changes.md) for how these properties work.
+This chart only covers the direction from ObjectBox to MongoDB;
+changes from MongoDB that lose against the ObjectBox object are counted in "Applied" of
+[Changes from MongoDB](#changes-from-mongodb).
 
 This only applies to types that define a sync precedence or sync clock property;
 for all other types, the value stays at zero.
