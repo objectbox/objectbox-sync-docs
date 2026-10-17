@@ -42,6 +42,7 @@ A device that was offline for a week and then syncs will overwrite a recent edit
 
 {% hint style="info" %}
 The default conflict resolution works at the **object level**: when a conflict is detected, the entire object is replaced.
+Updates from MongoDB are applied at the field level instead; see [Changes from MongoDB](#changes-from-mongodb).
 {% endhint %}
 
 ObjectBox Sync offers two property-level annotations to customize this behavior:
@@ -406,6 +407,64 @@ Choose precedence values carefully.
 Once an object has a high precedence, only writes with an equal or higher precedence can update it.
 Also, avoid `Long.MAX_VALUE` completely.
 {% endhint %}
+
+## Changes from MongoDB
+
+{% hint style="info" %}
+Field-level updates from MongoDB and the to-many relation rules below require Sync Server version 2026-10-17 or later.
+Older versions apply updates as whole documents,
+and changes losing due to a lower sync precedence still update to-many relations.
+{% endhint %}
+
+With the [MongoDB Sync Connector](mongodb-sync-connector/README.md), MongoDB is another source of concurrent changes.
+
+Updates of existing documents in MongoDB (e.g. `updateOne()` with `$set`) are applied at the field level:
+only the fields changed by the update are written to the ObjectBox object;
+all other properties keep their current values in ObjectBox.
+Thus, an update from MongoDB does not revert properties that were changed in ObjectBox in the meantime.
+Changing a nested field (e.g. `address.city`) applies the whole top-level field (e.g. `address`),
+as it is a single property in ObjectBox.
+Inserts and replaces (e.g. `replaceOne()`) apply the whole document.
+
+### Sync Precedence and MongoDB
+
+If the type has a sync precedence property,
+the precedence of the updated MongoDB document is compared with the one of the existing ObjectBox object:
+
+| Precedence of the MongoDB document | Properties applied to ObjectBox  | To-many relations applied to ObjectBox |
+|------------------------------------|----------------------------------|----------------------------------------|
+| Higher                             | All (the whole document)         | Only the changed ones                  |
+| Equal                              | Only the changed fields          | Only the changed ones                  |
+| Lower                              | None (the ObjectBox object wins) | None                                   |
+
+The direction from ObjectBox to MongoDB is guarded the same way:
+an ObjectBox change with a lower precedence than the MongoDB document is not applied in MongoDB
+(see [Puts skipped on Conflict](mongodb-sync-connector/mongodb-statistics.md#puts-skipped-on-conflict)).
+
+### Avoiding Conflicts with Sync Precedence
+
+Sync precedence lets you decide which change wins if an object is changed in MongoDB and in ObjectBox at the same time.
+A change that raises the precedence wins in both systems, independent of the timing:
+MongoDB does not apply ObjectBox changes with a lower precedence,
+and ObjectBox does not apply MongoDB changes with a lower precedence.
+
+To use this from a MongoDB application, set the precedence field together with the change that must win.
+E.g. when an order gets paid, raise its precedence in the same update:
+
+```javascript
+db.Order.updateOne(
+  { _id: orderId },
+  { $set: { status: "paid", precedence: 1000 } }
+)
+```
+
+A Sync client that concurrently edits the order with the previous precedence (e.g. `0`) loses in both systems:
+MongoDB keeps the paid order, and ObjectBox applies the whole MongoDB document, as its precedence is higher.
+The same works in the other direction, e.g. when a Sync client closes an order with a higher precedence
+(see [Example: Closing an Order](#example-closing-an-order)).
+
+This works well for data with rules on which change wins, e.g. lifecycle states or role-based authority
+(see [More Use Cases for Sync Precedence](#more-use-cases-for-sync-precedence)).
 
 ## Summary
 
