@@ -155,6 +155,17 @@ class Task {
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+@SyncEntity()
+@Entity()
+class Task:
+    id = Id
+    text = String
+    sync_clock = SyncClock  # stored as syncClock
+```
+{% endtab %}
+
 {% tab title="Swift" %}
 ```swift
 // objectbox: entity, sync
@@ -281,6 +292,19 @@ class Order {
 
   Order(this.item, {this.quantity = 0});
 }
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+@SyncEntity()
+@Entity()
+class Order:
+    id = Id
+    item = String
+    quantity = Int32
+    precedence = SyncPrecedence
+    sync_clock = SyncClock
 ```
 {% endtab %}
 

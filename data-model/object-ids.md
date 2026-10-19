@@ -76,6 +76,12 @@ To enable shared global IDs for a type, use this annotation on the type (class) 
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+@SyncEntity(shared_global_ids=True)
+```
+{% endtab %}
+
 {% tab title="Swift" %}
 ```
 // objectbox: sync = { "sharedGlobalIds": true }
