@@ -15,7 +15,7 @@ Prefer to look at example code? Check out [our Sync examples repository](https:/
 The standard ObjectBox (database) library does not include ObjectBox Sync (but may provide Sync **API interfaces**, to allow compiling).
 
 {% hint style="info" %}
-If you have not used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
+If you have not used ObjectBox before, please also be aware of documentation for the standard (non-sync) edition of ObjectBox (the ObjectBox DB) for your programming language ([Java/Kotlin, Dart/Flutter and Python](https://docs.objectbox.io/), [Swift](https://swift.objectbox.io/), [C and C++](https://cpp.objectbox.io/), [Go](https://golang.objectbox.io/)). You are currently looking at the documentation specific to ObjectBox Sync, which does not cover ObjectBox basics.
 {% endhint %}
 
 To get the ObjectBox Sync client library follow the instructions for your programming language:
@@ -64,6 +64,17 @@ end
 
 {% tab title="Dart/Flutter" %}
 See the [Getting Started](https://docs.objectbox.io/getting-started) instructions for Flutter or Dart and note the different instructions for Sync (different Flutter library, increasing Android minSdkVersion, install script parameter).
+{% endtab %}
+
+{% tab title="Python" %}
+Install the package `objectbox-sync` **instead of** `objectbox` (version 5.0 or newer):
+it provides the same `objectbox` module with the Sync variant of the ObjectBox library.
+
+```bash
+pip install objectbox-sync
+```
+
+See the [Getting Started](https://docs.objectbox.io/getting-started) page (Python) for the basics.
 {% endtab %}
 
 {% tab title="C/C++" %}
@@ -133,6 +144,14 @@ print("ObjectBox Sync is \(isSyncAvailable ? "available" : "unavailable")")
 ```dart
 final isSyncAvailable = Sync.isAvailable();
 print('ObjectBox Sync is ${isSyncAvailable ? "available" : "unavailable"}');
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+from objectbox import Sync
+
+print("ObjectBox Sync is", "available" if Sync.is_available() else "unavailable")
 ```
 {% endtab %}
 
@@ -227,6 +246,17 @@ class User {
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+from objectbox import Entity, SyncEntity
+
+@SyncEntity()
+@Entity()
+class User:
+    # ...
+```
+{% endtab %}
+
 {% tab title="C/C++ (using Generator)" %}
 ```cpp
 /// objectbox: sync
@@ -300,6 +330,20 @@ final syncClient = SyncClient(
         [SyncCredentials.none()]);
 syncClient.start(); // connect and start syncing
 ```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+from objectbox import Sync, SyncCredentials
+
+client = Sync.client(
+    store,
+    "ws://127.0.0.1:9999",  # wss for SSL, ws for unencrypted traffic
+    SyncCredentials.none())
+client.start()  # connect and start syncing
+```
+
+The store keeps its client (`store.sync_client()`) and closes it when the store is closed.
 {% endtab %}
 
 {% tab title="C++" %}
@@ -408,6 +452,14 @@ syncClient.start();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+client = Sync.client(store, "ws://127.0.0.1:9999", SyncCredentials.none(),
+                     filter_variables={"name": "value"})
+client.start()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 // Init as before: std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(...);
@@ -477,6 +529,15 @@ syncClient.start();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+values = ["apple", "banana", "cherry"]
+client = Sync.client(store, "ws://127.0.0.1:9999", SyncCredentials.none(),
+                     filter_variables={"fruits": ",".join(values)})
+client.start()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 // Init as before: std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(...);
@@ -543,6 +604,13 @@ syncClient.applyFilterVariables();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+client.put_filter_variable("team", "green")
+client.apply_filter_variables()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 syncClient->putFilterVariable("team", "green");
@@ -583,6 +651,14 @@ For some use cases, a client should only report data and thus only send updates 
 // C++; create syncClient as above, but do not start() just yet
 syncClient->setRequestUpdatesMode(OBXRequestUpdatesMode_MANUAL);
 syncClient->start();
+```
+
+```python
+# Python; create the client as above, but do not start() just yet
+from objectbox import SyncRequestUpdatesMode
+
+client.set_request_updates_mode(SyncRequestUpdatesMode.MANUAL)
+client.start()
 ```
 
 ### Secure Connection
@@ -661,6 +737,20 @@ syncClient.start();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+from objectbox import SyncFlags
+
+client = Sync.client(
+    store,
+    "wss://sync.server.example",
+    SyncCredentials.none(),
+    # Enable multiple flags using bitwise OR
+    flags=SyncFlags.REMOVE_WITH_OBJECT_DATA | SyncFlags.DEBUG_LOG_TX_LOGS)
+client.start()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 // Coming soon
@@ -734,6 +824,15 @@ SyncCredentials credential = SyncCredentials.jwtIdToken(idToken);
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+id_token = "<your_jwt_id_token>"  # Get from JWT authentication provider
+credentials = SyncCredentials.jwt_id_token(id_token)
+# Options for other types of JWT are available:
+# jwt_access_token(token), jwt_refresh_token(token), jwt_custom_token(token)
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 std::string idToken = "<your_jwt_id_token>"; // Get from JWT authentication provider
@@ -792,6 +891,16 @@ final credential = SyncCredentials.sharedSecretString("<your_secret>");
 // or a byte vector
 final secret = Uint8List.fromList([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]);
 final credentialBytes = SyncCredentials.sharedSecretUint8List(secret);
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+# use a string
+credentials = SyncCredentials.shared_secret("<your_secret>")
+
+# or bytes
+credentials = SyncCredentials.shared_secret(bytes([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]))
 ```
 {% endtab %}
 
@@ -870,6 +979,16 @@ SyncCredentials credential = SyncCredentials.googleAuthUint8List(secret);
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+# use a string
+credentials = SyncCredentials.google_auth("<secret>")
+
+# or bytes
+credentials = SyncCredentials.google_auth(bytes([0, 46, 79, 193, 185, 65, 73, 239, 15, 5]))
+```
+{% endtab %}
+
 {% tab title="C++" %}
 _Coming soon!_
 {% endtab %}
@@ -929,6 +1048,12 @@ final credential = SyncCredentials.none();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+credentials = SyncCredentials.none()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 obx::SyncCredentials credential = obx::SyncCredentials::none();
@@ -970,6 +1095,18 @@ val syncClient = Sync.client(...).build()
 
 // Start now.
 syncClient.start()
+```
+{% endtab %}
+
+{% tab title="Python" %}
+In Python, `Sync.client()` only creates the client; it connects once started:
+
+```python
+# Just create the client.
+client = Sync.client(store, "ws://127.0.0.1:9999", SyncCredentials.none())
+
+# Start now.
+client.start()
 ```
 {% endtab %}
 {% endtabs %}
@@ -1160,6 +1297,33 @@ subscription.cancel();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+Set listeners on the client, preferably before starting it.
+Subclass `SyncLoginListener`, `SyncConnectionListener` or `SyncCompletedListener` (or `SyncListener` for all events,
+including data changes) and override the methods of the events you are interested in:
+
+```python
+from objectbox import SyncLoginListener
+
+class LoginListener(SyncLoginListener):
+    def on_logged_in(self):
+        print("Logged in successfully")
+
+    def on_login_failed(self, sync_login_code):
+        print("Login failed:", sync_login_code)
+
+client = Sync.client(store, "ws://127.0.0.1:9999", SyncCredentials.none())
+client.set_login_listener(LoginListener())
+client.start()
+
+# remove the listener if you don't care about the events anymore
+client.set_login_listener(None)
+```
+
+Listeners are called from the client's background thread: return quickly, and do not close the client from a
+listener.
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 struct LoginListener : public obx::SyncClientLoginListener {
@@ -1315,6 +1479,28 @@ subscription.cancel();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+from objectbox import SyncChangeListener
+
+class ChangeListener(SyncChangeListener):
+    def on_change(self, sync_changes):
+        for change in sync_changes:
+            print(f"{change.entity}({change.entity_id}) puts={change.puts} removals={change.removals}")
+
+client.set_change_listener(ChangeListener())
+
+# For connects and disconnects use client.set_connection_listener()
+
+# For login status use client.set_login_listener()
+
+# For sync completion use client.set_completed_listener()
+
+# ...remove the listener if you don't care about the changes anymore
+client.set_change_listener(None)
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 /// Sample listener collecting all puts and removals
@@ -1441,6 +1627,12 @@ var count = syncClient.outgoingMessageCount();
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+count = client.outgoing_message_count()
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 uint64_t count = syncClient.outgoingMessageCount();
@@ -1552,6 +1744,27 @@ client.requestUpdates(subscribeForFuturePushes: false);
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+from objectbox import SyncRequestUpdatesMode
+
+client = Sync.client(store, "ws://127.0.0.1:9999", SyncCredentials.none())
+
+client.set_request_updates_mode(SyncRequestUpdatesMode.MANUAL)
+client.start()  # Connect but don't synchronize yet.
+
+# Turn on sync updates and subscribe for pushes.
+client.request_updates(subscribe_for_future_pushes=True)
+
+# Cancel ongoing synchronization & unsubscribe from future updates.
+client.cancel_updates()
+
+# Alternatively, catch up with the server but don't subscribe for future.
+# You can call this instead of subscribing to do one-time updates as needed.
+client.request_updates(subscribe_for_future_pushes=False)
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 std::shared_ptr<obx::SyncClient> syncClient = obx::Sync::client(store, ...);
@@ -1653,6 +1866,12 @@ syncClient.requestFullSync()
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+```python
+# coming soon
+```
+{% endtab %}
+
 {% tab title="C++" %}
 ```cpp
 syncClient->requestResync();
@@ -1711,6 +1930,17 @@ final syncClient = SyncClient(
     [SyncCredentials.none()],
     certificatePaths: ['/path/to/custom-ca.crt']);
 syncClient.start();
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+client = Sync.client(
+    store,
+    "wss://sync.server.example",
+    SyncCredentials.none(),
+    certificate_paths=["/path/to/custom-ca.crt"])
+client.start()
 ```
 {% endtab %}
 
