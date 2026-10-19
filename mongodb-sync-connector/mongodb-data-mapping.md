@@ -102,6 +102,24 @@ class Person {
 ```
 {% endtab %}
 
+{% tab title="Python" %}
+{% hint style="info" %}
+Python has no external names yet; the entity (class) name is the collection name.
+{% endhint %}
+
+Python stores property names in camelCase, e.g. `last_name` as `lastName`.
+To use the names as written in Python in MongoDB instead (e.g. `last_name`), store them like this:
+
+```python
+@SyncEntity()
+@Entity(python_names=True)
+class Person:
+    id = Id
+    name = String
+    last_name = String  # "last_name" in ObjectBox and MongoDB
+```
+{% endtab %}
+
 {% tab title="C/C++ (using Generator)" %}
 ```cpp
 /// objectbox: sync
@@ -186,6 +204,10 @@ int id = 0;
 ```
 
 Available external types for IDs: `mongoId` (default), `uuid` (UUIDv7), `uuidString` (UUIDv7 stored as string), `uuidV4`, `uuidV4String`.
+{% endtab %}
+
+{% tab title="Python" %}
+External types are not available in Python yet.
 {% endtab %}
 {% tab title=".fbs (C, C++, JS)" %}
 FlatBuffers schema file (in combination with ObjectBox Generator):
@@ -308,6 +330,10 @@ var decimalString: String?
 String decimalString;
 ```
 {% endtab %}
+
+{% tab title="Python" %}
+External types are not available in Python yet.
+{% endtab %}
 {% tab title=".fbs (C, C++, JS)" %}
 FlatBuffers schema file (in combination with ObjectBox Generator):
 
@@ -326,7 +352,8 @@ If you want to learn more about ObjectBox relations, check the [relation documen
 
 ObjectBox Sync also automatically maps IDs used in relations.
 
-Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID. This becomes a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
+Consider ObjectBox to-one relations, which have a single relation property pointing to another object using a 64-bit integer ID.
+In Python, this is a `Relation` property, e.g. `mother_id = Relation(Person)` (stored as `motherId`). This becomes a reference field in MongoDB's document containing the MongoDB object ID (OID). See the following illustration for an example:
 
 <figure><img src="../.gitbook/assets/ObjectVsDocument-Parent (1).png" alt="To-One Relationship Example: motherId mapping" width="563"><figcaption><p>Figure 2: To-One Relationship Example (motherId)</p></figcaption></figure>
 
@@ -382,6 +409,12 @@ To map nested documents with [flex properties](https://docs.objectbox.io/advance
 var myStringMap: MutableMap<String, Any?>? = null
 ```
 {% endtab %}
+
+{% tab title="Python" %}
+```python
+string_map = Flex  # e.g. a dict with string keys
+```
+{% endtab %}
 {% endtabs %}
 
 Flex properties characteristics and notes:
@@ -414,6 +447,10 @@ var myNestedDocumentJson: String? = null
 @ExternalType(type: ExternalPropertyType.jsonToNative)
 String? myNestedDocumentJson;
 ```
+{% endtab %}
+
+{% tab title="Python" %}
+External types are not available in Python yet.
 {% endtab %}
 
 {% tab title="Swift" %}
@@ -462,6 +499,12 @@ Object myArray;
 {% tab title="Kotlin" %}
 ```kotlin
 var myArray: MutableList<Any?>? = null
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+my_array = Flex  # e.g. a list with values of different types
 ```
 {% endtab %}
 {% endtabs %}
