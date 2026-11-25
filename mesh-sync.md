@@ -96,7 +96,7 @@ The same code works on Android, iOS and macOS:
 
 ```dart
 import 'package:objectbox/objectbox.dart';
-import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart'
+import 'package:objectbox_mesh_sync/objectbox_mesh_sync.dart'
     show createMeshConfig;
 
 final mesh = await createMeshConfig('com.example.myapp.mesh');
@@ -240,21 +240,29 @@ On these versions, pin the package by the commit of the version tag instead:
 {% endtab %}
 
 {% tab title="Dart/Flutter" %}
-Use version `6.0.0-preview.3` (or later) of the ObjectBox Dart packages, which contain Mesh Sync support:
+Mesh Sync is provided by the separate [objectbox_mesh_sync](https://pub.dev/packages/objectbox_mesh_sync) package,
+available starting with version `6.0.0-preview.6`.
+Add it instead of `objectbox_sync_flutter_libs`
+(it depends on it, so it includes the ObjectBox Sync libraries):
 
 ```yaml
 dependencies:
-  objectbox: ^6.0.0-preview.3
-  objectbox_sync_flutter_libs: ^6.0.0-preview.3
+  objectbox: ^6.0.0-preview.6
+  objectbox_mesh_sync: any
 ```
 
-On Android, the `objectbox_sync_flutter_libs` plugin already includes the Mesh Sync library for Android,
-with the required manifest permissions and dependencies.
+Mesh Sync is a separate package, so apps not using it do not have to include the Google Nearby dependencies.
+Note that on iOS and macOS, the Google Nearby dependencies currently may conflict with other dependencies,
+like those of Firebase.
+
+On Android, the plugin includes the Mesh Sync library for Android.
+The required permissions must be declared in the app's manifest, see [Permissions](#permissions).
 
 On iOS and macOS, the plugin uses the `ObjectBoxMeshSync` library of the ObjectBox Swift Package (see the Swift tab).
 This requires the [Swift Package Manager integration](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers) of Flutter
-(the default since Flutter 3.44) and Xcode 16.3 or newer.
-With the CocoaPods integration, Mesh Sync is not available and `createMeshConfig()` throws an `UnsupportedError`.
+(the default since Flutter 3.44) and Xcode 26.3 or newer.
+With the CocoaPods integration (or older Xcode versions), Mesh Sync is not available
+and `createMeshConfig()` throws an `UnsupportedError`.
 {% endtab %}
 {% endtabs %}
 
@@ -269,11 +277,12 @@ see [Apple platforms](#apple-platforms-ios-and-macos).
 
 Mesh Sync may use Bluetooth, Wi-Fi and location-related Android permissions for discovery and connections.
 
-The Mesh Sync library for Android declares the permissions that may be required for its mesh network in its manifest.
+For Android (Java/Kotlin) apps, the Mesh Sync library for Android declares the permissions that may be required for its mesh network in its manifest.
 They are automatically merged into your app's manifest, so you do not need to declare them yourself.
-This applies to both Android (Java/Kotlin) apps and Flutter apps.
 
-For reference, these are the permissions added by the library:
+Flutter apps must declare these permissions themselves in `android/app/src/main/AndroidManifest.xml`.
+
+These are the permissions added by the library (or to add to a Flutter app's manifest):
 
 ```xml
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -295,7 +304,9 @@ For reference, these are the permissions added by the library:
 Note that not all of these permissions may be required.
 Depending on a device's Android version and your app's needs, only some of them may actually be necessary.
 For example, location permissions are typically not required on recent Android releases.
-To remove permissions your app does not need, use [merge rule markers](https://developer.android.com/build/manage-manifests) in your app's manifest:
+In Flutter apps, simply do not declare permissions your app does not need.
+In Android (Java/Kotlin) apps, to remove permissions your app does not need,
+use [merge rule markers](https://developer.android.com/build/manage-manifests) in your app's manifest:
 
 ```xml
 <uses-permission
