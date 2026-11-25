@@ -247,7 +247,7 @@ Add it instead of `objectbox_sync_flutter_libs`
 
 ```yaml
 dependencies:
-  objectbox: ^6.0.0-preview.6
+  objectbox: ^6.0.0-rc.1
   objectbox_mesh_sync: any
 ```
 
